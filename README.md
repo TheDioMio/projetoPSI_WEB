@@ -1,6 +1,6 @@
 # Projeto Desenvolvimento de Aplicações
 
-Repositório para o projeto da unidade curricular de **Desenvolvimento de Aplicações**, desenvolvido no âmbito do **TeSP de Programação de Sistemas de Informação (PSI)**.
+Repositório para o projeto da unidade curricular de **Projeto de Sistemas de Informação**, desenvolvido no âmbito do **TeSP de Programação de Sistemas de Informação (PSI)**.
 
 ---
 
@@ -11,3 +11,4 @@ Repositório para o projeto da unidade curricular de **Desenvolvimento de Aplica
 - **Mário Pina** (2241534)  
 
 ---
+
