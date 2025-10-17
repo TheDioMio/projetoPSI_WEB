@@ -1,0 +1,4 @@
+Depois de fazer o clone:
+	1.º composer update (No terminal do phpstorm, pasta do projeto)
+	2.º composer install (No terminal do phpstorm, pasta do projeto)
+	3.º php init (No terminal do phpstorm, pasta do projeto)
