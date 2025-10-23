@@ -462,6 +462,8 @@
     color: var(--secondary)
 }
 
-.a{
-    color: var(--primary);
+.btn-login-principal {
+    color: #131c87;
+    background-color: #2facc2;
+    border-color: #279f9c !important;
 }

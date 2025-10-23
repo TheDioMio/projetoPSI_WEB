@@ -6,36 +6,55 @@
 
 use yii\bootstrap5\Html;
 use yii\bootstrap5\ActiveForm;
+use yii\helpers\Url; // Certifica-te que está presente
 
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
+
+// Definimos estilos para a imagem para garantir que a altura seja a mesma do formulário central
+$imgOptions = [
+    'alt' => 'Imagem de fundo',
+    'class' => 'img-fluid',
+    'style' => 'height: 600px; width: 250px; object-fit: cover;' // Ajusta width/height conforme necessário
+];
 ?>
-<div class="site-login">
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Please fill out the following fields to login:</p>
+<div class="site-login d-flex justify-content-center align-items-center w-100 py-5">
 
-    <div class="row">
-        <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
+    <div class="d-none d-md-block">
+        <?= Html::img('@web/img/imgFundoLoginFrontend_ESQ.png', $imgOptions) ?>
+    </div>
 
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+    <div class="login-form-center" style="max-width: 400px; padding: 20px;">
 
-                <?= $form->field($model, 'password')->passwordInput() ?>
+        <h1 class="text-center"><?= Html::encode($this->title) ?></h1>
 
-                <?= $form->field($model, 'rememberMe')->checkbox() ?>
+        <p class="text-center">Bem-vindo de volta!</p>
+
+        <div class="row">
+            <div class="col-12">
+                <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
+
+                <?= $form->field($model, 'username')->textInput(['autofocus' => true, 'placeholder' => 'Utilizador'])->label(false)?>
+
+                <?= $form->field($model, 'password')->passwordInput(['placeholder' => 'Password'])->label(false)?>
+
+                <?= $form->field($model, 'rememberMe')->checkbox()->label('Lembrar Login') ?>
 
                 <div class="my-1 mx-0" style="color:#999;">
-                    If you forgot your password you can <?= Html::a('reset it', ['site/request-password-reset']) ?>.
-                    <br>
-                    Need new verification email? <?= Html::a('Resend', ['site/resend-verification-email']) ?>
+                    Esqueçeste-te da password? <?= Html::a('Recupera-a', ['site/request-password-reset']) ?>.
                 </div>
 
                 <div class="form-group">
-                    <?= Html::submitButton('Login', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                    <?= Html::submitButton('Login', ['class' => 'btn btn-primary w-100', 'name' => 'login-button']) ?>
                 </div>
 
-            <?php ActiveForm::end(); ?>
+                <?php ActiveForm::end(); ?>
+            </div>
         </div>
     </div>
+    <div class="login-image-right d-none d-md-block">
+        <?= Html::img('@web/img/imgFundoLoginFrontend_DIR.png', $imgOptions) ?>
+    </div>
+
 </div>
