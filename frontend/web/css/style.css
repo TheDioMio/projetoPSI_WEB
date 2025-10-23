@@ -1,7 +1,7 @@
 /********** Template CSS **********/
 :root {
-    --primary: #7AB730;
-    --secondary: #FFD33C;
+    --primary: #2fa7a1;
+    --secondary: #f28f2b;
     --light: #F3F3F3;
     --dark: #212121;
 }
@@ -455,4 +455,13 @@
 
 .blog-item a:hover i::after {
     width: 50px;
+}
+
+/* Cor para botao Logout*/
+.btn-link {
+    color: var(--secondary)
+}
+
+.a{
+    color: var(--primary);
 }
