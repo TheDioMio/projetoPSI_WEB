@@ -40,87 +40,28 @@ AppAsset::register($this);
     <link href="<?= $web ?>/css/style.css" rel="stylesheet">
 
 </head>
-<body class="d-flex flex-column h-100">
+<body>
 
 <?php $this->beginBody() ?>
 
- <!-- Inicio Template -->
-
-
-
-<header>
-    <!--
-            <div class="container-fluid border-bottom d-none d-lg-block">
-                <div class="row gx-0">
-                    <div class="col-lg-4 text-center py-2">
-                        <div class="d-inline-flex align-items-center">
-                            <i class="bi bi-geo-alt fs-1 text-primary me-3"></i>
-                            <div class="text-start">
-                                <h6 class="text-uppercase mb-1">Our Office</h6>
-                                <span>123 Street, New York, USA</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 text-center border-start border-end py-2">
-                        <div class="d-inline-flex align-items-center">
-                            <i class="bi bi-envelope-open fs-1 text-primary me-3"></i>
-                            <div class="text-start">
-                                <h6 class="text-uppercase mb-1">Email Us</h6>
-                                <span>info@example.com</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 text-center py-2">
-                        <div class="d-inline-flex align-items-center">
-                            <i class="bi bi-phone-vibrate fs-1 text-primary me-3"></i>
-                            <div class="text-start">
-                                <h6 class="text-uppercase mb-1">Call Us</h6>
-                                <span>+012 345 6789</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
-
-                    <nav class="navbar navbar-expand-lg bg-white navbar-light shadow-sm py-3 py-lg-0 px-3 px-lg-0">
-                        <a href="index.html" class="navbar-brand ms-lg-5">
-                            <h1 class="m-0 text-uppercase text-dark"><i class="bi bi-shop fs-1 text-primary me-3"></i>Pet Shop</h1>
-                        </a>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarCollapse">
-                            <div class="navbar-nav ms-auto py-0">
-                                <a href="index.html" class="nav-item nav-link active">Home</a>
-                                <a href="about.html" class="nav-item nav-link">About</a>
-                                <a href="service.html" class="nav-item nav-link">Service</a>
-                                <a href="product.html" class="nav-item nav-link">Product</a>
-                                <div class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                                    <div class="dropdown-menu m-0">
-                                        <a href="price.html" class="dropdown-item">Pricing Plan</a>
-                                        <a href="team.html" class="dropdown-item">The Team</a>
-                                        <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                                        <a href="blog.html" class="dropdown-item">Blog Grid</a>
-                                        <a href="detail.html" class="dropdown-item">Blog Detail</a>
-                                    </div>
-                                </div>
-                                <a href="contact.html" class="nav-item nav-link nav-contact bg-primary text-white px-5 ms-lg-5">Contact <i class="bi bi-arrow-right"></i></a>
-                            </div>
-                        </div>
-                    </nav>
-
-            -->
 
     <?php
+
+
+    // 1. Defina o caminho para a sua imagem
+    // (O helper Html::img() resolve o @web automaticamente)
+    $logoUrl = '@web/img/logo_cores.png'; // Altere para o caminho da sua imagem
+
+    // 2. Crie a tag <img> com o helper do Yii
+    $logoImg = Html::img($logoUrl, [
+        'alt' => Html::encode(Yii::$app->name) . ' Logo', // Texto alternativo
+        'class' => 'me-3', // Mantém a margem 'margin-right' que o ícone tinha
+        'style' => 'width: 4rem; height: 4rem; object-fit: contain;' // Força o tamanho
+    ]);
+
+
     NavBar::begin([
-        'brandLabel' => '
-                            <h1 class="m-0 text-dark">
-                                <i class="bi bi-house fs-1 text-primary me-3"></i>' . Html::encode(Yii::$app->name) . '
-                            </h1>',
+        'brandLabel' => '<h1 class="m-0 text-dark">' . $logoImg . Html::encode(Yii::$app->name) . '</h1>',
         'brandUrl' => Yii::$app->homeUrl,
 
         'options' => [
@@ -161,14 +102,15 @@ AppAsset::register($this);
         echo Html::beginForm(['/site/logout'], 'post', ['class' => 'd-flex'])
             . Html::submitButton(
                 'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout text-decoration-none'],
+                ['class' => 'btn btn-link'],
 
             )
             . Html::endForm();
     }
     NavBar::end();
     ?>
-</header>
+
+
 
 <?php if (isset($this->blocks['hero'])): ?>
     <?= $this->blocks['hero'] ?>
@@ -183,6 +125,7 @@ AppAsset::register($this);
         <?= $content ?>
     </div>
 </main>
+
 
 <!-- Footer Start -->
 <div class="container-fluid bg-light mt-5 py-5">
@@ -217,21 +160,20 @@ AppAsset::register($this);
                     <a class="text-body" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Contact Us</a>
                 </div>
             </div>
+
             <div class="col-lg-3 col-md-6">
-                <h5 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Newsletter</h5>
-                <form action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control p-3" placeholder="Your Email">
-                        <button class="btn btn-primary">Sign Up</button>
-                    </div>
-                </form>
-                <h6 class="text-uppercase mt-4 mb-3">Segue-nos</h6>
+                <h5 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Segue-nos</h5>
+
+
+
+                <h6 class="text-uppercase mt-4 mb-3">As nossas redes sociais</h6>
                 <div class="d-flex">
                     <a class="btn btn-outline-primary btn-square me-2" href="#"><i class="bi bi-twitter"></i></a>
                     <a class="btn btn-outline-primary btn-square me-2" href="#"><i class="bi bi-facebook"></i></a>
                     <a class="btn btn-outline-primary btn-square me-2" href="#"><i class="bi bi-linkedin"></i></a>
                     <a class="btn btn-outline-primary btn-square" href="#"><i class="bi bi-instagram"></i></a>
                 </div>
+
             </div>
             <div class="col-12 text-center text-body">
                 <a class="text-body" href="">Terms & Conditions</a>
