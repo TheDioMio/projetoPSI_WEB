@@ -8,10 +8,13 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
+
+
 /**
  * User model
  *
  * @property integer $id
+ * @property string $name
  * @property string $username
  * @property string $password_hash
  * @property string $password_reset_token
@@ -29,6 +32,7 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
 
+    public $password;
 
     /**
      * {@inheritdoc}
@@ -54,10 +58,24 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            ['status', 'default', 'value' => self::STATUS_INACTIVE],
+            [['username', 'email', 'name'], 'required'],
+            ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            ['name', 'string', 'max' => 120],
+            ['password', 'required', 'on' => 'create'], // senha obrigatória ao criar
+            ['password', 'string', 'min' => 6],
+            [['username', 'email'], 'string', 'max' => 255],
+
         ];
     }
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios['create'] = ['username', 'email', 'name', 'password'];
+        return $scenarios;
+    }
+
 
     /**
      * {@inheritdoc}
