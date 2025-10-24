@@ -122,9 +122,15 @@ AppAsset::register($this);
                                 <i class="bi bi-house fs-1 text-primary me-3"></i>' . Html::encode(Yii::$app->name) . '
                             </h1>',
         'brandUrl' => Yii::$app->homeUrl,
+
         'options' => [
-            'class' => "navbar navbar-expand-lg bg-white navbar-light shadow-sm py-3 py-lg-0 px-3 px-lg-0",
+            'class' => "navbar navbar-expand-lg bg-white navbar-light shadow-sm py-3 py-lg-0 px-3 px-lg-0 sticky-top",
+
         ],
+
+        'innerContainerOptions' => [
+        'class' => 'container-fluid' ],// Isto substitui o 'container' por defeito
+
 
         'brandOptions'    => ['class' => 'navbar-brand m-0'],
         'collapseOptions' => ['id' => 'navbarCollapse'],
@@ -148,7 +154,7 @@ AppAsset::register($this);
     if (Yii::$app->user->isGuest) {
         echo Html::tag('div',Html::a('Login <i class="bi bi-arrow-right"></i>',['/site/login'],
             ['class' => ["nav-item nav-link nav-contact bg-primary text-white px-5 ms-lg-5"]]),
-            ['class' => ['d-flex']],
+            ['class' => ['d-flex', 'align-items-center', 'py-0', 'me-0']],
 
         );
     } else {
@@ -163,6 +169,10 @@ AppAsset::register($this);
     NavBar::end();
     ?>
 </header>
+
+<?php if (isset($this->blocks['hero'])): ?>
+    <?= $this->blocks['hero'] ?>
+<?php endif; ?>
 
 <main role="main" class="flex-shrink-0">
     <div class="container">

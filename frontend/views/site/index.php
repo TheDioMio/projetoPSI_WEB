@@ -5,7 +5,7 @@
 $this->title = 'Início';
 ?>
 
-
+<?php $this->beginBlock('hero'); ?>
 <!-- Hero Start -->
 <div class="container-fluid bg-primary py-5 mb-5 hero-header">
     <div class="container py-5">
@@ -27,6 +27,8 @@ $this->title = 'Início';
     </div>
 </div>
 <!-- Hero End -->
+
+<?php $this->endBlock(); ?>
 
 <!-- Video Modal Start -->
 <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -179,7 +181,7 @@ $this->title = 'Início';
                     <h6 class="text-uppercase">Quality Pet Foods</h6>
                     <h5 class="text-primary mb-0">$199.00</h5>
                     <div class="btn-action d-flex justify-content-center">
-                        <a class="btn btn-primary py-2 px-3" href=""><i class="bi bi-cart"></i></a>
+
                         <a class="btn btn-primary py-2 px-3" href=""><i class="bi bi-eye"></i></a>
                     </div>
                 </div>
@@ -190,7 +192,7 @@ $this->title = 'Início';
                     <h6 class="text-uppercase">Quality Pet Foods</h6>
                     <h5 class="text-primary mb-0">$199.00</h5>
                     <div class="btn-action d-flex justify-content-center">
-                        <a class="btn btn-primary py-2 px-3" href=""><i class="bi bi-cart"></i></a>
+
                         <a class="btn btn-primary py-2 px-3" href=""><i class="bi bi-eye"></i></a>
                     </div>
                 </div>
@@ -201,7 +203,7 @@ $this->title = 'Início';
                     <h6 class="text-uppercase">Quality Pet Foods</h6>
                     <h5 class="text-primary mb-0">$199.00</h5>
                     <div class="btn-action d-flex justify-content-center">
-                        <a class="btn btn-primary py-2 px-3" href=""><i class="bi bi-cart"></i></a>
+
                         <a class="btn btn-primary py-2 px-3" href=""><i class="bi bi-eye"></i></a>
                     </div>
                 </div>
@@ -212,7 +214,7 @@ $this->title = 'Início';
                     <h6 class="text-uppercase">Quality Pet Foods</h6>
                     <h5 class="text-primary mb-0">$199.00</h5>
                     <div class="btn-action d-flex justify-content-center">
-                        <a class="btn btn-primary py-2 px-3" href=""><i class="bi bi-cart"></i></a>
+
                         <a class="btn btn-primary py-2 px-3" href=""><i class="bi bi-eye"></i></a>
                     </div>
                 </div>
@@ -223,7 +225,7 @@ $this->title = 'Início';
                     <h6 class="text-uppercase">Quality Pet Foods</h6>
                     <h5 class="text-primary mb-0">$199.00</h5>
                     <div class="btn-action d-flex justify-content-center">
-                        <a class="btn btn-primary py-2 px-3" href=""><i class="bi bi-cart"></i></a>
+
                         <a class="btn btn-primary py-2 px-3" href=""><i class="bi bi-eye"></i></a>
                     </div>
                 </div>
