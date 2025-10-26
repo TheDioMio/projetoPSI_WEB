@@ -15,6 +15,9 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use common\models\Listing;
+use common\models\Animal;
+use yii\web\NotFoundHttpException;
 
 /**
  * Site controller
@@ -257,13 +260,39 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionDetail()
+    public function actionDetail($id)
     {
-        return $this->render('detail');
+        // 1. O Controller PROCURA o animal na Base de Dados
+        // Usamos ->with() para otimizar e ir buscar as relações (raça, tipo)
+        $model = Animal::find()
+            ->where(['id' => $id])
+            ->with('animalType', 'breed') // Carrega as tabelas relacionadas
+            ->one();
+
+        // 2. Verifica se o animal existe
+        if ($model === null) {
+            throw new NotFoundHttpException('O animal que procura não existe.');
+        }
+
+        // 3. O Controller ENVIA o $model para a View
+        return $this->render('detail', [
+            'model' => $model, // <-- AQUI ESTÁ A VARIÁVEL QUE FALTAVA
+        ]);
     }
 
     public function actionAnimal()
     {
-        return $this->render('animal');
+       /* return $this->render('animal'); */
+
+        $listings = Listing::find()
+            ->where(['status' => 1]) // Assumindo que '1' = Anúncio Aprovado
+            ->with('animal', 'animal.animalType') // Otimização: Carrega os animais e tipos de uma só vez
+            ->orderBy(['created_at' => SORT_DESC]) // Mostrar os mais recentes primeiro
+            ->all(); // Pede todos os resultados como um array
+
+        // 2. Enviamos o array de $listings para a view
+        return $this->render('animal', [
+            'listings' => $listings,
+        ]);
     }
 }

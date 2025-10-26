@@ -1,5 +1,7 @@
 <?php
 
+use yii\helpers\Html;
+
 /** @var yii\web\View $this */
 
 $this->title = 'Detalhes';
@@ -38,9 +40,7 @@ $this->title = 'Detalhes';
             <div class="mb-5">
 
                 <h1 class="text-uppercase mb-4">nome do bicho</h1>
-                <p>descrição descrição descrição descrição descrição descrição descrição descrição
-                    descrição descrição descrição descriçãodescrição descrição descrição descrição
-                    descrição descrição descrição descriçãodescrição descrição descrição descrição</p>
+                <p> <?= Html::encode($model->description)?></p>
 
             </div>
             <!-- Blog Detail End -->
@@ -105,9 +105,57 @@ $this->title = 'Detalhes';
         <!-- Sidebar Start -->
         <div class="col-lg-4">
 
+            <!-- Plain Text Start -->
+            <div>
+                <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-5">Perfil do Animal</h3>
+                <div class="bg-light text-center" style="padding: 30px;">
+
+                    <div class="bg-light p-3">
+                        <ul class="list-group list-group-flush">
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
+                                <strong>Idade:</strong>
+                                <span><?= Html::encode($model->age)?></span>
+                            </li>
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
+                                <strong>Porte:</strong>
+                                <span><?= Html::encode($model->size)?></span>
+                            </li>
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
+                                <strong>Tipo:</strong>
+                                <span> <?= Html::encode($model->breed_id)?> </span>
+                            </li>
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
+                                <strong>Raça:</strong>
+                                <span><?= Html::encode($model->neutered)?></span>
+                            </li>
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
+                                <strong>Esterilizado:</strong>
+                                <span><?= Html::encode($model->neutered)?></span>
+                            </li>
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
+                                <strong>Vacinas:</strong>
+                                <span><?= Html::encode($model->vaccines)?></span>
+                            </li>
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
+                                <strong>Localização:</strong>
+                                <span><?= Html::encode($model->location)?></span>
+                            </li>
+
+                        </ul>
+                    </div>
+            </div>
+            <!-- Plain Text End -->
+
             <!-- Category Start -->
             <div class="mb-5">
-                <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Interessado?</h3>
+                <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4 mt-4">Interessado?</h3>
                 <div class="d-flex flex-column justify-content-start">
                     <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Candidatura Online <i class="bi bi-input-cursor-text"></i></a>
                     <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Pedir mais Informações <i class="bi bi-info-circle"></i></a>
@@ -164,15 +212,7 @@ $this->title = 'Detalhes';
             </div>
             <!-- Tags End -->
 
-            <!-- Plain Text Start -->
-            <div>
-                <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Plain Text</h3>
-                <div class="bg-light text-center" style="padding: 30px;">
-                    <p>Vero sea et accusam justo dolor accusam lorem consetetur, dolores sit amet sit dolor clita kasd justo, diam accusam no sea ut tempor magna takimata, amet sit et diam dolor ipsum amet diam</p>
-                    <a href="" class="btn btn-primary py-2 px-4">Read More</a>
-                </div>
-            </div>
-            <!-- Plain Text End -->
+
         </div>
         <!-- Sidebar End -->
     </div>

@@ -4,6 +4,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\helpers\StringHelper;
 
 /** @var yii\web\View $this */
 
@@ -49,32 +50,55 @@ $posterUrl = Yii::getAlias('@web/video/' . $escolhaAleatoria['posterFile']);
     <div class="row g-5">
         <!-- Blog list Start -->
         <div class="col-lg-8">
-            <div class="blog-item mb-5">
-                <div class="row g-0 bg-light overflow-hidden">
-                    <div class="col-12 col-sm-5 h-100">
-                        <img class="img-fluid h-100" src="img/blog-1.jpg" style="object-fit: cover;">
-                    </div>
-                    <div class="col-12 col-sm-7 h-100 d-flex flex-column justify-content-center">
-                        <div class="p-4">
-                            <div class="d-flex mb-3">
-                                <small class="me-3"><i class="bi bi-bookmarks me-2"></i>Web Design</small>
-                                <small><i class="bi bi-calendar-date me-2"></i>01 Jan, 2045</small>
+
+            <?php foreach ($listings as $listing): ?>
+                <?php
+                // Para ser mais fácil, vamos buscar o animal que está "dentro" do anúncio
+                $animal = $listing->animal;
+
+                // Se, por alguma razão, o animal deste anúncio foi apagado,
+                // saltamos este loop e passamos ao próximo
+                if ($animal === null) {
+                    continue;
+                }
+                ?>
+
+                <div class="blog-item mb-5">
+                    <div class="row g-0 bg-light overflow-hidden">
+                        <div class="col-12 col-sm-5 h-100">
+                            <img class="img-fluid h-100" src="img/blog-1.jpg" style="object-fit: cover;">
+                        </div>
+                        <div class="col-12 col-sm-7 h-100 d-flex flex-column justify-content-center">
+                            <div class="p-4">
+                                <div class="d-flex mb-3">
+                                    <small class="me-3">
+                                        <i class="bi bi-bookmarks me-2"></i>
+                                        <?= Html::encode($animal->animalType->description) ?>
+                                    </small>
+                                    <small>
+                                        <i class="bi bi-calendar-date me-2"></i>
+                                        <?= Yii::$app->formatter->asDate($listing->created_at, 'long') ?>
+                                    </small>
+                                </div>
+
+                                <h5 class="text-uppercase mb-3"> nome   ????????</h5>
+
+                                <p>
+                                    <?= Html::encode(StringHelper::truncate($animal->description, 100, '...')) ?>
+                                </p>
+
+                                <?php
+                                echo Html::a(
+                                    'Detalhes<i class="bi bi-chevron-right"></i>',
+                                    ['/site/detail', 'id' => $animal->id],
+                                    ['class' => 'text-primary text-uppercase']
+                                );
+                                ?>
                             </div>
-                            <h5 class="text-uppercase mb-3">Dolor sit magna rebum clita rebum dolor</h5>
-                            <p>Ipsum sed lorem amet dolor amet duo ipsum amet et dolore est stet tempor eos dolor</p>
-                            <?php
-                            echo Html::a(
-                                'Detalhes<i class="bi bi-chevron-right"></i>', // 1. O texto do link
-                                ['/site/detail'], // 2. O URL (a rota para a sua action)
-                                ['class' => 'text-primary text-uppercase'] // 3. As opções HTML (a sua classe)
-                            );
-                            ?>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="col-12">
+            <?php endforeach; ?> <div class="col-12">
                 <nav aria-label="Page navigation">
                     <ul class="pagination pagination-lg m-0">
                         <li class="page-item disabled">

@@ -1,0 +1,5 @@
+- Criar menu dropdown na navbar no utilizador logado com as opçoes:
+	Perfil
+	Logout
+
+- Na tabela animais deve-se criar um campo para o nome do animal
