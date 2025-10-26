@@ -256,4 +256,14 @@ class SiteController extends Controller
             'model' => $model
         ]);
     }
+
+    public function actionDetail()
+    {
+        return $this->render('detail');
+    }
+
+    public function actionAnimal()
+    {
+        return $this->render('animal');
+    }
 }

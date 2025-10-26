@@ -80,7 +80,7 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => 'Início', 'url' => ['/site/index'], 'linkOptions' => ['class' => 'nav-link active']],
-        ['label' => 'Animais', 'url' => ['/site/about'], 'linkOptions' => ['class' => 'nav-link']],
+        ['label' => 'Animais', 'url' => ['/site/animal'], 'linkOptions' => ['class' => 'nav-link']],
         ['label' => 'Acerca', 'url' => ['/site/about'], 'linkOptions' => ['class' => 'nav-link']],
         ['label' => 'Contactos', 'url' => ['/site/contact'], 'linkOptions' => ['class' => 'nav-link',]],
     ];
@@ -203,6 +203,7 @@ AppAsset::register($this);
 </div>
 <!-- Footer End -->
 
+<a href="#" class="btn btn-primary py-3 fs-4 back-to-top"><i class="bi bi-arrow-up"></i></a>
 
 <!-- JavaScript Libraries -->
 <?php $web = Yii::getAlias('@web'); ?>

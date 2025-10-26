@@ -438,6 +438,8 @@ $this->title = 'Início';
 </div>
 <!-- Blog End -->
 
+<a href="#" class="btn btn-primary py-3 fs-4 back-to-top"><i class="bi bi-arrow-up"></i></a>
+
 
 
 <!--

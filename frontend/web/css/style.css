@@ -517,7 +517,64 @@
 
 
 
-.navbar.sticky-top {
-    position: sticky !important;
+/* ----------------------------------------------------------------------
+                        CSS BANNER VIDEO
+   ---------------------------------------------------------------------- */
 
+.hero-video-banner {
+    position: relative;
+    padding-top: 0;
+
+    /* ESTA É A LINHA QUE CONTROLA O TAMANHO */
+    height: 60vh; /* 60% da altura do ecrã */
+
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #333;
 }
+
+.hero-video-banner video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Truque para centrar o vídeo */
+
+    /* Garante que o vídeo cobre todo o espaço, mesmo que corte as margens */
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+
+    z-index: 0; /* Fica no fundo */
+}
+
+/* A camada escura por cima do vídeo (para o texto ser legível) */
+.hero-video-banner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    /* Overlay preto com 50% de opacidade. Ajuste o 0.5 se quiser mais claro/escuro */
+    background: rgba(0, 0, 0, 0.5);
+
+    z-index: 1; /* Fica entre o vídeo e o texto */
+}
+
+.hero-video-banner .banner-content {
+    position: relative; /* Fica por cima de tudo */
+    z-index: 2;
+    color: #fff; /* O texto deve ser branco */
+
+    /* Ajuste o padding se o texto estiver muito colado às bordas */
+    padding: 20px;
+}
+
+/* ----------------------------------------------------------------------
+                        CSS BANNER VIDEO
+   ---------------------------------------------------------------------- */
