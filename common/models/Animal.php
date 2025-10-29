@@ -19,7 +19,7 @@ use Yii;
  * @property int|null $user_id
  * @property string|null $created_at
  *
- * @property AnimalType $animalType
+ * @property AnimalType $animal-type
  * @property Application[] $applications
  * @property Breed $breed
  * @property File[] $files

@@ -46,6 +46,8 @@
                     ],
                     //['label' => 'Simple Link', 'icon' => 'th', 'badge' => '<span class="right badge badge-danger">New</span>'],
                     ['label' => 'Users', 'url' => ['user/index'], 'icon' => 'th', 'badge' => '<span class="right badge badge-danger">New</span>'],
+                    ['label' => 'Breed', 'url' => ['breed/index'], 'icon' => 'th', 'badge' => '<span class="right badge badge-danger">New</span>'],
+                    ['label' => 'Type Animal', 'url' => ['animal-type/index'], 'icon' => 'th', 'badge' => '<span class="right badge badge-danger">New</span>'],
                     ['label' => 'Animals', 'url' => ['animal/index'], 'icon' => 'th', 'badge' => '<span class="right badge badge-danger">New</span>'],
                     ['label' => 'Listings', 'url' => ['listing/index'], 'icon' => 'th', 'badge' => '<span class="right badge badge-danger">New</span>'],
                     ['label' => 'Yii2 PROVIDED', 'header' => true],

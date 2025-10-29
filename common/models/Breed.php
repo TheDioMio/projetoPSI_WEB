@@ -11,7 +11,7 @@ use Yii;
  * @property string $description
  * @property int $animal_type_id
  *
- * @property AnimalType $animalType
+ * @property AnimalType $animal-type
  * @property Animal[] $animals
  */
 class Breed extends \yii\db\ActiveRecord
