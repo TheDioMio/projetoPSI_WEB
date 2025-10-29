@@ -57,7 +57,7 @@ $this->title = 'Início';
         <div class="row gx-5">
             <div class="col-lg-5 mb-5 mb-lg-0" style="min-height: 500px;">
                 <div class="position-relative h-100">
-                    <img class="position-absolute w-100 h-100 rounded" src="img/about.jpg" style="object-fit: cover;">
+                    <img class="position-absolute w-100 h-100 rounded" src="../img/about.jpg" style="object-fit: cover;">
                 </div>
             </div>
             <div class="col-lg-7">
@@ -177,7 +177,7 @@ $this->title = 'Início';
         <div class="owl-carousel product-carousel">
             <div class="pb-5">
                 <div class="product-item position-relative bg-light d-flex flex-column text-center">
-                    <img class="img-fluid mb-4" src="img/product-1.png" alt="">
+                    <img class="img-fluid mb-4" src="../img/product-1.png" alt="">
                     <h6 class="text-uppercase">Quality Pet Foods</h6>
                     <h5 class="text-primary mb-0">$199.00</h5>
                     <div class="btn-action d-flex justify-content-center">
@@ -188,7 +188,7 @@ $this->title = 'Início';
             </div>
             <div class="pb-5">
                 <div class="product-item position-relative bg-light d-flex flex-column text-center">
-                    <img class="img-fluid mb-4" src="img/product-2.png" alt="">
+                    <img class="img-fluid mb-4" src="../img/product-2.png" alt="">
                     <h6 class="text-uppercase">Quality Pet Foods</h6>
                     <h5 class="text-primary mb-0">$199.00</h5>
                     <div class="btn-action d-flex justify-content-center">
@@ -199,7 +199,7 @@ $this->title = 'Início';
             </div>
             <div class="pb-5">
                 <div class="product-item position-relative bg-light d-flex flex-column text-center">
-                    <img class="img-fluid mb-4" src="img/product-3.png" alt="">
+                    <img class="img-fluid mb-4" src="../img/product-3.png" alt="">
                     <h6 class="text-uppercase">Quality Pet Foods</h6>
                     <h5 class="text-primary mb-0">$199.00</h5>
                     <div class="btn-action d-flex justify-content-center">
@@ -210,7 +210,7 @@ $this->title = 'Início';
             </div>
             <div class="pb-5">
                 <div class="product-item position-relative bg-light d-flex flex-column text-center">
-                    <img class="img-fluid mb-4" src="img/product-4.png" alt="">
+                    <img class="img-fluid mb-4" src="../img/product-4.png" alt="">
                     <h6 class="text-uppercase">Quality Pet Foods</h6>
                     <h5 class="text-primary mb-0">$199.00</h5>
                     <div class="btn-action d-flex justify-content-center">
@@ -221,7 +221,7 @@ $this->title = 'Início';
             </div>
             <div class="pb-5">
                 <div class="product-item position-relative bg-light d-flex flex-column text-center">
-                    <img class="img-fluid mb-4" src="img/product-2.png" alt="">
+                    <img class="img-fluid mb-4" src="../img/product-2.png" alt="">
                     <h6 class="text-uppercase">Quality Pet Foods</h6>
                     <h5 class="text-primary mb-0">$199.00</h5>
                     <div class="btn-action d-flex justify-content-center">
@@ -263,7 +263,7 @@ $this->title = 'Início';
         <div class="owl-carousel team-carousel position-relative" style="padding-right: 25px;">
             <div class="team-item">
                 <div class="position-relative overflow-hidden">
-                    <img class="img-fluid w-100" src="img/team-1.jpg" alt="">
+                    <img class="img-fluid w-100" src="../img/team-1.jpg" alt="">
                     <div class="team-overlay">
                         <div class="d-flex align-items-center justify-content-start">
                             <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-twitter"></i></a>
@@ -279,7 +279,7 @@ $this->title = 'Início';
             </div>
             <div class="team-item">
                 <div class="position-relative overflow-hidden">
-                    <img class="img-fluid w-100" src="img/team-2.jpg" alt="">
+                    <img class="img-fluid w-100" src="../img/team-2.jpg" alt="">
                     <div class="team-overlay">
                         <div class="d-flex align-items-center justify-content-start">
                             <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-twitter"></i></a>
@@ -295,7 +295,7 @@ $this->title = 'Início';
             </div>
             <div class="team-item">
                 <div class="position-relative overflow-hidden">
-                    <img class="img-fluid w-100" src="img/team-3.jpg" alt="">
+                    <img class="img-fluid w-100" src="../img/team-3.jpg" alt="">
                     <div class="team-overlay">
                         <div class="d-flex align-items-center justify-content-start">
                             <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-twitter"></i></a>
@@ -311,7 +311,7 @@ $this->title = 'Início';
             </div>
             <div class="team-item">
                 <div class="position-relative overflow-hidden">
-                    <img class="img-fluid w-100" src="img/team-4.jpg" alt="">
+                    <img class="img-fluid w-100" src="../img/team-4.jpg" alt="">
                     <div class="team-overlay">
                         <div class="d-flex align-items-center justify-content-start">
                             <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-twitter"></i></a>
@@ -327,7 +327,7 @@ $this->title = 'Início';
             </div>
             <div class="team-item">
                 <div class="position-relative overflow-hidden">
-                    <img class="img-fluid w-100" src="img/team-5.jpg" alt="">
+                    <img class="img-fluid w-100" src="../img/team-5.jpg" alt="">
                     <div class="team-overlay">
                         <div class="d-flex align-items-center justify-content-start">
                             <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-twitter"></i></a>
@@ -355,7 +355,7 @@ $this->title = 'Início';
                 <div class="owl-carousel testimonial-carousel bg-white p-5">
                     <div class="testimonial-item text-center">
                         <div class="position-relative mb-4">
-                            <img class="img-fluid mx-auto" src="img/testimonial-1.jpg" alt="">
+                            <img class="img-fluid mx-auto" src="../img/testimonial-1.jpg" alt="">
                             <div class="position-absolute top-100 start-50 translate-middle d-flex align-items-center justify-content-center bg-white" style="width: 45px; height: 45px;">
                                 <i class="bi bi-chat-square-quote text-primary"></i>
                             </div>
@@ -367,7 +367,7 @@ $this->title = 'Início';
                     </div>
                     <div class="testimonial-item text-center">
                         <div class="position-relative mb-4">
-                            <img class="img-fluid mx-auto" src="img/testimonial-2.jpg" alt="">
+                            <img class="img-fluid mx-auto" src="../img/testimonial-2.jpg" alt="">
                             <div class="position-absolute top-100 start-50 translate-middle d-flex align-items-center justify-content-center bg-white" style="width: 45px; height: 45px;">
                                 <i class="bi bi-chat-square-quote text-primary"></i>
                             </div>
@@ -397,7 +397,7 @@ $this->title = 'Início';
                 <div class="blog-item">
                     <div class="row g-0 bg-light overflow-hidden">
                         <div class="col-12 col-sm-5 h-100">
-                            <img class="img-fluid h-100" src="img/blog-1.jpg" style="object-fit: cover;">
+                            <img class="img-fluid h-100" src="../img/blog-1.jpg" style="object-fit: cover;">
                         </div>
                         <div class="col-12 col-sm-7 h-100 d-flex flex-column justify-content-center">
                             <div class="p-4">
@@ -417,7 +417,7 @@ $this->title = 'Início';
                 <div class="blog-item">
                     <div class="row g-0 bg-light overflow-hidden">
                         <div class="col-12 col-sm-5 h-100">
-                            <img class="img-fluid h-100" src="img/blog-2.jpg" style="object-fit: cover;">
+                            <img class="img-fluid h-100" src="../img/blog-2.jpg" style="object-fit: cover;">
                         </div>
                         <div class="col-12 col-sm-7 h-100 d-flex flex-column justify-content-center">
                             <div class="p-4">

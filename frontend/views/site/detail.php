@@ -19,10 +19,10 @@ $this->title = 'Detalhes';
                 </div>
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="img/hero.jpg" class="d-block w-100" alt="...">
+                        <img src="../img/hero.jpg" class="d-block w-100" alt="...">
                     </div>
                     <div class="carousel-item">
-                        <img src="img/offer.jpg" class="d-block w-100" alt="...">
+                        <img src="../img/offer.jpg" class="d-block w-100" alt="...">
                     </div>
 
                 </div>
@@ -56,7 +56,7 @@ $this->title = 'Detalhes';
             <div class="mb-5">
                 <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4 pt-10">3 Comentários</h3>
                 <div class="d-flex mb-4">
-                    <img src="img/user.jpg" class="img-fluid" style="width: 45px; height: 45px;">
+                    <img src="../img/user.jpg" class="img-fluid" style="width: 45px; height: 45px;">
                     <div class="ps-3">
                         <h6><a href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>
                         <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor labore
@@ -65,7 +65,7 @@ $this->title = 'Detalhes';
                     </div>
                 </div>
                 <div class="d-flex mb-4">
-                    <img src="img/user.jpg" class="img-fluid" style="width: 45px; height: 45px;">
+                    <img src="../img/user.jpg" class="img-fluid" style="width: 45px; height: 45px;">
                     <div class="ps-3">
                         <h6><a href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>
                         <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor labore
@@ -74,7 +74,7 @@ $this->title = 'Detalhes';
                     </div>
                 </div>
                 <div class="d-flex ms-5 mb-4">
-                    <img src="img/user.jpg" class="img-fluid" style="width: 45px; height: 45px;">
+                    <img src="../img/user.jpg" class="img-fluid" style="width: 45px; height: 45px;">
                     <div class="ps-3">
                         <h6><a href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>
                         <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor labore
@@ -170,22 +170,22 @@ $this->title = 'Detalhes';
             <div class="mb-5">
                 <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Animais Recentes</h3>
                 <div class="d-flex overflow-hidden mb-3">
-                    <img class="img-fluid" src="img/blog-1.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
+                    <img class="img-fluid" src="../img/blog-1.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
                     <a href="" class="h5 d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit
                     </a>
                 </div>
                 <div class="d-flex overflow-hidden mb-3">
-                    <img class="img-fluid" src="img/blog-2.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
+                    <img class="img-fluid" src="../img/blog-2.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
                     <a href="" class="h5 d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit
                     </a>
                 </div>
                 <div class="d-flex overflow-hidden mb-3">
-                    <img class="img-fluid" src="img/blog-3.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
+                    <img class="img-fluid" src="../img/blog-3.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
                     <a href="" class="h5 d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit
                     </a>
                 </div>
                 <div class="d-flex overflow-hidden mb-3">
-                    <img class="img-fluid" src="img/blog-1.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
+                    <img class="img-fluid" src="../img/blog-1.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
                     <a href="" class="h5 d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit
                     </a>
                 </div>
