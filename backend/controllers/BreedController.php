@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use common\models\Breed;
+use common\models\AnimalType;
 use backend\models\BreedSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -69,6 +70,7 @@ class BreedController extends Controller
     {
         $model = new Breed();
 
+        $animalTypes = AnimalType::find()->all();
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
@@ -79,6 +81,7 @@ class BreedController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'animalTypes' => $animalTypes,
         ]);
     }
 
@@ -92,13 +95,14 @@ class BreedController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $animalTypes = AnimalType::find()->all();
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'animalTypes' => $animalTypes,
         ]);
     }
 

@@ -31,7 +31,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'description',
-            'animal_type_id',
+            [
+                'attribute' => 'animal_type_id',
+                'value' => function ($model) {
+                    return $model->animalType ? $model->animalType->description : '(sem tipo)';
+                },
+                'label' => 'Animal Type',
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Breed $model, $key, $index, $column) {

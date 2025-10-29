@@ -31,7 +31,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'description',
-            'animal_type_id',
+            [
+                'attribute' => 'animal_type_id',
+                'value' => function ($model) {
+                    return $model->animalType ? $model->animalType->description : '(sem tipo)';
+                },
+                'label' => 'Animal Type',
+            ],
         ],
     ]) ?>
 
