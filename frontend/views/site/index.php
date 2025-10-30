@@ -1,5 +1,9 @@
 <?php
 
+
+use yii\helpers\Html;
+
+
 /** @var yii\web\View $this */
 
 $this->title = 'Início';
@@ -15,7 +19,7 @@ $this->title = 'Início';
                 <h1 class="text-uppercase text-white mb-lg-4">A sua plataforma para adoção responsável</h1>
                 <p class="fs-4 text-white mb-lg-4">Animais felizes, famílias completas.</p>
                 <div class="d-flex align-items-center justify-content-center justify-content-lg-start pt-5">
-                    <a href="" class="btn btn-outline-light border-2 py-md-3 px-md-5 me-5">Read More</a>
+                    <a href="../site/about" class="btn btn-outline-light border-2 py-md-3 px-md-5 me-5">Saber Mais</a>
                     <button type="button" class="btn-play" data-bs-toggle="modal"
                             data-src="https://www.youtube.com/embed/DWRcNpR6Kdc" data-bs-target="#videoModal">
                         <span></span>
@@ -62,29 +66,34 @@ $this->title = 'Início';
             </div>
             <div class="col-lg-7">
                 <div class="border-start border-5 border-primary ps-5 mb-5">
-                    <h6 class="text-primary text-uppercase">About Us</h6>
-                    <h1 class="display-5 text-uppercase mb-0">We Keep Your Pets Happy All Time</h1>
+                    <h6 class="text-primary text-uppercase">Processo</h6>
+                    <h1 class="display-5 text-uppercase mb-0">Como Funciona?</h1>
                 </div>
-                <h4 class="text-body mb-4">Diam dolor diam ipsum tempor sit. Clita erat ipsum et lorem stet no labore lorem sit clita duo justo magna dolore</h4>
+                <h4 class="text-body mb-4">Saiba como pode adotar um animal ou como pode colocar um animal para adoção</h4>
                 <div class="bg-light p-4">
                     <ul class="nav nav-pills justify-content-between mb-3" id="pills-tab" role="tablist">
                         <li class="nav-item w-50" role="presentation">
                             <button class="nav-link text-uppercase w-100 active" id="pills-1-tab" data-bs-toggle="pill"
                                     data-bs-target="#pills-1" type="button" role="tab" aria-controls="pills-1"
-                                    aria-selected="true">Our Mission</button>
+                                    aria-selected="true">Adotar</button>
                         </li>
                         <li class="nav-item w-50" role="presentation">
                             <button class="nav-link text-uppercase w-100" id="pills-2-tab" data-bs-toggle="pill"
                                     data-bs-target="#pills-2" type="button" role="tab" aria-controls="pills-2"
-                                    aria-selected="false">Our Vission</button>
+                                    aria-selected="false">Colocar para Adoção</button>
                         </li>
                     </ul>
                     <div class="tab-content" id="pills-tabContent">
                         <div class="tab-pane fade show active" id="pills-1" role="tabpanel" aria-labelledby="pills-1-tab">
-                            <p class="mb-0">Tempor erat elitr at rebum at at clita aliquyam consetetur. Diam dolor diam ipsum et, tempor voluptua sit consetetur sit. Aliquyam diam amet diam et eos sadipscing labore. Clita erat ipsum et lorem et sit, sed stet no labore lorem sit. Sanctus clita duo justo et tempor consetetur takimata eirmod, dolores takimata consetetur invidunt magna dolores aliquyam dolores dolore. Amet erat amet et magna</p>
+                            <p class="mb-0">Através da nossa plataforma, pesquise por um dos animais disponíveis, após selecionar
+                            um animal basta entrar em contacto com o anunciante ou associação para iniciar o processo de adoção.
+                            <br><br>Pode também pedir mais informações sobre o animal ou agendar uma visita!</p>
                         </div>
                         <div class="tab-pane fade" id="pills-2" role="tabpanel" aria-labelledby="pills-2-tab">
-                            <p class="mb-0">Tempor erat elitr at rebum at at clita aliquyam consetetur. Diam dolor diam ipsum et, tempor voluptua sit consetetur sit. Aliquyam diam amet diam et eos sadipscing labore. Clita erat ipsum et lorem et sit, sed stet no labore lorem sit. Sanctus clita duo justo et tempor consetetur takimata eirmod, dolores takimata consetetur invidunt magna dolores aliquyam dolores dolore. Amet erat amet et magna</p>
+                            <p class="mb-0">Tem um animal para dar para adoção?
+                            <br><br>Registe-se na nossa plataforma e crie um anúncio, adicione fotos, preencha os dados básicos
+                            e uma descrição, clique em publicar e o seu anuncio está pronto para ser visualizado por milhares
+                            de pessoas!</p>
                         </div>
                     </div>
                 </div>
@@ -94,85 +103,12 @@ $this->title = 'Início';
 </div>
 <!-- About End -->
 
-<!-- Services Start -->
-<div class="container-fluid py-5">
-    <div class="container">
-        <div class="border-start border-5 border-primary ps-5 mb-5" style="max-width: 600px;">
-            <h6 class="text-primary text-uppercase">Services</h6>
-            <h1 class="display-5 text-uppercase mb-0">Our Excellent Pet Care Services</h1>
-        </div>
-        <div class="row g-5">
-            <div class="col-md-6">
-                <div class="service-item bg-light d-flex p-4">
-                    <i class="flaticon-house display-1 text-primary me-4"></i>
-                    <div>
-                        <h5 class="text-uppercase mb-3">Pet Boarding</h5>
-                        <p>Kasd dolor no lorem sit tempor at justo rebum rebum stet justo elitr dolor amet sit</p>
-                        <a class="text-primary text-uppercase" href="">Read More<i class="bi bi-chevron-right"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="service-item bg-light d-flex p-4">
-                    <i class="flaticon-food display-1 text-primary me-4"></i>
-                    <div>
-                        <h5 class="text-uppercase mb-3">Pet Feeding</h5>
-                        <p>Kasd dolor no lorem sit tempor at justo rebum rebum stet justo elitr dolor amet sit</p>
-                        <a class="text-primary text-uppercase" href="">Read More<i class="bi bi-chevron-right"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="service-item bg-light d-flex p-4">
-                    <i class="flaticon-grooming display-1 text-primary me-4"></i>
-                    <div>
-                        <h5 class="text-uppercase mb-3">Pet Grooming</h5>
-                        <p>Kasd dolor no lorem sit tempor at justo rebum rebum stet justo elitr dolor amet sit</p>
-                        <a class="text-primary text-uppercase" href="">Read More<i class="bi bi-chevron-right"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="service-item bg-light d-flex p-4">
-                    <i class="flaticon-cat display-1 text-primary me-4"></i>
-                    <div>
-                        <h5 class="text-uppercase mb-3">Pet Training</h5>
-                        <p>Kasd dolor no lorem sit tempor at justo rebum rebum stet justo elitr dolor amet sit</p>
-                        <a class="text-primary text-uppercase" href="">Read More<i class="bi bi-chevron-right"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="service-item bg-light d-flex p-4">
-                    <i class="flaticon-dog display-1 text-primary me-4"></i>
-                    <div>
-                        <h5 class="text-uppercase mb-3">Pet Exercise</h5>
-                        <p>Kasd dolor no lorem sit tempor at justo rebum rebum stet justo elitr dolor amet sit</p>
-                        <a class="text-primary text-uppercase" href="">Read More<i class="bi bi-chevron-right"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="service-item bg-light d-flex p-4">
-                    <i class="flaticon-vaccine display-1 text-primary me-4"></i>
-                    <div>
-                        <h5 class="text-uppercase mb-3">Pet Treatment</h5>
-                        <p>Kasd dolor no lorem sit tempor at justo rebum rebum stet justo elitr dolor amet sit</p>
-                        <a class="text-primary text-uppercase" href="">Read More<i class="bi bi-chevron-right"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Services End -->
-
 <!-- Products Start -->
 <div class="container-fluid py-5">
     <div class="container">
         <div class="border-start border-5 border-primary ps-5 mb-5" style="max-width: 600px;">
-            <h6 class="text-primary text-uppercase">Products</h6>
-            <h1 class="display-5 text-uppercase mb-0">Products For Your Best Friends</h1>
+            <h6 class="text-primary text-uppercase">Animais</h6>
+            <h1 class="display-5 text-uppercase mb-0">Os nossos animais mais recentes</h1>
         </div>
         <div class="owl-carousel product-carousel">
             <div class="pb-5">
@@ -235,18 +171,92 @@ $this->title = 'Início';
 </div>
 <!-- Products End -->
 
+<!-- Services Start -->
+<div class="container-fluid py-5">
+    <div class="container">
+        <div class="border-start border-5 border-primary ps-5 mb-5" style="max-width: 600px;">
+            <h6 class="text-primary text-uppercase">Parceiros</h6>
+            <h1 class="display-5 text-uppercase mb-0">Conheça os nossos parceiros</h1>
+        </div>
+        <div class="row g-5">
+            <div class="col-md-6">
+                <div class="service-item bg-light d-flex p-4">
+                    <i class="flaticon-house display-1 text-primary me-4"></i>
+                    <div>
+                        <h5 class="text-uppercase mb-3">Associações de Proteção Animal</h5>
+                        <p>Conheças as associações que fazem parte da nossa comunidade</p>
+                        <a class="text-primary text-uppercase" href="">Conhecer<i class="bi bi-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="service-item bg-light d-flex p-4">
+                    <i class="flaticon-food display-1 text-primary me-4"></i>
+                    <div>
+                        <h5 class="text-uppercase mb-3">Pet Feeding</h5>
+                        <p>Kasd dolor no lorem sit tempor at justo rebum rebum stet justo elitr dolor amet sit</p>
+                        <a class="text-primary text-uppercase" href="">Read More<i class="bi bi-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="service-item bg-light d-flex p-4">
+                    <i class="flaticon-grooming display-1 text-primary me-4"></i>
+                    <div>
+                        <h5 class="text-uppercase mb-3">Pet Grooming</h5>
+                        <p>Kasd dolor no lorem sit tempor at justo rebum rebum stet justo elitr dolor amet sit</p>
+                        <a class="text-primary text-uppercase" href="">Read More<i class="bi bi-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="service-item bg-light d-flex p-4">
+                    <i class="flaticon-cat display-1 text-primary me-4"></i>
+                    <div>
+                        <h5 class="text-uppercase mb-3">Pet Training</h5>
+                        <p>Kasd dolor no lorem sit tempor at justo rebum rebum stet justo elitr dolor amet sit</p>
+                        <a class="text-primary text-uppercase" href="">Read More<i class="bi bi-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="service-item bg-light d-flex p-4">
+                    <i class="flaticon-dog display-1 text-primary me-4"></i>
+                    <div>
+                        <h5 class="text-uppercase mb-3">Pet Exercise</h5>
+                        <p>Kasd dolor no lorem sit tempor at justo rebum rebum stet justo elitr dolor amet sit</p>
+                        <a class="text-primary text-uppercase" href="">Read More<i class="bi bi-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="service-item bg-light d-flex p-4">
+                    <i class="flaticon-vaccine display-1 text-primary me-4"></i>
+                    <div>
+                        <h5 class="text-uppercase mb-3">Pet Treatment</h5>
+                        <p>Kasd dolor no lorem sit tempor at justo rebum rebum stet justo elitr dolor amet sit</p>
+                        <a class="text-primary text-uppercase" href="">Read More<i class="bi bi-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Services End -->
+
+
+
 <!-- Offer Start -->
 <div class="container-fluid bg-offer my-5 py-5">
     <div class="container py-5">
         <div class="row gx-5 justify-content-start">
             <div class="col-lg-7">
                 <div class="border-start border-5 border-dark ps-5 mb-5">
-                    <h6 class="text-dark text-uppercase">Special Offer</h6>
-                    <h1 class="display-5 text-uppercase text-white mb-0">Save 50% on all items your first order</h1>
+                    <h6 class="text-dark text-uppercase">Anunciar</h6>
+                    <h1 class="display-5 text-uppercase text-white mb-0">Tem um Animal para Adotar?</h1>
                 </div>
-                <p class="text-white mb-4">Eirmod sed tempor lorem ut dolores sit kasd ipsum. Dolor ea et dolore et at sea ea at dolor justo ipsum duo rebum sea. Eos vero eos vero ea et dolore eirmod et. Dolores diam duo lorem. Elitr ut dolores magna sit. Sea dolore sed et.</p>
-                <a href="" class="btn btn-light py-md-3 px-md-5 me-3">Shop Now</a>
-                <a href="" class="btn btn-outline-light py-md-3 px-md-5">Read More</a>
+                <p class="text-white mb-4">Sabemos que a vida muda. A nossa plataforma ajuda-o a encontrar uma nova família responsável para o seu companheiro.</p>
+                <a href="" class="btn btn-light py-md-3 px-md-5 me-3">Criar Anúncio</a>
             </div>
         </div>
     </div>
@@ -257,8 +267,8 @@ $this->title = 'Início';
 <div class="container-fluid py-5">
     <div class="container">
         <div class="border-start border-5 border-primary ps-5 mb-5" style="max-width: 600px;">
-            <h6 class="text-primary text-uppercase">Team Members</h6>
-            <h1 class="display-5 text-uppercase mb-0">Qualified Pets Care Professionals</h1>
+            <h6 class="text-primary text-uppercase">A Nossa Equipa</h6>
+            <h1 class="display-5 text-uppercase mb-0">Conheça os nossos Voluntários</h1>
         </div>
         <div class="owl-carousel team-carousel position-relative" style="padding-right: 25px;">
             <div class="team-item">
@@ -390,7 +400,7 @@ $this->title = 'Início';
     <div class="container">
         <div class="border-start border-5 border-primary ps-5 mb-5" style="max-width: 600px;">
             <h6 class="text-primary text-uppercase">Latest Blog</h6>
-            <h1 class="display-5 text-uppercase mb-0">Latest Articles From Our Blog Post</h1>
+            <h1 class="display-5 text-uppercase mb-0">O nossos números</h1>
         </div>
         <div class="row g-5">
             <div class="col-lg-6">

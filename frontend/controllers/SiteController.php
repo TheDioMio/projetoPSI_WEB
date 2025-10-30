@@ -78,7 +78,21 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        // 1. Ir buscar os 4 anúncios mais recentes e aprovados
+        $recentListings = Listing::find()
+            ->where(['status' => 1]) // 1 = Aprovado
+            ->orderBy(['created_at' => SORT_DESC]) // Mais recentes primeiro
+            ->limit(4) // Queremos só 4 para a homepage
+            ->with('animal', 'animal.animalType') // Otimização para carregar tudo de uma vez
+            ->all();
+
+        // 2. Ir buscar os números para os contadores (hard-coded por agora)
+        $paraAdocaoCount = 42; // (Pode trocar por: Listing::find()->where(['status'=>1])->count(); )
+        $adotadosCount = 123;  // (Pode trocar por: Listing::find()->where(['status'=>2])->count(); )
+
+        // 3. Enviar os dados para a view 'index.php'
+        return $this->render('index', ['recentListings' => $recentListings,]);
+
     }
 
     /**
@@ -266,7 +280,7 @@ class SiteController extends Controller
         // Usamos ->with() para otimizar e ir buscar as relações (raça, tipo)
         $model = Animal::find()
             ->where(['id' => $id])
-            ->with('animal-type', 'breed') // Carrega as tabelas relacionadas
+            ->with('animalType', 'breed') // Carrega as tabelas relacionadas
             ->one();
 
         // 2. Verifica se o animal existe
@@ -286,7 +300,7 @@ class SiteController extends Controller
 
         $listings = Listing::find()
             ->where(['status' => 1]) // Assumindo que '1' = Anúncio Aprovado
-            ->with('animal', 'animal.animal-type') // Otimização: Carrega os animais e tipos de uma só vez
+            ->with('animal', 'animal.animalType') // Otimização: Carrega os animais e tipos de uma só vez
             ->orderBy(['created_at' => SORT_DESC]) // Mostrar os mais recentes primeiro
             ->all(); // Pede todos os resultados como um array
 
