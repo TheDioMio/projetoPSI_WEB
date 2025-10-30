@@ -3,3 +3,5 @@
 	Logout
 
 - Na tabela animais deve-se criar um campo para o nome do animal
+
+- Fazer a página Reset Password,
