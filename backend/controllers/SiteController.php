@@ -24,12 +24,12 @@ class SiteController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
                         'allow' => true,
+                        'actions' => ['login', 'error'],
                     ],
                     [
-                        'actions' => ['logout', 'index'],
                         'allow' => true,
+                        'actions' => ['logout', 'index'],
                         'roles' => ['@'],
                     ],
                 ],
@@ -42,6 +42,7 @@ class SiteController extends Controller
             ],
         ];
     }
+
 
     /**
      * {@inheritdoc}

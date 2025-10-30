@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use Cassandra\Exception\UnauthorizedException;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -32,10 +33,15 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'signup'],
+                'only' => ['logout', 'signup','login'],
                 'rules' => [
                     [
                         'actions' => ['signup'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        'actions' => ['login'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -94,7 +100,17 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            if (\Yii::$app->user->can('loginFrontEnd')) {
+                return $this->goBack();
+            } else {
+//                Yii::$app->user->logout();
+//                throw new \yii\web\ForbiddenHttpException('This user doesn\'t have frontend permission.');
+//
+                Yii::$app->user->logout();
+                Yii::$app->session->setFlash('error', 'You are not allowed to access the frontend.');
+                return $this->redirect(['site/login']);
+            }
+            //return $this->goBack();
         }
 
         $model->password = '';

@@ -1,0 +1,32 @@
+correr o comando
+
+php yii migrate/create create_user_table		
+
+
+
+o create_user_table é o nome da tabela
+
+
+nomenclatura a seguir
+tabela_tarefa_campo
+exemplo:
+animal_add_name
+
+
+
+no ficheiro da migração  fica assim
+
+    public function up()
+    {
+        $this->addColumn('animal', 'name', $this->string(50));
+    }
+
+    public function down()
+    {
+        $this->dropColumn('animal', 'name');
+    }
+
+
+
+no final correr 
+php yii migrate

@@ -31,9 +31,7 @@ class m251030_193654_file_add_type extends Migration
 
     public function down()
     {
-
         $this->dropColumn('file', 'type');
-
     }
 
 }
