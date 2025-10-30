@@ -286,7 +286,7 @@ class SiteController extends Controller
 
         $listings = Listing::find()
             ->where(['status' => 1]) // Assumindo que '1' = Anúncio Aprovado
-            ->with('animal', 'animal.animal-type') // Otimização: Carrega os animais e tipos de uma só vez
+            ->with('animal', 'animal.animalType') // Otimização: Carrega os animais e tipos de uma só vez
             ->orderBy(['created_at' => SORT_DESC]) // Mostrar os mais recentes primeiro
             ->all(); // Pede todos os resultados como um array
 
