@@ -6,11 +6,9 @@
 
 use yii\bootstrap5\Html;
 use yii\bootstrap5\ActiveForm;
-use yii\helpers\Url; // Certifica-te que está presente
 
 $this->title = 'Login';
 $this->params['breadcrumbs'][] = $this->title;
-
 ?>
 <div class="site-login d-flex justify-content-center align-items-center w-100 py-5">
     <div class="container-img-login img-login-esq d-none d-md-block">
@@ -22,18 +20,21 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="form-login-centrar">
         <div>
             <h1 class="text-center"><?= Html::encode($this->title) ?></h1>
-            <p class="text-center">Bem-vindo de volta!</p>
+            <p class="text-center"><?=Html::encode('Bem-vindo de volta!')?></p>
         </div>
         <div class="row">
-            <div class="col-12">
+            <div class="col-12 text-dark">
                 <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
-
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true, 'placeholder' => 'Utilizador'])->label(false)?>
-                <?= $form->field($model, 'password')->passwordInput(['placeholder' => 'Password'])->label(false)?>
+                <?= $form->field($model, 'username', ['options' => ['class' => 'form-bg mb-2']])
+                    ->textInput(['placeholder' => 'Utilizador'])
+                    ->label(false) ?>
+                <?= $form->field($model, 'password', ['options' => ['class' => 'form-bg mb-2']])
+                    ->passwordInput(['placeholder' => 'Password'])
+                    ->label(false) ?>
                 <?= $form->field($model, 'rememberMe')->checkbox()->label('Lembrar Login') ?>
-
-                <div class="my-1 mx-0" style="color:#999;">
-                    Esqueçeste-te da password? <?= Html::a('Recuperar', ['site/request-password-reset']) ?>.
+                <div class="info-adds my-1 mx-0">
+                    <p><?=Html::encode('Esqueceu-se da password?')?> <?= Html::a('Recuperar', ['site/request-password-reset']) ?><br>
+                    <?=Html::encode('Quer criar conta?')?> <?= Html::a('Criar', ['site/signup']) ?>.</p>
                 </div>
 
                 <div class="form-group mt-5">
@@ -50,17 +51,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <div class="row text-center">
             <div class="col-4">
-                <div class="d-block">Conexão Segura</div>
+                <div class="d-block"><?= Html::encode('Registo Seguro')?></div>
             </div>
-
             <div class="col-4">
-                <div class="d-block">Suporte 24/7</div>
+                <div class="d-block"><?= Html::encode('Suporte 24/7')?></div>
             </div>
-
             <div class="col-4">
-                <div class="d-block">Privacidade é Prioridade</div>
+                <div class="d-block"><?= Html::encode('Privacidade Garantida')?></div>
             </div>
-
         </div>
     </div>
 
@@ -70,5 +68,4 @@ $this->params['breadcrumbs'][] = $this->title;
             'class' => 'img-fluid login-image-asset'
         ]) ?>
     </div>
-
 </div>

@@ -6,40 +6,68 @@
 
 use yii\bootstrap5\Html;
 use yii\bootstrap5\ActiveForm;
-use yii\captcha\Captcha;
 
-$this->title = 'Contact';
+$this->title = 'Formulário de Contacto';
 $this->params['breadcrumbs'][] = $this->title;
+$txtLocalizacao = 'Politécnico de Leiria - ESTG';
+$txtZipcode = '2415-404 Leiria';
+$txtEmail = 'info@petcompanion.pt';
+$txtTelefone = '+351 244 875 627';
 ?>
-<div class="site-contact">
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        If you have business inquiries or other questions, please fill out the following form to contact us. Thank you.
-    </p>
+<div class="site-contact container mt-5 mb-5">
+    <div class="row contact-panel">
+        <div class="col-lg-6 form-panel">
+            <h2><?=Html::encode($this->title)?></h2>
 
-    <div class="row">
-        <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
+            <?php $form = ActiveForm::begin([
+                'id' => 'contact-form',
+                'fieldConfig' => [
+                    'template' => "{label}\n{input}\n{hint}\n{error}",
+                    'labelOptions' => ['class' => 'form-label text-white-50 mt-3'],
+                    'inputOptions' => ['class' => 'form-control'],
+                ],
+            ]); ?>
 
-                <?= $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
+            <?= $form->field($model, 'name')->textInput(['placeholder' => 'Nome Completo'])->label(false) ?>
+            <?= $form->field($model, 'email')->textInput(['placeholder' => 'Email'])->label(false) ?>
+            <?= $form->field($model, 'subject')->textInput(['placeholder' => 'Assunto'])->label(false) ?>
+            <?= $form->field($model, 'body')->textarea(['rows' => 4, 'placeholder' => 'Escreva aqui a sua mensagem...'])->label(false) ?>
 
-                <?= $form->field($model, 'email') ?>
-
-                <?= $form->field($model, 'subject') ?>
-
-                <?= $form->field($model, 'body')->textarea(['rows' => 6]) ?>
-
-                <?= $form->field($model, 'verifyCode')->widget(Captcha::class, [
-                    'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
-                ]) ?>
-
-                <div class="form-group">
-                    <?= Html::submitButton('Submit', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
-                </div>
+            <div class="form-group mt-5">
+                <?= Html::submitButton('Enviar Mensagem', ['class' => 'btn btn-light btn-lg text-primary fw-bold', 'name' => 'contact-button']) ?>
+            </div>
 
             <?php ActiveForm::end(); ?>
         </div>
-    </div>
 
+        <div class="col-lg-6 info-panel">
+            <h2 class="mb-0"><?=Html::encode('Contacte-nos')?></h2>
+            <p class="mt-0 mb-5"><?=Html::encode('Estamos sempre disponíveis.')?></p>
+
+            <div class="info-item">
+                <i class="bi bi-house-fill"></i>
+                <div>
+                    <small><?=Html::encode('Morada')?></small>
+                    <p class="mb-0"><?=Html::encode($txtLocalizacao)?><br><?=Html::encode($txtZipcode)?></p>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <i class="bi bi-telephone-fill"></i>
+                <div>
+                    <small><?=Html::encode('Telefone')?></small>
+                    <p class="mb-0"><?=Html::encode($txtTelefone)?></p>
+                </div>
+            </div>
+
+            <div class="info-item">
+                <i class="bi bi-envelope-at-fill"></i>
+                <div>
+                    <small><?=Html::encode('Email')?></small>
+                    <p class="mb-0"><?=Html::encode($txtEmail)?></p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
