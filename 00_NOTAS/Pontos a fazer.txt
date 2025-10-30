@@ -1,3 +1,5 @@
 - Criar menu dropdown na navbar no utilizador logado com as opçoes:
 	Perfil
 	Logout
+
+- Fazer a página Reset Password,

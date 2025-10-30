@@ -464,11 +464,10 @@
 }
 
 /* ----------------------------------------------------------------------
-                        CSS PÁGINA DE LOGIN
+                        CSS PÁGINA DE LOGIN E SIGNUP
    ---------------------------------------------------------------------- */
 .form-login-centrar {
     max-width: 100%;
-    background-color: #F0F8FF;
     padding: 20px;
     align-self: stretch;
     display: flex;
@@ -511,8 +510,22 @@
     rgba(255, 255, 255, 0) 50%
     );
 }
+
+.form-bg {
+    background-color: #F0F0F0E6;
+    border-radius: 8px;
+}
+
+.form-bg input::placeholder {
+    color: #777;
+    opacity: 1;
+}
+
+.info-adds p{
+    color:#999;
+}
 /* ----------------------------------------------------------------------
-                        FIM - CSS PÁGINA DE LOGIN
+                        FIM - CSS PÁGINA DE LOGIN E SIGNUP
    ---------------------------------------------------------------------- */
 
 
@@ -635,4 +648,100 @@
 }
 /* ----------------------------------------------------------------------
                        FIM CSS PÁGINA DE SOBRE NÓS
+   ---------------------------------------------------------------------- */
+
+/* ----------------------------------------------------------------------
+                       PÁGINA FORMULÁRIO DE CONTACTO
+   ---------------------------------------------------------------------- */
+.contact-panel {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease-in-out;
+}
+
+
+.form-panel { /*ISTO CONTROLA O GRADIENTE DO FORM*/
+    background: linear-gradient(to bottom left, var(--bs-primary), #6c63ff);
+    padding: 60px 45px;
+    color: #fff;
+}
+
+.form-panel h2 {
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 40px;
+}
+
+.form-control {
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 0;
+    color: #fff;
+    transition: all 0.3s;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.form-control:focus {
+    border-color: #fff;
+    box-shadow: none;
+}
+
+.btn-light {
+    border-radius: 50px;
+    padding: 12px 30px;
+    transition: all 0.3s;
+}
+
+.btn-light:hover {
+    background-color: #fff;
+    color: var(--bs-primary);
+    transform: translateY(-2px);
+}
+
+.info-panel {
+    background: linear-gradient(to bottom left, var(--bs-secondary), #b37c22);
+    padding: 60px 50px;
+}
+
+.info-panel h2 {
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+.info-panel p {
+    font-size: 1rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 25px;
+}
+
+.info-item i {
+    background-color: var(--bs-primary);
+    color: #fff;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-size: 1.2rem;
+}
+
+@media (max-width: 992px) {
+    .form-panel, .info-panel {
+        padding: 40px 30px;
+    }
+}
+/* ----------------------------------------------------------------------
+                       FIM PÁGINA FORMULÁRIO DE CONTACTO
    ---------------------------------------------------------------------- */

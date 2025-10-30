@@ -80,6 +80,14 @@ class UserController extends Controller
 //            $model->generateAuthKey();
 
             if ($model->save()) {
+
+                // Obter o authManager
+                $auth = Yii::$app->authManager;
+                // Buscar a role existente
+                $adminRole = $auth->getRole('admin');
+                // Atribuir ao utilizador (exemplo: utilizador que vem no model)
+                $auth->assign($adminRole, $model->id);
+
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
