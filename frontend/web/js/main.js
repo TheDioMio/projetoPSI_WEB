@@ -131,6 +131,13 @@
             '<i class="bi bi-arrow-right"></i>'
         ],
     });
+
+    // Counter Up
+// Ativa a animação em qualquer elemento com a classe 'counter-up'
+    $('.counter-up').counterUp({
+        delay: 10,  // Atraso antes de começar
+        time: 1000  // Duração da animação
+    });
     
 })(jQuery);
 

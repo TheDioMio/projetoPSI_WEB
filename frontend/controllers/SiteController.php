@@ -84,20 +84,34 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        // 1. Ir buscar os 4 anúncios mais recentes e aprovados
         $recentListings = Listing::find()
             ->where(['status' => 1]) // 1 = Aprovado
             ->orderBy(['created_at' => SORT_DESC]) // Mais recentes primeiro
-            ->limit(4) // Queremos só 4 para a homepage
-            ->with('animal', 'animal.animalType') // Otimização para carregar tudo de uma vez
+            ->limit(8) // <-- ALTERADO DE 4 PARA 8
+            ->with('animal', 'animal.animalType') // Otimização
             ->all();
 
         // 2. Ir buscar os números para os contadores (hard-coded por agora)
-        $paraAdocaoCount = 42; // (Pode trocar por: Listing::find()->where(['status'=>1])->count(); )
-        $adotadosCount = 123;  // (Pode trocar por: Listing::find()->where(['status'=>2])->count(); )
+
+        // 2. VAI BUSCAR O NÚMERO REAL de animais para adoção
+        // (Assumindo que status=1 significa "Para Adoção")
+        $paraAdocaoCount = Listing::find()
+            ->where(['status' => 1])
+            ->count();
+
+        // 3. MANTÉM OS ADOTADOS COMO HARD-CODED (como pediu)
+        // (Quando a BD estiver pronta, pode mudar isto para:
+        //  $adotadosCount = Listing::find()->where(['status' => 2])->count();
+        $adotadosCount = 123; // O seu valor hard-coded
+
+        // --- FIM DA ALTERAÇÃO ---
 
         // 3. Enviar os dados para a view 'index.php'
-        return $this->render('index', ['recentListings' => $recentListings,]);
+        return $this->render('index', [
+            'recentListings' => $recentListings,
+            'paraAdocaoCount' => $paraAdocaoCount,
+            'adotadosCount' => $adotadosCount,
+        ]);
 
     }
 

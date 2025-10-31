@@ -33,6 +33,8 @@ AppAsset::register($this);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="<?= $web ?>/lib/flaticon/font/flaticon.css" rel="stylesheet">
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <!-- Libraries Stylesheet -->
     <link href="<?= $web ?>/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 
@@ -223,6 +225,9 @@ AppAsset::register($this);
 <script src="<?= $web ?>/lib/owlcarousel/owl.carousel.min.js"></script>
 
 <!-- 4) Script do template (depende dos plugins acima) -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.min.js"></script>
+
 <script src="<?= $web ?>/js/main.js"></script>
 
 

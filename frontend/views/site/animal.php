@@ -81,7 +81,7 @@ $posterUrl = Yii::getAlias('@web/video/' . $escolhaAleatoria['posterFile']);
                                     </small>
                                 </div>
 
-                                <h5 class="text-uppercase mb-3"> nome   ????????</h5>
+                                <h5 class="text-uppercase mb-3"><?php echo $animal->name ?></h5>
 
                                 <p>
                                     <?= Html::encode(StringHelper::truncate($animal->description, 100, '...')) ?>

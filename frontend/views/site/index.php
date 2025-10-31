@@ -2,6 +2,7 @@
 
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 
 /** @var yii\web\View $this */
@@ -110,62 +111,37 @@ $this->title = 'Início';
             <h6 class="text-primary text-uppercase">Animais</h6>
             <h1 class="display-5 text-uppercase mb-0">Os nossos animais mais recentes</h1>
         </div>
+
         <div class="owl-carousel product-carousel">
-            <div class="pb-5">
-                <div class="product-item position-relative bg-light d-flex flex-column text-center">
-                    <img class="img-fluid mb-4" src="../img/product-1.png" alt="">
-                    <h6 class="text-uppercase">Quality Pet Foods</h6>
-                    <h5 class="text-primary mb-0">$199.00</h5>
-                    <div class="btn-action d-flex justify-content-center">
 
-                        <a class="btn btn-primary py-2 px-3" href=""><i class="bi bi-eye"></i></a>
+            <?php foreach ($recentListings as $listing): ?>
+                <?php
+                $animal = $listing->animal;
+                if ($animal === null) continue;
+                ?>
+
+                <div class="pb-5">
+                    <div class="product-item position-relative bg-light d-flex flex-column text-center">
+
+                        <img class="img-fluid mb-4" src="../img/blog-1.jpg" alt="<?= Html::encode($animal->name) ?>" style="object-fit: cover; height: 200px;">
+
+                        <h6 class="text-uppercase"><?= Html::encode($animal->name) ?></h6>
+
+                        <h5 class="text-primary mb-0">
+                            <?= Html::encode($animal->animalType->description) ?>
+                        </h5>
+
+                        <div class="btn-action d-flex justify-content-center">
+                            <?= Html::a(
+                                '<i class="bi bi-eye"></i>',
+                                ['/site/detail', 'id' => $animal->id],
+                                ['class' => 'btn btn-primary py-2 px-3']
+                            ) ?>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="pb-5">
-                <div class="product-item position-relative bg-light d-flex flex-column text-center">
-                    <img class="img-fluid mb-4" src="../img/product-2.png" alt="">
-                    <h6 class="text-uppercase">Quality Pet Foods</h6>
-                    <h5 class="text-primary mb-0">$199.00</h5>
-                    <div class="btn-action d-flex justify-content-center">
+            <?php endforeach; ?>
 
-                        <a class="btn btn-primary py-2 px-3" href=""><i class="bi bi-eye"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="pb-5">
-                <div class="product-item position-relative bg-light d-flex flex-column text-center">
-                    <img class="img-fluid mb-4" src="../img/product-3.png" alt="">
-                    <h6 class="text-uppercase">Quality Pet Foods</h6>
-                    <h5 class="text-primary mb-0">$199.00</h5>
-                    <div class="btn-action d-flex justify-content-center">
-
-                        <a class="btn btn-primary py-2 px-3" href=""><i class="bi bi-eye"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="pb-5">
-                <div class="product-item position-relative bg-light d-flex flex-column text-center">
-                    <img class="img-fluid mb-4" src="../img/product-4.png" alt="">
-                    <h6 class="text-uppercase">Quality Pet Foods</h6>
-                    <h5 class="text-primary mb-0">$199.00</h5>
-                    <div class="btn-action d-flex justify-content-center">
-
-                        <a class="btn btn-primary py-2 px-3" href=""><i class="bi bi-eye"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="pb-5">
-                <div class="product-item position-relative bg-light d-flex flex-column text-center">
-                    <img class="img-fluid mb-4" src="../img/product-2.png" alt="">
-                    <h6 class="text-uppercase">Quality Pet Foods</h6>
-                    <h5 class="text-primary mb-0">$199.00</h5>
-                    <div class="btn-action d-flex justify-content-center">
-
-                        <a class="btn btn-primary py-2 px-3" href=""><i class="bi bi-eye"></i></a>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
@@ -181,7 +157,7 @@ $this->title = 'Início';
         <div class="row g-5">
             <div class="col-md-6">
                 <div class="service-item bg-light d-flex p-4">
-                    <i class="flaticon-house display-1 text-primary me-4"></i>
+                    <i class="fa-solid fa-paw fa-4x text-primary me-4"></i>
                     <div>
                         <h5 class="text-uppercase mb-3">Associações de Proteção Animal</h5>
                         <p>Conheças as associações que fazem parte da nossa comunidade</p>
@@ -189,53 +165,14 @@ $this->title = 'Início';
                     </div>
                 </div>
             </div>
+
             <div class="col-md-6">
                 <div class="service-item bg-light d-flex p-4">
-                    <i class="flaticon-food display-1 text-primary me-4"></i>
+                    <i class="fa-solid fa-syringe fa-4x text-primary me-4"></i>
                     <div>
-                        <h5 class="text-uppercase mb-3">Pet Feeding</h5>
-                        <p>Kasd dolor no lorem sit tempor at justo rebum rebum stet justo elitr dolor amet sit</p>
-                        <a class="text-primary text-uppercase" href="">Read More<i class="bi bi-chevron-right"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="service-item bg-light d-flex p-4">
-                    <i class="flaticon-grooming display-1 text-primary me-4"></i>
-                    <div>
-                        <h5 class="text-uppercase mb-3">Pet Grooming</h5>
-                        <p>Kasd dolor no lorem sit tempor at justo rebum rebum stet justo elitr dolor amet sit</p>
-                        <a class="text-primary text-uppercase" href="">Read More<i class="bi bi-chevron-right"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="service-item bg-light d-flex p-4">
-                    <i class="flaticon-cat display-1 text-primary me-4"></i>
-                    <div>
-                        <h5 class="text-uppercase mb-3">Pet Training</h5>
-                        <p>Kasd dolor no lorem sit tempor at justo rebum rebum stet justo elitr dolor amet sit</p>
-                        <a class="text-primary text-uppercase" href="">Read More<i class="bi bi-chevron-right"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="service-item bg-light d-flex p-4">
-                    <i class="flaticon-dog display-1 text-primary me-4"></i>
-                    <div>
-                        <h5 class="text-uppercase mb-3">Pet Exercise</h5>
-                        <p>Kasd dolor no lorem sit tempor at justo rebum rebum stet justo elitr dolor amet sit</p>
-                        <a class="text-primary text-uppercase" href="">Read More<i class="bi bi-chevron-right"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="service-item bg-light d-flex p-4">
-                    <i class="flaticon-vaccine display-1 text-primary me-4"></i>
-                    <div>
-                        <h5 class="text-uppercase mb-3">Pet Treatment</h5>
-                        <p>Kasd dolor no lorem sit tempor at justo rebum rebum stet justo elitr dolor amet sit</p>
-                        <a class="text-primary text-uppercase" href="">Read More<i class="bi bi-chevron-right"></i></a>
+                        <h5 class="text-uppercase mb-3">Cuidados Veterinários</h5>
+                        <p>Conheça as clínicas e hospitais que fazem parte da nossa comunidade </p>
+                        <a class="text-primary text-uppercase" href="">Conhecer<i class="bi bi-chevron-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -358,6 +295,9 @@ $this->title = 'Início';
 
 
 <!-- Testimonial Start -->
+<div class="border-start border-5 border-primary ps-5 mb-5" style="max-width: 600px;">
+    <h1 class="display-5 text-uppercase mb-0">Casos de sucesso</h1>
+</div>
 <div class="container-fluid bg-testimonial py-5" style="margin: 45px 0;">
     <div class="container py-5">
         <div class="row justify-content-end">
@@ -399,53 +339,36 @@ $this->title = 'Início';
 <div class="container-fluid py-5">
     <div class="container">
         <div class="border-start border-5 border-primary ps-5 mb-5" style="max-width: 600px;">
-            <h6 class="text-primary text-uppercase">Latest Blog</h6>
-            <h1 class="display-5 text-uppercase mb-0">O nossos números</h1>
+            <h6 class="text-primary text-uppercase">Os nossos números</h6>
+            <h1 class="display-5 text-uppercase mb-0">O Nosso Impacto</h1>
         </div>
-        <div class="row g-5">
-            <div class="col-lg-6">
-                <div class="blog-item">
-                    <div class="row g-0 bg-light overflow-hidden">
-                        <div class="col-12 col-sm-5 h-100">
-                            <img class="img-fluid h-100" src="../img/blog-1.jpg" style="object-fit: cover;">
-                        </div>
-                        <div class="col-12 col-sm-7 h-100 d-flex flex-column justify-content-center">
-                            <div class="p-4">
-                                <div class="d-flex mb-3">
-                                    <small class="me-3"><i class="bi bi-bookmarks me-2"></i>Web Design</small>
-                                    <small><i class="bi bi-calendar-date me-2"></i>01 Jan, 2045</small>
-                                </div>
-                                <h5 class="text-uppercase mb-3">Dolor sit magna rebum clita rebum dolor</h5>
-                                <p>Ipsum sed lorem amet dolor amet duo ipsum amet et dolore est stet tempor eos dolor</p>
-                                <a class="text-primary text-uppercase" href="">Read More<i class="bi bi-chevron-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
+
+    </div>
+
+    <div class="container-fluid bg-dark stats-banner my-5 py-5">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-6 col-md-6 text-center">
+                    <i class="fa fa-paw fa-3x text-white mb-3"></i>
+
+                    <h1 class="display-4 text-white counter-up"> <?= Html::encode($paraAdocaoCount) ?> </h1>
+
+                    <h5 class="text-uppercase text-light">Animais para Adoção</h5>
                 </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="blog-item">
-                    <div class="row g-0 bg-light overflow-hidden">
-                        <div class="col-12 col-sm-5 h-100">
-                            <img class="img-fluid h-100" src="../img/blog-2.jpg" style="object-fit: cover;">
-                        </div>
-                        <div class="col-12 col-sm-7 h-100 d-flex flex-column justify-content-center">
-                            <div class="p-4">
-                                <div class="d-flex mb-3">
-                                    <small class="me-3"><i class="bi bi-bookmarks me-2"></i>Web Design</small>
-                                    <small><i class="bi bi-calendar-date me-2"></i>01 Jan, 2045</small>
-                                </div>
-                                <h5 class="text-uppercase mb-3">Dolor sit magna rebum clita rebum dolor</h5>
-                                <p>Ipsum sed lorem amet dolor amet duo ipsum amet et dolore est stet tempor eos dolor</p>
-                                <a class="text-primary text-uppercase" href="">Read More<i class="bi bi-chevron-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
+
+                <div class="col-lg-6 col-md-6 text-center">
+                    <i class="fa fa-heart fa-3x text-white mb-3"></i>
+
+                    <h1 class="display-4 text-white counter-up"> <?= Html::encode($adotadosCount) ?></h1>
+
+                    <h5 class="text-uppercase text-light">Histórias de Sucesso</h5>
                 </div>
+
             </div>
         </div>
     </div>
 </div>
+
 <!-- Blog End -->
 
 <a href="#" class="btn btn-primary py-3 fs-4 back-to-top"><i class="bi bi-arrow-up"></i></a>
