@@ -1,28 +1,40 @@
 <?php
-$this->title = 'Starter Page';
+
+use yii\helpers\Url;
+use yii\web\View;
+use yii\helpers\Json;
+use yii\bootstrap5\Html;
+
+$this->title = 'Dashboard';
 $this->params['breadcrumbs'] = [['label' => $this->title]];
 ?>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-6">
-            <?= \hail812\adminlte\widgets\Alert::widget([
-                'type' => 'success',
-                'body' => '<h3>Congratulations!</h3>',
-            ]) ?>
-            <?= \hail812\adminlte\widgets\Callout::widget([
-                'type' => 'danger',
-                'head' => 'I am a danger callout!',
-                'body' => 'There is a problem that we need to fix. A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart.'
+        <div class="col-4">
+            <?= \hail812\adminlte\widgets\SmallBox::widget([
+                'title' => count($utilizadores),
+                'text' => 'Utilizadores registados',
+                'icon' => 'fas fa-user',
+                'theme' => 'gradient-success',
+                'linkUrl' => Url::to(['user/index']),
             ]) ?>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-12 col-sm-6 col-md-3">
-            <?= \hail812\adminlte\widgets\InfoBox::widget([
-                'text' => 'CPU Traffic',
-                'number' => '10 <small>%</small>',
-                'icon' => 'fas fa-cog',
+        <div class="col-4">
+            <?= \hail812\adminlte\widgets\SmallBox::widget([
+                'title' => count($animais),
+                'text' => 'Animais registados',
+                'icon' => 'fas fa-paw',
+                'theme' => 'gradient-success',
+                'linkUrl' => Url::to(['animal/index']),
+            ]) ?>
+        </div>
+        <div class="col-4">
+            <?= \hail812\adminlte\widgets\SmallBox::widget([
+                'title' => count($listagens),
+                'text' => 'Listagens ativas',
+                'icon' => 'fas fa-pen',
+                'theme' => 'gradient-success',
+                'linkUrl' => Url::to(['listing/index']),
             ]) ?>
         </div>
     </div>
