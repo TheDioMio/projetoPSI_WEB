@@ -39,7 +39,7 @@ $this->title = 'Detalhes';
 
             <div class="mb-5">
 
-                <h1 class="text-uppercase mb-4">nome do bicho</h1>
+                <h1 class="text-uppercase mb-4"><?= Html::encode($model->name)?></h1>
                 <p> <?= Html::encode($model->description)?></p>
 
             </div>

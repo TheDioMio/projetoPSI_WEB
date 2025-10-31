@@ -22,7 +22,7 @@ $this->title = 'Início';
                 <div class="d-flex align-items-center justify-content-center justify-content-lg-start pt-5">
                     <a href="../site/about" class="btn btn-outline-light border-2 py-md-3 px-md-5 me-5">Saber Mais</a>
                     <button type="button" class="btn-play" data-bs-toggle="modal"
-                            data-src="https://www.youtube.com/embed/DWRcNpR6Kdc" data-bs-target="#videoModal">
+                            data-src="https://www.youtube.com/embed/NeQM1c-XCDc?si=w_nLHsghw1txRYEc" data-bs-target="#videoModal">
                         <span></span>
                     </button>
                     <h5 class="font-weight-normal text-white m-0 ms-4 d-none d-sm-block">Play Video</h5>
