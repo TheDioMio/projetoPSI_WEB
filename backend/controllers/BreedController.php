@@ -5,6 +5,7 @@ namespace backend\controllers;
 use common\models\Breed;
 use common\models\AnimalType;
 use backend\models\BreedSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -37,6 +38,18 @@ class BreedController extends Controller
      *
      * @return string
      */
+
+    public function beforeAction($action)
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        // Lógica para passar o utilizador para o LAYOUT/SIDEBAR
+        $this->view->params['userLogado'] = Yii::$app->user->identity;
+
+        return true;
+    }
     public function actionIndex()
     {
         $searchModel = new BreedSearch();

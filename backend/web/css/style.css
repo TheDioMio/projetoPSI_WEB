@@ -1,0 +1,13 @@
+/*
+PARA DAR LINK A ESTE CSS A QUALQUER VIEW NO BACKEND:
+$this->registerCssFile('@web/css/style.css', [
+    'depends' => [\hail812\adminlte3\assets\AdminLteAsset::class],
+]);
+
+Colocar isto na parte de cima do <?php ?>
+*/
+
+.img-logo-dashboard {
+    max-width: 70px;
+    max-height: 70px;
+}

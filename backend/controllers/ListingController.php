@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use common\models\Listing;
 use backend\models\ListingSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -36,6 +37,18 @@ class ListingController extends Controller
      *
      * @return string
      */
+
+    public function beforeAction($action)
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        // Lógica para passar o utilizador para o LAYOUT/SIDEBAR
+        $this->view->params['userLogado'] = Yii::$app->user->identity;
+
+        return true;
+    }
     public function actionIndex()
     {
         $searchModel = new ListingSearch();

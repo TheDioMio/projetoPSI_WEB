@@ -37,6 +37,18 @@ class UserController extends Controller
      *
      * @return string
      */
+
+    public function beforeAction($action)
+    {
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        // Lógica para passar o utilizador para o LAYOUT/SIDEBAR
+        $this->view->params['userLogado'] = Yii::$app->user->identity;
+
+        return true;
+    }
     public function actionIndex()
     {
         $searchModel = new UserSearch();
