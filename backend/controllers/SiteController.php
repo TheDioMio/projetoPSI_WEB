@@ -2,7 +2,11 @@
 
 namespace backend\controllers;
 
+use backend\models\AnimalSearch;
+use common\models\Animal;
+use common\models\Listing;
 use common\models\LoginForm;
+use common\models\User;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -63,8 +67,10 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-
-        return $this->render('index');
+        $animais = Animal::find()->all();
+        $utilizadores = User::find()->all();
+        $listagens = Listing::find()->all();
+        return $this->render('index', ['animais'=>$animais, 'utilizadores'=>$utilizadores, 'listagens'=>$listagens]);
     }
 
     /**
