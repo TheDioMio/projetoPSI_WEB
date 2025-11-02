@@ -1,83 +1,95 @@
+<?php
+
+use yii\bootstrap5\Html;
+use yii\helpers\Url;
+$this->registerCssFile('@web/css/style.css', [
+    'depends' => [\hail812\adminlte3\assets\AdminLteAsset::class],
+]);
+$userLogado = $this->params['userLogado']->username;
+?>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
-        <img src="<?=$assetDir?>/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">AdminLTE 3</span>
+    <a href="#" class="brand-link py-0">
+        <?= Html::img('@web/img/logoBlack&White', [
+            'alt' => 'Imagem logo Dashboard',
+            'class' => 'img-logo-dashboard'
+        ]) ?>
+        <span class="brand-text font-weight-light"><?=Html::encode('Admin Panel')?></span>
     </a>
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
                 <img src="<?=$assetDir?>/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
+                <a href="#" class="d-block"><?=$userLogado?><a/>
             </div>
         </div>
 
-        <!-- SidebarSearch Form -->
-        <!-- href be escaped -->
-        <!-- <div class="form-inline">
-            <div class="input-group" data-widget="sidebar-search">
-                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-sidebar">
-                        <i class="fas fa-search fa-fw"></i>
-                    </button>
-                </div>
-            </div>
-        </div> -->
+<!--        SidebarSearch Form -->
+<!--        <div class="form-inline">-->
+<!--            <div class="input-group" data-widget="sidebar-search">-->
+<!--                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">-->
+<!--                <div class="input-group-append">-->
+<!--                    <button class="btn btn-sidebar">-->
+<!--                        <i class="fas fa-search fa-fw"></i>-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        Sidebar Menu -->
 
-        <!-- Sidebar Menu -->
         <nav class="mt-2">
             <?php
             echo \hail812\adminlte\widgets\Menu::widget([
                 'items' => [
+                    ['label' => 'Dashboard', 'url' => ['site/index'], 'iconStyle' => 'far'],
+                    ['label' => 'CRUD e Consulta de BD', 'header' => true],
                     [
-                        'label' => 'Starter Pages',
-                        'icon' => 'tachometer-alt',
-                        'badge' => '<span class="right badge badge-info">2</span>',
+                        'label' => 'Menu Animais', 'icon'=>'fas fa-bone',
                         'items' => [
-                            ['label' => 'Active Page', 'url' => ['site/index'], 'iconStyle' => 'far'],
-                            ['label' => 'Inactive Page', 'iconStyle' => 'far'],
+                            ['label' => 'Animais', 'url' => ['animal/index'], 'icon' => 'none'],
+                            ['label' => 'Tipos de Animal', 'url' => ['animal-type/index'], 'icon' => 'none'],
+                            ['label' => 'Raças', 'url' => ['breed/index'], 'icon' => 'none'],
+
                         ]
                     ],
-                    //['label' => 'Simple Link', 'icon' => 'th', 'badge' => '<span class="right badge badge-danger">New</span>'],
-                    ['label' => 'Users', 'url' => ['user/index'], 'icon' => 'th', 'badge' => '<span class="right badge badge-danger">New</span>'],
-                    ['label' => 'Breed', 'url' => ['breed/index'], 'icon' => 'th', 'badge' => '<span class="right badge badge-danger">New</span>'],
-                    ['label' => 'Type Animal', 'url' => ['animal-type/index'], 'icon' => 'th', 'badge' => '<span class="right badge badge-danger">New</span>'],
-                    ['label' => 'Animals', 'url' => ['animal/index'], 'icon' => 'th', 'badge' => '<span class="right badge badge-danger">New</span>'],
-                    ['label' => 'Listings', 'url' => ['listing/index'], 'icon' => 'th', 'badge' => '<span class="right badge badge-danger">New</span>'],
-                    ['label' => 'Comments', 'url' => ['comment/index'], 'icon' => 'th', 'badge' => '<span class="right badge badge-danger">New</span>'],
-                    ['label' => 'Yii2 PROVIDED', 'header' => true],
-                    ['label' => 'Login', 'url' => ['site/login'], 'icon' => 'sign-in-alt', 'visible' => Yii::$app->user->isGuest],
-                    ['label' => 'Gii',  'icon' => 'file-code', 'url' => ['/gii'], 'target' => '_blank'],
-                    ['label' => 'Debug', 'icon' => 'bug', 'url' => ['/debug'], 'target' => '_blank'],
-                    ['label' => 'MULTI LEVEL EXAMPLE', 'header' => true],
-                    ['label' => 'Level1'],
                     [
-                        'label' => 'Level1',
+                        'label' => 'Menu Utilizadores', 'icon'=>'fas fa-users',
                         'items' => [
-                            ['label' => 'Level2', 'iconStyle' => 'far'],
-                            [
-                                'label' => 'Level2',
-                                'iconStyle' => 'far',
-                                'items' => [
-                                    ['label' => 'Level3', 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                    ['label' => 'Level3', 'iconStyle' => 'far', 'icon' => 'dot-circle'],
-                                    ['label' => 'Level3', 'iconStyle' => 'far', 'icon' => 'dot-circle']
-                                ]
-                            ],
-                            ['label' => 'Level2', 'iconStyle' => 'far']
+                            ['label' => 'Users', 'url' => ['user/index'], 'icon' => 'none'],
+                            ['label' => 'Listagens', 'url' => ['listing/index'], 'icon' => 'none'],
+                            ['label' => 'Comentários', 'url' => ['comment/index'], 'icon' => 'none'],
                         ]
+
                     ],
-                    ['label' => 'Level1'],
-                    ['label' => 'LABELS', 'header' => true],
-                    ['label' => 'Important', 'iconStyle' => 'far', 'iconClassAdded' => 'text-danger'],
-                    ['label' => 'Warning', 'iconClass' => 'nav-icon far fa-circle text-warning'],
-                    ['label' => 'Informational', 'iconStyle' => 'far', 'iconClassAdded' => 'text-info'],
+//                    ['label' => 'Yii2 PROVIDED', 'header' => true],
+//                    ['label' => 'Login', 'url' => ['site/login'], 'icon' => 'sign-in-alt', 'visible' => Yii::$app->user->isGuest],
+//                    ['label' => 'Gii',  'icon' => 'file-code', 'url' => ['/gii'], 'target' => '_blank'],
+//                    ['label' => 'Debug', 'icon' => 'bug', 'url' => ['/debug'], 'target' => '_blank'],
+//                    ['label' => 'MULTI LEVEL EXAMPLE', 'header' => true],
+//                    [
+//                        'label' => 'Level1',
+//                        'items' => [
+//                            ['label' => 'Level2', 'iconStyle' => 'far'],
+//                            [
+//                                'label' => 'Level2',
+//                                'iconStyle' => 'far',
+//                                'items' => [
+//                                    ['label' => 'Level3', 'iconStyle' => 'far', 'icon' => 'dot-circle'],
+//                                    ['label' => 'Level3', 'iconStyle' => 'far', 'icon' => 'dot-circle'],
+//                                    ['label' => 'Level3', 'iconStyle' => 'far', 'icon' => 'dot-circle']
+//                                ]
+//                            ],
+//                            ['label' => 'Level2', 'iconStyle' => 'far']
+//                        ]
+//                    ],
+//                    ['label' => 'LABELS', 'header' => true],
+//                    ['label' => 'Important', 'iconStyle' => 'far', 'iconClassAdded' => 'text-danger'],
+//                    ['label' => 'Warning', 'iconClass' => 'nav-icon far fa-circle text-warning'],
+//                    ['label' => 'Informational', 'iconStyle' => 'far', 'iconClassAdded' => 'text-info'],
                 ],
             ]);
             ?>
@@ -86,3 +98,25 @@
     </div>
     <!-- /.sidebar -->
 </aside>
+
+
+
+
+
+<!---->
+<!--[-->
+<!--'label' => 'Level1',-->
+<!--'items' => [-->
+<!--['label' => 'Level2', 'iconStyle' => 'far'],-->
+<!--[-->
+<!--'label' => 'Level2',-->
+<!--'iconStyle' => 'far',-->
+<!--'items' => [-->
+<!--['label' => 'Level3', 'iconStyle' => 'far', 'icon' => 'dot-circle'],-->
+<!--['label' => 'Level3', 'iconStyle' => 'far', 'icon' => 'dot-circle'],-->
+<!--['label' => 'Level3', 'iconStyle' => 'far', 'icon' => 'dot-circle']-->
+<!--]-->
+<!--],-->
+<!--['label' => 'Level2', 'iconStyle' => 'far']-->
+<!--]-->
+<!--],-->

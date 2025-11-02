@@ -12,6 +12,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
+use yii\base\Action;
 
 /**
  * Site controller
@@ -59,6 +60,25 @@ class SiteController extends Controller
             ],
         ];
     }
+
+    public function beforeAction($action)
+    {
+        // 1. Executa a lógica padrão do Controller
+        if (!parent::beforeAction($action)) {
+            return false;
+        }
+
+        // 2. Lógica para passar o utilizador para o Layout
+        // Usamos Yii::$app->user->identity que já é seguro (retorna null se não houver login)
+        $currentUser = Yii::$app->user->identity;
+
+        // 3. Define a variável global do Layout (View Params)
+        // Se o utilizador não estiver logado, passamos null (o que deve ser tratado na sidebar)
+        $this->view->params['userLogado'] = $currentUser;
+
+        return true;
+    }
+
 
     /**
      * Displays homepage.
