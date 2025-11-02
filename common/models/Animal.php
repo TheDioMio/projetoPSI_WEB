@@ -33,7 +33,12 @@ class Animal extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
+     * @var UploadedFile[]
      */
+
+    public $imageFiles;
+
+
     public static function tableName()
     {
         return 'animal';

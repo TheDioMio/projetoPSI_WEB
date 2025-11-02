@@ -86,6 +86,7 @@ AppAsset::register($this);
         ['label' => 'Animais', 'url' => ['/site/animal'], 'linkOptions' => ['class' => 'nav-link']],
         ['label' => 'Acerca', 'url' => ['/site/about'], 'linkOptions' => ['class' => 'nav-link']],
         ['label' => 'Contactos', 'url' => ['/site/contact'], 'linkOptions' => ['class' => 'nav-link',]],
+        ['label' => 'Novo Anuncio', 'url' => ['/site/create-listing'], 'linkOptions' => ['class' => 'nav-link',]],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Registar', 'url' => ['/site/signup']];
