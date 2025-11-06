@@ -129,7 +129,7 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
+        if (!Yii::$app->user->isGuest )  {
             return $this->goHome();
         }
 
@@ -421,22 +421,25 @@ class SiteController extends Controller
                             throw new \Exception('Falha ao guardar o ficheiro no disco.');
                         }
 
+
                         // 7c. Guardar o registo na tabela 'file'
                         $fileModel = new File();
                         $fileModel->user_id = $userId;
                         $fileModel->animal_id = $animalId;
                         $fileModel->type = 'animal_photo';
                         $fileModel->path = $baseUrl . '/' . $fileName; // O URL público
+
                         if (!$fileModel->save()) {
                             throw new \Exception('Falha ao guardar o caminho do ficheiro na BD.');
                         }
+
                     }
 
                     // 8. (Opcional) Criar o Listing (Anúncio)
                     $listingModel = new Listing();
                     $listingModel->animal_id = $model->id;
-                    $listingModel->user_id = $userId;
-                    $listingModel->status = 0; // 0 = Pendente de Aprovação
+                    $listingModel->user_id = Yii::$app->user->id;
+                    $listingModel->status = 1; // 0 = Pendente de Aprovação
                     if (!$listingModel->save()) {
                         throw new \Exception('Falha ao criar o anúncio (listing).');
                     }

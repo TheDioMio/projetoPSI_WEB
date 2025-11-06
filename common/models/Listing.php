@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "listing".
@@ -105,4 +107,17 @@ class Listing extends \yii\db\ActiveRecord
         return $this->hasMany(Visit::class, ['listing_id' => 'id']);
     }
 
+
+
+/*
+    public function behaviors()
+    {
+        return [
+
+                TimestampBehavior::class,
+
+
+        ];
+    }
+*/
 }

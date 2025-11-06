@@ -38,6 +38,7 @@ class RbacController extends Controller
         $admin = $auth->createRole('admin');
         $auth->add($admin);
         $auth->addChild($admin, $updatePost);
+        $auth->addChild($admin, $login); // adicionado temporariamente para dar acesso frontend ao admin
         //$auth->addChild($admin, $user);
 
         // Assign roles to users. 1 and 2 are IDs returned by IdentityInterface::getId()

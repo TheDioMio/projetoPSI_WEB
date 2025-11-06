@@ -5,6 +5,9 @@ namespace common\models;
 use Yii;
 use yii\web\UploadedFile;
 
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
+
 
 /**
  * This is the model class for table "file".
@@ -31,7 +34,6 @@ class File extends \yii\db\ActiveRecord
      * @var $imageFile
      */
     public $imageFile;
-
     public function upload()
     {
         if ($this->validate()) {
@@ -59,7 +61,7 @@ class File extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            /*
+
             [['animal_id', 'user_id', 'created_at', 'type'], 'default', 'value' => null],
             [['animal_id', 'user_id'], 'integer'],
             [['path'], 'required'],
@@ -67,8 +69,8 @@ class File extends \yii\db\ActiveRecord
             [['path'], 'string', 'max' => 255],
             [['type'], 'string', 'max' => 50],
             [['animal_id'], 'exist', 'skipOnError' => true, 'targetClass' => Animal::class, 'targetAttribute' => ['animal_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],*/
-            [['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg', 'maxFiles' => 5],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+           // [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg', 'maxFiles' => 5],
            // [['profileImage'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
            // [['documentFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'pdf, docx', 'maxFiles' => 3],
 
