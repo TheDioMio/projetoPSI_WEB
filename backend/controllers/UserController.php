@@ -2,6 +2,8 @@
 
 namespace backend\controllers;
 
+use common\models\Comment;
+use common\models\Listing;
 use common\models\User;
 use common\models\UserSearch;
 use yii\filters\VerbFilter;
@@ -200,5 +202,9 @@ class UserController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function getListings(){
+        return $this->hasMany(Listing::class, ['id' => 'user_id']);
     }
 }

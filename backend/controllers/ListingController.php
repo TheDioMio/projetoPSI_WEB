@@ -2,6 +2,8 @@
 
 namespace backend\controllers;
 
+use common\models\Animal;
+use common\models\AnimalType;
 use common\models\Listing;
 use backend\models\ListingSearch;
 use Yii;
@@ -143,5 +145,12 @@ class ListingController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function getAnimal()
+    {
+        // 'animal_id' é a coluna na tabela 'listing'
+        // 'id' é a coluna na tabela 'animal'
+        return $this->hasOne(Animal::class, ['id' => 'animal_id']);
     }
 }

@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use common\models\Animal;
 use backend\models\AnimalSearch;
+use common\models\Listing;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;

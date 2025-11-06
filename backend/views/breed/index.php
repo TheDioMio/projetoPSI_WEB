@@ -10,42 +10,41 @@ use yii\grid\GridView;
 /** @var backend\models\BreedSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Breeds';
+$this->title = 'Gestão de Raças';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="breed-index">
+<div class="breed-index container-fluid">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="card card-outline card-primary shadow-sm">
 
-    <p>
-        <?= Html::a('Create Breed', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+        <div class="card-header">
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+            <div class="card-tools float-right">
+                <?= Html::a('<i class="fas fa-plus-circle"></i> Criar Raça', ['create'], ['class' => 'btn btn-success btn-sm']) ?>
+            </div>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+        </div>
 
-            'id',
-            'description',
-            [
-                'attribute' => 'animal_type_id',
-                'value' => function ($model) {
-                    return $model->animalType ? $model->animalType->description : '(sem tipo)';
-                },
-                'label' => 'Animal Type',
-            ],
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Breed $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
-        ],
-    ]); ?>
-
-
+        <div class="card-body p-0">
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'tableOptions' => ['class' => 'table table-hover table-striped table-sm text-nowrap'],
+                'layout' => "{items}\n{summary}\n{pager}",
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                    'id',
+                    'description',
+                    'animal_type_id',
+                    [
+                        'class' => ActionColumn::class,
+                        'template' => '{view} {delete}',
+                        'urlCreator' => function ($action, Breed $model, $key, $index, $column) {
+                            return Url::toRoute([$action, 'id' => $model->id]);
+                        }
+                    ],
+                ],
+            ]); ?>
+        </div>
+    </div>
 </div>

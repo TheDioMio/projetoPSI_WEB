@@ -87,7 +87,6 @@ class m251022_183526_create_petpanion_tables extends Migration
             'user_id' => $this->integer()->notNull(),
             'text' => $this->text(),
             'created_at' => $this->dateTime(),
-            'created_time' => $this->time(),
         ], $tableOptions);
 
         // FILE

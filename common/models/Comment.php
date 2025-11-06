@@ -35,11 +35,11 @@ class Comment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['text', 'created_at', 'created_time'], 'default', 'value' => null],
+            [['text', 'created_at'], 'default', 'value' => null],
             [['listing_id', 'user_id'], 'required'],
             [['listing_id', 'user_id'], 'integer'],
             [['text'], 'string'],
-            [['created_at', 'created_time'], 'safe'],
+            [['created_at'], 'safe'],
             [['listing_id'], 'exist', 'skipOnError' => true, 'targetClass' => Listing::class, 'targetAttribute' => ['listing_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -79,5 +79,4 @@ class Comment extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
-
 }

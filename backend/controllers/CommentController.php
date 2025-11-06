@@ -4,7 +4,10 @@ namespace backend\controllers;
 
 use common\models\Comment;
 use app\models\CommentSearch;
+use common\models\Listing;
+use common\models\User;
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -69,7 +72,7 @@ class CommentController extends Controller
     public function actionView($id)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->findModel($id)
         ]);
     }
 
@@ -82,17 +85,28 @@ class CommentController extends Controller
     {
         $model = new Comment();
 
+        $users = User::find()->select(['id','username'])->indexBy('id')->asArray()->all();
+
+
+        $listings = Listing::find()
+            //Este select está a fazer um JOIN, ele associa o ID do animal na listagem com o nome do animal no ID da tabela animal!!
+        ->select([
+            'id' => Listing::tableName() . '.id', 'animalDescription' => 'animal.description'])
+        ->joinWith('animal')
+        ->asArray()
+        ->all();
+        
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post())) {
+                $model->created_at = date('Y-m-d H:i:s');
+                if ($model->save()) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
             }
         } else {
             $model->loadDefaultValues();
         }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return $this->render('create', ['model' => $model, 'users'=>$users, 'listings' => $listings]);
     }
 
     /**
@@ -146,4 +160,5 @@ class CommentController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
 }

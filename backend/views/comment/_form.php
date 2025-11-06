@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -7,25 +8,24 @@ use yii\widgets\ActiveForm;
 /** @var common\models\Comment $model */
 /** @var yii\widgets\ActiveForm $form */
 ?>
-
 <div class="comment-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'listing_id')->textInput() ?>
+    <?= $form->field($model, 'listing_id')
+        ->dropDownList(ArrayHelper::map($listings, 'id', 'animalDescription'),
+            ['prompt'=> 'Selecione o animal' ])
+        ->label('Animal Listado')?>
 
-    <?= $form->field($model, 'user_id')->textInput() ?>
+    <?= $form->field($model, 'user_id')
+        ->dropDownList(ArrayHelper::map($users, 'id', 'username'),
+            ['prompt'=> 'Selecione o autor' ])
+        ->label('Autor do Comentário')?>
 
-    <?= $form->field($model, 'text')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'created_at')->textInput() ?>
-
-    <?= $form->field($model, 'created_time')->textInput() ?>
+    <?=$form->field($model, 'text')->textInput()->label('Conteúdo')?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
-
     <?php ActiveForm::end(); ?>
-
 </div>

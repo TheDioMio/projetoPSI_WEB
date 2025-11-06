@@ -18,7 +18,7 @@ class CommentSearch extends Comment
     {
         return [
             [['id', 'listing_id', 'user_id'], 'integer'],
-            [['text', 'created_at', 'created_time'], 'safe'],
+            [['text', 'created_at'], 'safe'],
         ];
     }
 
@@ -63,7 +63,6 @@ class CommentSearch extends Comment
             'listing_id' => $this->listing_id,
             'user_id' => $this->user_id,
             'created_at' => $this->created_at,
-            'created_time' => $this->created_time,
         ]);
 
         $query->andFilterWhere(['like', 'text', $this->text]);

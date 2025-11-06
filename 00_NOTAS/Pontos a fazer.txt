@@ -2,4 +2,6 @@
 	Perfil
 	Logout
 
-- Fazer a página Reset Password,
+- Fazer a página Reset Password
+- Comentários precisam de ter um limite de caracteres, e precisam de ter a BD mudada, já que têm 2 campos de
+"Criado em" diferentes.
