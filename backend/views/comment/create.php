@@ -1,20 +1,33 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /** @var yii\web\View $this */
 /** @var common\models\Comment $model */
 
-$this->title = 'Create Comment';
-$this->params['breadcrumbs'][] = ['label' => 'Comments', 'url' => ['index']];
+$this->title = 'Criar Novo Comentário';
+$this->params['breadcrumbs'][] = ['label' => 'Gestão de Comentários', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="comment-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="comment-create container-fluid">
 
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
+    <div class="card card-outline card-success shadow-sm">
 
+        <div class="card-header">
+            <div class="card-tools">
+                <?= Html::a('<i class="fas fa-arrow-left"></i> Voltar à Lista', ['index'], ['class' => 'btn btn-default btn-sm']) ?>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <?= $this->render('_form', [
+                'model' => $model,
+                'users' => $users,
+                'listings' => $listings,
+            ]) ?>
+        </div>
+
+    </div>
 </div>
