@@ -5,11 +5,12 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+
 /** @var yii\web\View $this */
 /** @var app\models\CommentSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
-$this->title = 'Gestão de Comentários';
-$this->params['breadcrumbs'][] = $this->title;
+    $title = 'Gestão de Comentários';
+    $params['breadcrumbs'][] = $title;
 ?>
 <div class="comment-index container-fluid">
     <div class="card card-outline card-primary shadow-sm">
@@ -27,10 +28,25 @@ $this->params['breadcrumbs'][] = $this->title;
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
                     'id',
-                    'listing_id',
-                    'user_id',
-                    'text:ntext',
-                    'created_at',
+                    [
+                        'label' => 'Animal Listado',
+                        'attribute' => 'animal_name',
+                        'value' => 'listing.animal.name'
+                    ],
+                    [
+                        'label' => 'Autor do Comentário',
+                        'attribute' => 'user_username',
+                        'value' => 'listing.user.username',
+                    ],
+                    [
+                        'label' => 'Conteúdo',
+                        'attribute' => 'text',
+                        'format'=> 'ntext',
+                    ],
+                    [
+                        'label' => 'Data de Publicação',
+                        'attribute' => 'created_at',
+                    ],
                     [
                         'class' => ActionColumn::class,
                         'template' => '{view} {delete}',

@@ -91,11 +91,11 @@ class CommentController extends Controller
         $listings = Listing::find()
             //Este select está a fazer um JOIN, ele associa o ID do animal na listagem com o nome do animal no ID da tabela animal!!
         ->select([
-            'id' => Listing::tableName() . '.id', 'animalDescription' => 'animal.description'])
+            'id' => Listing::tableName() . '.id', 'animalName' => 'animal.name'])
         ->joinWith('animal')
         ->asArray()
         ->all();
-        
+
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
                 $model->created_at = date('Y-m-d H:i:s');

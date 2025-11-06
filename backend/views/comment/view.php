@@ -30,14 +30,13 @@ $this->params['breadcrumbs'][] = 'Ver'; // O título da página atual
         </div>
 
         <div class="card-body">
-
             <?= DetailView::widget([
                 'model' => $model,
                 'attributes' => [
                     'id',
                     [
                         'label' => 'Animal Listado',
-                        'attribute' => 'listing.animal.description',
+                        'attribute' => 'listing.animal.name'
                     ],
                     [
                         'label' => 'Autor do Comentário',
@@ -47,9 +46,6 @@ $this->params['breadcrumbs'][] = 'Ver'; // O título da página atual
                         'label' => 'Conteúdo',
                         'attribute' => 'text',
                         'format'=> 'ntext',
-                        'value' => function ($model) {
-                            return StringHelper::truncate($model->text, 100, '...');
-                        }
                     ],
                     [
                         'label' => 'Data de Publicação',

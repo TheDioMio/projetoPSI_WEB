@@ -80,6 +80,7 @@ class ListingController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
+
     public function actionCreate()
     {
         $model = new Listing();
@@ -91,7 +92,6 @@ class ListingController extends Controller
         } else {
             $model->loadDefaultValues();
         }
-
         return $this->render('create', [
             'model' => $model,
         ]);
@@ -145,12 +145,5 @@ class ListingController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
-    }
-
-    public function getAnimal()
-    {
-        // 'animal_id' é a coluna na tabela 'listing'
-        // 'id' é a coluna na tabela 'animal'
-        return $this->hasOne(Animal::class, ['id' => 'animal_id']);
     }
 }

@@ -34,6 +34,18 @@ class Listing extends \yii\db\ActiveRecord
         return 'listing';
     }
 
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::class,
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => false,
+                'value' => new Expression('NOW()'),
+            ],
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -106,18 +118,4 @@ class Listing extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Visit::class, ['listing_id' => 'id']);
     }
-
-
-
-/*
-    public function behaviors()
-    {
-        return [
-
-                TimestampBehavior::class,
-
-
-        ];
-    }
-*/
 }

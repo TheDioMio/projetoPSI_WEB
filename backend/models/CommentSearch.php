@@ -1,16 +1,20 @@
 <?php
-
 namespace app\models;
-
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\Comment;
+use common\models\Animal;
+use common\models\User;
 
 /**
  * CommentSearch represents the model behind the search form of `common\models\Comment`.
  */
+
 class CommentSearch extends Comment
 {
+    public $animal_name;
+    public $user_username;
+
     /**
      * {@inheritdoc}
      */
@@ -19,6 +23,7 @@ class CommentSearch extends Comment
         return [
             [['id', 'listing_id', 'user_id'], 'integer'],
             [['text', 'created_at'], 'safe'],
+            [['animal_name', 'user_username'], 'safe'],
         ];
     }
 
@@ -43,29 +48,39 @@ class CommentSearch extends Comment
     {
         $query = Comment::find();
 
-        // add conditions that should always apply here
+        //Isto aqui faz um join com as tabelas relacionadas ao Comment, é preciso para funções de procura.
+        $query->joinWith(['listing.animal', 'listing.user']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+        $dataProvider->sort->attributes['animal_name'] = [
+            'asc' => [Animal::tableName() . '.name' => SORT_ASC],
+            'desc' => [Animal::tableName() . '.name' => SORT_DESC],
+        ];
+        $dataProvider->sort->attributes['user_username'] = [
+            'asc' => [User::tableName() . '.username' => SORT_ASC],
+            'desc' => [User::tableName() . '.username' => SORT_DESC],
+        ];
+
 
         $this->load($params, $formName);
 
         if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
             return $dataProvider;
         }
 
-        // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'listing_id' => $this->listing_id,
-            'user_id' => $this->user_id,
-            'created_at' => $this->created_at,
+            Comment::tableName().'.id' => $this->id,
+            Comment::tableName().'.listing_id' => $this->listing_id,
+            Comment::tableName().'.user_id' => $this->user_id,
         ]);
+        $query->andFilterWhere(['like', Comment::tableName().'.text', $this->text]);
+        $query->andFilterWhere(['like', Comment::tableName().'.created_at', $this->created_at]);
 
-        $query->andFilterWhere(['like', 'text', $this->text]);
+        //FILTROS PARA AS TABELAS RELACIONADAS!!!!
+        $query->andFilterWhere(['like', Animal::tableName() . '.name', $this->animal_name]);
+        $query->andFilterWhere(['like', User::tableName() . '.username', $this->user_username]);
 
         return $dataProvider;
     }

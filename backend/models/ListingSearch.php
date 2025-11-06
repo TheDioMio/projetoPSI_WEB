@@ -2,6 +2,8 @@
 
 namespace backend\models;
 
+use common\models\Animal;
+use common\models\User;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\Listing;
@@ -11,6 +13,9 @@ use common\models\Listing;
  */
 class ListingSearch extends Listing
 {
+    public $animal_name;
+    public $listing_user;
+
     /**
      * {@inheritdoc}
      */
@@ -18,7 +23,7 @@ class ListingSearch extends Listing
     {
         return [
             [['id', 'animal_id', 'user_id', 'views', 'status'], 'integer'],
-            [['description', 'created_at'], 'safe'],
+            [['description', 'created_at', 'listing_user', 'animal_name'], 'safe'],
         ];
     }
 
@@ -49,6 +54,22 @@ class ListingSearch extends Listing
             'query' => $query,
         ]);
 
+        //Isto aqui faz um join com as tabelas relacionadas à Listing, é preciso para funções de procura.
+        $query->joinWith(['animal', 'user']);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+        $dataProvider->sort->attributes['animal_name'] = [
+            'asc' => [Animal::tableName() . '.name' => SORT_ASC],
+            'desc' => [Animal::tableName() . '.name' => SORT_DESC],
+        ];
+        $dataProvider->sort->attributes['listing_user'] = [
+            'asc' => [User::tableName() . '.username' => SORT_ASC],
+            'desc' => [User::tableName() . '.username' => SORT_DESC],
+        ];
+
+
         $this->load($params, $formName);
 
         if (!$this->validate()) {
@@ -67,7 +88,14 @@ class ListingSearch extends Listing
             'created_at' => $this->created_at,
         ]);
 
-        $query->andFilterWhere(['like', 'description', $this->description]);
+
+        //Isto teve que ser mudado porque, caso contrário, dá erro de ambiguity (tabela animal também tem um campo de description).
+        $query->andFilterWhere(['like', Listing::tableName().'.description', $this->description]);
+
+        //FILTROS PARA AS TABELAS RELACIONADAS!!!!
+        $query->andFilterWhere(['like', Animal::tableName() . '.name', $this->animal_name]);
+        $query->andFilterWhere(['like', User::tableName() . '.username', $this->listing_user]);
+
 
         return $dataProvider;
     }
