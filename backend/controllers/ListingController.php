@@ -6,6 +6,7 @@ use common\models\Animal;
 use common\models\AnimalType;
 use common\models\Listing;
 use backend\models\ListingSearch;
+use common\models\User;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -84,6 +85,8 @@ class ListingController extends Controller
     public function actionCreate()
     {
         $model = new Listing();
+        $animals = Animal::find()->select(['id','name'])->indexBy('id')->asArray()->all();
+        $users = User::find()->select(['id', 'username'])->indexBy('id')->asArray()->all();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -94,6 +97,8 @@ class ListingController extends Controller
         }
         return $this->render('create', [
             'model' => $model,
+            'animals' => $animals,
+            'users' => $users,
         ]);
     }
 
@@ -107,13 +112,16 @@ class ListingController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $animals = Animal::find()->select(['id','name'])->indexBy('id')->asArray()->all();
+        $users = User::find()->select(['id', 'username'])->indexBy('id')->asArray()->all();
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'users' => $users,
+            'animals' => $animals,
         ]);
     }
 

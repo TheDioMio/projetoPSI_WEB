@@ -6,37 +6,59 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\Listing $model */
 
-$this->title = $model->id;
+$this->title = 'Detalhes da Listagem #'.$model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Listings', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="listing-view">
+    <div class="card card-outline card-primary shadow-sm">
+        <div class="card-header">
+            <div class="card-tools float-right">
+                <p>
+                    <?= Html::a('<i class="fas fa-arrow-left"></i> Voltar à Lista', ['index'], ['class' => 'btn btn-default btn-sm']) ?>
+                    <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary btn-sm']) ?>
+                    <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+                        'class' => 'btn btn-danger btn-sm',
+                        'data' => [
+                            'confirm' => 'Tem a certeza que deseja eliminar esta listagem?',
+                            'method' => 'post',
+                        ],
+                    ]) ?>
+                </p>
+            </div>
+        </div>
+        <div class="card-body">
+            <?= DetailView::widget([
+                'model' => $model,
+                'attributes' => [
+                    'id',
+                    [
+                        'label' => 'Animal Listado',
+                        'attribute' => 'animal.name',
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'description:ntext',
-            'animal_id',
-            'user_id',
-            'views',
-            'status',
-            'created_at',
-        ],
-    ]) ?>
-
+                    ],
+                    [
+                        'label' => 'Autor da Listagem',
+                        'attribute' => 'user.name',
+                    ],
+                    [
+                        'label' => 'Descrição',
+                        'attribute' => 'description',
+                        'format' => 'ntext',
+                    ],
+                    [
+                        'label' => 'Visualizações',
+                        'attribute' => 'views',
+                    ],
+                    [
+                        'label' => 'Data de Criação',
+                        'attribute' => 'created_at',
+                    ],
+                ],
+            ]) ?>
+        </div>
+    </div>
 </div>
+
+

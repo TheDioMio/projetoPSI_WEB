@@ -10,7 +10,7 @@ use yii\grid\GridView;
 /** @var backend\models\ListingSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Listings';
+$this->title = 'Gestão de Listagens';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="listing-index container-fluid">

@@ -80,17 +80,20 @@ class ListingSearch extends Listing
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
             'animal_id' => $this->animal_id,
             'user_id' => $this->user_id,
             'views' => $this->views,
             'status' => $this->status,
-            'created_at' => $this->created_at,
         ]);
 
 
-        //Isto teve que ser mudado porque, caso contrário, dá erro de ambiguity (tabela animal também tem um campo de description).
+        /*Isto teve que ser mudado porque, caso contrário, dá erro de ambiguity
+        (tabela animal também tem um campo de description).
+        A mesma coisa para o campo ID.
+        */
         $query->andFilterWhere(['like', Listing::tableName().'.description', $this->description]);
+        $query->andFilterWhere(['like', Listing::tableName().'.id', $this->id]);
+        $query->andFilterWhere(['like', Listing::tableName().'.created_at', $this->created_at]);
 
         //FILTROS PARA AS TABELAS RELACIONADAS!!!!
         $query->andFilterWhere(['like', Animal::tableName() . '.name', $this->animal_name]);

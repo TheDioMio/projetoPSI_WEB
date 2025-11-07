@@ -7,10 +7,9 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var common\models\Comment $model */
 
-// Vamos tornar o título um pouco mais descritivo
 $this->title = 'Detalhes do Comentário #' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Comments', 'url' => ['index']];
-$this->params['breadcrumbs'][] = 'Ver'; // O título da página atual
+$this->params['breadcrumbs'][] = 'Ver';
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="comment-view">
@@ -19,8 +18,9 @@ $this->params['breadcrumbs'][] = 'Ver'; // O título da página atual
 
         <div class="card-header">
             <div class="card-tools float-right">
+                <?= Html::a('<i class="fas fa-arrow-left"></i> Voltar à Lista', ['index'], ['class' => 'btn btn-default btn-sm']) ?>
                 <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-                    'class' => 'btn btn-danger btn-sm', // Adicionei btn-sm para consistência
+                    'class' => 'btn btn-danger btn-sm',
                     'data' => [
                         'confirm' => 'Tem a certeza que deseja eliminar este comentário?',
                         'method' => 'post',
