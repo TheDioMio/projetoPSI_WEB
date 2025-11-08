@@ -426,7 +426,7 @@ class SiteController extends Controller
                         $fileModel = new File();
                         $fileModel->user_id = $userId;
                         $fileModel->animal_id = $animalId;
-                        $fileModel->type = 'animal_photo';
+                        $fileModel->type_id = 1;
                         $fileModel->path = $baseUrl . '/' . $fileName; // O URL público
 
                         if (!$fileModel->save()) {
@@ -446,8 +446,8 @@ class SiteController extends Controller
 
                     // 9. Se tudo correu bem, 'cometer' a transação
                     $transaction->commit();
-                    Yii::$app->session->setFlash('success', 'Anúncio criado com sucesso! Ficará pendente de aprovação.');
-                    return $this->redirect(['animal-detail', 'id' => $model->id]);
+                    Yii::$app->session->setFlash('success', 'Anúncio criado com sucesso!');
+                    return $this->redirect(['detail', 'id' => $model->id]);
 
                 } catch (\Exception $e) {
                     // 10. Se algo falhou, fazer 'rollback' (desfazer tudo)

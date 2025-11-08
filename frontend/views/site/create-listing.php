@@ -5,34 +5,43 @@ use yii\bootstrap5\ActiveForm; // Usamos o ActiveForm do Bootstrap 5
 use yii\helpers\ArrayHelper;
 use common\models\AnimalType;
 use common\models\Breed;
+use common\models\AnimalAge;
+use common\models\AnimalSize;
+use common\models\Vaccination;
 
 /** @var yii\web\View $this */
 /** @var common\models\Animal $model */ // O $model é um 'Animal' vazio, vindo do Controller
 
-// --- Prepara os dados para os Dropdowns ---
+// --- Dropdowns vindos da BD ---
+$tiposDeAnimal = ArrayHelper::map(
+    AnimalType::find()->orderBy(['description' => SORT_ASC])->all(),
+    'id',
+    'description'
+);
 
-// 1. Tipos de Animal (da Base de Dados)
-$tiposDeAnimal = ArrayHelper::map(AnimalType::find()->orderBy(['description' => SORT_ASC])->all(), 'id', 'description');
+$racas = ArrayHelper::map(
+    Breed::find()->orderBy(['description' => SORT_ASC])->all(),
+    'id',
+    'description'
+);
 
-// 2. Raças (da Base de Dados)
-$racas = ArrayHelper::map(Breed::find()->orderBy(['description' => SORT_ASC])->all(), 'id', 'description');
+$idades = ArrayHelper::map(
+    AnimalAge::find()->orderBy(['description' => SORT_ASC])->all(),
+    'id',
+    'description'
+);
 
-// 3. Portes (Estático)
-$portes = [
-    1 => 'Pequeno (até 10kg)',
-    2 => 'Médio (11kg - 25kg)',
-    3 => 'Grande (mais de 25kg)',
-];
+$portes = ArrayHelper::map(
+    AnimalSize::find()->orderBy(['id' => SORT_ASC])->all(),
+    'id',
+    'description'
+);
 
-// 4. Vacinas (Estático)
-$vacinas = [
-    0 => 'Não Vacinado',
-    1 => 'Vacinado (Básicas)',
-    2 => 'Vacinado (Completo)',
-    3 => 'Não Aplicável / Desconhecido',
-];
-
-// ------------------------------------------
+$vacinas = ArrayHelper::map(
+    Vaccination::find()->orderBy(['id' => SORT_ASC])->all(),
+    'id',
+    'description'
+);
 
 $this->title = 'Criar Novo Anúncio';
 $this->params['breadcrumbs'][] = $this->title; // Adiciona ao "breadcrumb"
@@ -81,13 +90,16 @@ $this->params['breadcrumbs'][] = $this->title; // Adiciona ao "breadcrumb"
 
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <?= $form->field($model, 'age')->textInput(['type' => 'number'])->label('Idade (em anos)') ?>
+                        <?= $form->field($model, 'age_id')->dropDownList(
+                            $idades,
+                            ['prompt' => 'Selecione a idade...']
+                        )->label('Idade') ?>
                     </div>
 
                     <div class="col-md-6">
-                        <?= $form->field($model, 'size')->dropDownList(
+                        <?= $form->field($model, 'size_id')->dropDownList(
                             $portes,
-                            ['prompt' => 'Selecione o Porte...']
+                            ['prompt' => 'Selecione o Porte...', 'encode' => false]
                         )->label('Porte') ?>
                     </div>
                 </div>
@@ -100,14 +112,14 @@ $this->params['breadcrumbs'][] = $this->title; // Adiciona ao "breadcrumb"
 
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <?= $form->field($model, 'vaccines')->dropDownList(
+                        <?= $form->field($model, 'vaccination_id')->dropDownList(
                             $vacinas,
                             ['prompt' => 'Estado da vacinação...']
                         )->label('Vacinas') ?>
                     </div>
 
                     <div class="col-md-6">
-                        <?= $form->field($model, 'neutered')->checkbox()->label('Animal Castrado/Esterilizado') ?>
+                        <?= $form->field($model, 'neutered')->checkbox()->label('Animal Esterilizado') ?>
                     </div>
                 </div>
 

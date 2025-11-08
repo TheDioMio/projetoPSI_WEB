@@ -115,32 +115,32 @@ $this->title = 'Detalhes';
 
                             <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
                                 <strong>Idade:</strong>
-                                <span><?= Html::encode($model->age)?></span>
+                                <span><?= Html::encode($model->age ? $model->age->description : '—') ?></span>
                             </li>
 
                             <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
                                 <strong>Porte:</strong>
-                                <span><?= Html::encode($model->size)?></span>
+                                <span><?= Html::encode($model->size ? $model->size->description : '—') ?></span>
                             </li>
 
                             <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
                                 <strong>Tipo:</strong>
-                                <span> <?= Html::encode($model->breed_id)?> </span>
+                                <span> <?= Html::encode($model->animalType ? $model->animalType->description : '—') ?> </span>
                             </li>
 
                             <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
                                 <strong>Raça:</strong>
-                                <span><?= Html::encode($model->neutered)?></span>
+                                <span><?= Html::encode($model->breed ? $model->breed->description : '—')?></span>
                             </li>
 
                             <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
                                 <strong>Esterilizado:</strong>
-                                <span><?= Html::encode($model->neutered)?></span>
+                                <span><?= \yii\helpers\Html::encode($model->neutered ? 'Sim' : 'Não') ?></span>
                             </li>
 
                             <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
                                 <strong>Vacinas:</strong>
-                                <span><?= Html::encode($model->vaccines)?></span>
+                                <span><?= Html::encode($model->vaccination ? $model->vaccination->description : '—') ?></span>
                             </li>
 
                             <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">

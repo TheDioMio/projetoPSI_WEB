@@ -3,28 +3,34 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "animal".
  *
  * @property int $id
+ * @property int|null $age_id
+ * @property int|null $size_id
+ * @property int|null $vaccination_id
  * @property string|null $description
- * @property int|null $size
- * @property int|null $age
  * @property int $animal_type_id
  * @property int|null $breed_id
- * @property int|null $vaccines
  * @property int|null $neutered
  * @property string|null $location
  * @property int|null $user_id
  * @property string|null $created_at
+ * @property string|null $name
  *
- * @property AnimalType $animal-type
+ * @property AnimalAge $age
+ * @property AnimalType $animalType
  * @property Application[] $applications
  * @property Breed $breed
  * @property File[] $files
  * @property Listing[] $listings
+ * @property AnimalSize $size
  * @property User $user
+ * @property Vaccination $vaccination
  * @property Visit[] $visits
  */
 class Animal extends \yii\db\ActiveRecord
@@ -35,14 +41,12 @@ class Animal extends \yii\db\ActiveRecord
      * {@inheritdoc}
      * @var UploadedFile[]
      */
-
-    public $imageFiles;
-
-
     public static function tableName()
     {
         return 'animal';
     }
+
+    public $imageFiles;
 
     /**
      * {@inheritdoc}
@@ -50,16 +54,20 @@ class Animal extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['description', 'size', 'age', 'breed_id', 'vaccines', 'location', 'user_id', 'created_at'], 'default', 'value' => null],
+            [['age_id', 'size_id', 'vaccination_id', 'description', 'breed_id', 'location', 'user_id', 'created_at', 'name'], 'default', 'value' => null],
             [['neutered'], 'default', 'value' => 0],
+            [['age_id', 'size_id', 'vaccination_id', 'animal_type_id', 'breed_id', 'neutered', 'user_id'], 'integer'],
             [['description'], 'string'],
-            [['size', 'age', 'animal_type_id', 'breed_id', 'vaccines', 'neutered', 'user_id'], 'integer'],
             [['animal_type_id'], 'required'],
             [['created_at'], 'safe'],
             [['location'], 'string', 'max' => 150],
+            [['name'], 'string', 'max' => 50],
+            [['age_id'], 'exist', 'skipOnError' => true, 'targetClass' => AnimalAge::class, 'targetAttribute' => ['age_id' => 'id']],
             [['animal_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => AnimalType::class, 'targetAttribute' => ['animal_type_id' => 'id']],
             [['breed_id'], 'exist', 'skipOnError' => true, 'targetClass' => Breed::class, 'targetAttribute' => ['breed_id' => 'id']],
+            [['size_id'], 'exist', 'skipOnError' => true, 'targetClass' => AnimalSize::class, 'targetAttribute' => ['size_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+            [['vaccination_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vaccination::class, 'targetAttribute' => ['vaccination_id' => 'id']],
         ];
     }
 
@@ -70,17 +78,28 @@ class Animal extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'age_id' => 'Age ID',
+            'size_id' => 'Size ID',
+            'vaccination_id' => 'Vaccination ID',
             'description' => 'Description',
-            'size' => 'Size',
-            'age' => 'Age',
             'animal_type_id' => 'Animal Type ID',
             'breed_id' => 'Breed ID',
-            'vaccines' => 'Vaccines',
             'neutered' => 'Neutered',
             'location' => 'Location',
             'user_id' => 'User ID',
             'created_at' => 'Created At',
+            'name' => 'Name',
         ];
+    }
+
+    /**
+     * Gets query for [[Age]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAge()
+    {
+        return $this->hasOne(AnimalAge::class, ['id' => 'age_id']);
     }
 
     /**
@@ -134,6 +153,16 @@ class Animal extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Size]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSize()
+    {
+        return $this->hasOne(AnimalSize::class, ['id' => 'size_id']);
+    }
+
+    /**
      * Gets query for [[User]].
      *
      * @return \yii\db\ActiveQuery
@@ -144,6 +173,16 @@ class Animal extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[Vaccination]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVaccination()
+    {
+        return $this->hasOne(Vaccination::class, ['id' => 'vaccination_id']);
+    }
+
+    /**
      * Gets query for [[Visits]].
      *
      * @return \yii\db\ActiveQuery
@@ -151,6 +190,19 @@ class Animal extends \yii\db\ActiveRecord
     public function getVisits()
     {
         return $this->hasMany(Visit::class, ['animal_id' => 'id']);
+    }
+
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::class,
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => false, // se não tens coluna updated_at
+                'value' => new Expression('NOW()'), // usa timestamp do MySQL
+            ],
+        ];
     }
 
 }

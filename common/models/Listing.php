@@ -109,15 +109,17 @@ class Listing extends \yii\db\ActiveRecord
 
 
 
-/*
+
     public function behaviors()
     {
         return [
-
-                TimestampBehavior::class,
-
-
+            [
+                'class' => TimestampBehavior::class,
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => false, // se não tens coluna updated_at
+                'value' => new Expression('NOW()'), // usa timestamp do MySQL
+            ],
         ];
     }
-*/
+
 }
