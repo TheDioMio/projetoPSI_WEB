@@ -10,45 +10,50 @@ use yii\helpers\Url;
 /** @var \common\models\UserSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Users';
+$this->title = 'Gestão de Utilizadores';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="user-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            //'id',
-            'name',
-            'username',
-            //'auth_key',
-            //'password_hash',
-            //'address',
-            //'password_reset_token',
-            'email:email',
-            //'status',
-            //'created_at',
-            //'updated_at',
-            //'verification_token',
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, User $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
-        ],
-    ]); ?>
-
-
+<div class="user-index container-fluid">
+    <div class="card card-outline card-primary shadow-sm">
+        <div class="card-header">
+            <div class="card-tools float-right">
+                <?= Html::a('<i class="fas fa-plus-circle"></i> Criar Utilizador', ['create'], ['class' => 'btn btn-success btn-sm']) ?>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'tableOptions' => ['class' => 'table table-hover table-striped table-sm'],
+                'layout' => "{items}\n{summary}\n{pager}",
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                    [
+                        'label' => 'ID',
+                        'attribute' => 'id',
+                    ],
+                    [
+                        'label' => 'Nome',
+                        'attribute' => 'name',
+                    ],
+                    'username',
+                    //'auth_key',
+                    //'password_hash',
+                    //'address',
+                    //'password_reset_token',
+                    'email:email',
+                    [
+                        'label' => 'Data de Criação',
+                        'attribute' => 'created_at',
+                    ],
+                    [
+                        'class' => ActionColumn::className(),
+                        'urlCreator' => function ($action, User $model, $key, $index, $column) {
+                            return Url::toRoute([$action, 'id' => $model->id]);
+                        }
+                    ],
+                ],
+            ]); ?>
+        </div>
+    </div>
 </div>

@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use common\models\AnimalType;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\Breed;
@@ -9,8 +10,10 @@ use common\models\Breed;
 /**
  * BreedSearch represents the model behind the search form of `common\models\Breed`.
  */
+
 class BreedSearch extends Breed
 {
+    public $animal_type_name;
     /**
      * {@inheritdoc}
      */
@@ -18,7 +21,7 @@ class BreedSearch extends Breed
     {
         return [
             [['id', 'animal_type_id'], 'integer'],
-            [['description'], 'safe'],
+            [['description', 'animal_type_name'], 'safe'],
         ];
     }
 
@@ -43,12 +46,15 @@ class BreedSearch extends Breed
     {
         $query = Breed::find();
 
-        // add conditions that should always apply here
+        $query->joinWith(['animalType']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
+        $dataProvider->sort->attributes['animal_type_name'] = [
+            'asc' => [AnimalType::tableName() . '.description' => SORT_ASC],
+            'desc' => [AnimalType::tableName() . '.description' => SORT_DESC],
+        ];
         $this->load($params, $formName);
 
         if (!$this->validate()) {
@@ -59,12 +65,14 @@ class BreedSearch extends Breed
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
             'animal_type_id' => $this->animal_type_id,
         ]);
 
-        $query->andFilterWhere(['like', 'description', $this->description]);
 
+        //Isto aqui é para não dar erro de ambiguity!
+        $query->andFilterWhere(['like', Breed::tableName().'.id', $this->id]);
+
+        $query->andFilterWhere(['like', AnimalType::tableName() . '.description', $this->animal_type_name]);
         return $dataProvider;
     }
 }

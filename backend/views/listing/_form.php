@@ -22,10 +22,10 @@ use yii\widgets\ActiveForm;
             ['prompt'=> 'Selecione o autor' ])
         ->label('Autor do Comentário')?>
 
-    <?= $form->field($model, 'description')->textInput()->label('Descrição')?>
+    <?= $form->field($model, 'description')->textarea(['rows'=>5])->label('Descrição')?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

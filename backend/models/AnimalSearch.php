@@ -17,7 +17,7 @@ class AnimalSearch extends Animal
     public function rules()
     {
         return [
-            [['id', 'size', 'age', 'animal_type_id', 'breed_id', 'vaccines', 'neutered', 'user_id'], 'integer'],
+            [['id', 'size', 'age', 'animal_type_id', 'vaccination_id','breed_id', 'neutered', 'user_id'], 'integer'],
             [['description', 'location', 'created_at'], 'safe'],
         ];
     }
@@ -64,7 +64,7 @@ class AnimalSearch extends Animal
             'age' => $this->age,
             'animal_type_id' => $this->animal_type_id,
             'breed_id' => $this->breed_id,
-            'vaccines' => $this->vaccines,
+            'vaccination_id' => $this->vaccination_id,
             'neutered' => $this->neutered,
             'user_id' => $this->user_id,
             'created_at' => $this->created_at,

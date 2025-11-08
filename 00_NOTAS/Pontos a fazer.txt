@@ -3,5 +3,5 @@
 	Logout
 
 - Fazer a página Reset Password
-- Comentários precisam de ter um limite de caracteres, e precisam de ter a BD mudada, já que têm 2 campos de
-"Criado em" diferentes.
+- Rever os limites de caracteres para cada campo, ex. não faz sentido o nome do animal ter varchar(50), é muito grande.
+- Corrigir os erros do RBAC quanto se tenta criar um utilizador novo (fazer roles)

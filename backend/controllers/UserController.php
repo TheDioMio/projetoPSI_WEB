@@ -89,19 +89,16 @@ class UserController extends Controller
         if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
 
             // Gera hash com a senha digitada
-
             $model->setPassword($model->password);
 //            $model->generateAuthKey();
 
             if ($model->save()) {
-
                 // Obter o authManager
                 $auth = Yii::$app->authManager;
                 // Buscar a role existente
                 $adminRole = $auth->getRole('admin');
                 // Atribuir ao utilizador (exemplo: utilizador que vem no model)
                 $auth->assign($adminRole, $model->id);
-
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         } else {
@@ -112,35 +109,6 @@ class UserController extends Controller
             'model' => $model,
         ]);
     }
-
-
-//    public function actionCreate()
-//    {
-//        $model = new User();
-//
-//        if ($this->request->isPost) {
-//
-////            dd($this->request->post());
-//
-//            $model = new User();
-//            $model->username = $this->username;
-//            $model->email = $this->email;
-//            $model->setPassword($this->password);
-//
-//            $model->save();
-//            return $this->redirect(['view', 'id' => $model->id]);
-//
-//        } else {
-//            $model->loadDefaultValues();
-//        }
-//
-//        return $this->render('create', [
-//            'model' => $model,
-//        ]);
-//    }
-
-
-
 
     /**
      * Updates an existing User model.
@@ -202,9 +170,5 @@ class UserController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
-    }
-
-    public function getListings(){
-        return $this->hasMany(Listing::class, ['id' => 'user_id']);
     }
 }
