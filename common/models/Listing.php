@@ -118,20 +118,4 @@ class Listing extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Visit::class, ['listing_id' => 'id']);
     }
-
-
-
-
-    public function behaviors()
-    {
-        return [
-            [
-                'class' => TimestampBehavior::class,
-                'createdAtAttribute' => 'created_at',
-                'updatedAtAttribute' => false, // se não tens coluna updated_at
-                'value' => new Expression('NOW()'), // usa timestamp do MySQL
-            ],
-        ];
-    }
-
 }
