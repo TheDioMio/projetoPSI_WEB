@@ -6,6 +6,7 @@ use common\models\Animal;
 use common\models\AnimalType;
 use common\models\Listing;
 use backend\models\ListingSearch;
+use common\models\User;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -80,9 +81,12 @@ class ListingController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
+
     public function actionCreate()
     {
         $model = new Listing();
+        $animals = Animal::find()->select(['id','name'])->indexBy('id')->asArray()->all();
+        $users = User::find()->select(['id', 'username'])->indexBy('id')->asArray()->all();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -91,9 +95,10 @@ class ListingController extends Controller
         } else {
             $model->loadDefaultValues();
         }
-
         return $this->render('create', [
             'model' => $model,
+            'animals' => $animals,
+            'users' => $users,
         ]);
     }
 
@@ -107,13 +112,16 @@ class ListingController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $animals = Animal::find()->select(['id','name'])->indexBy('id')->asArray()->all();
+        $users = User::find()->select(['id', 'username'])->indexBy('id')->asArray()->all();
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'users' => $users,
+            'animals' => $animals,
         ]);
     }
 
@@ -145,12 +153,5 @@ class ListingController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
-    }
-
-    public function getAnimal()
-    {
-        // 'animal_id' é a coluna na tabela 'listing'
-        // 'id' é a coluna na tabela 'animal'
-        return $this->hasOne(Animal::class, ['id' => 'animal_id']);
     }
 }

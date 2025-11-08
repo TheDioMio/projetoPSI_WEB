@@ -13,7 +13,7 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'listing_id')
-        ->dropDownList(ArrayHelper::map($listings, 'id', 'animalDescription'),
+        ->dropDownList(ArrayHelper::map($listings, 'id', 'animalName'),
             ['prompt'=> 'Selecione o animal' ])
         ->label('Animal Listado')?>
 
