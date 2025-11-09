@@ -157,7 +157,11 @@ $this->title = 'Detalhes';
             <div class="mb-5">
                 <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4 mt-4">Interessado?</h3>
                 <div class="d-flex flex-column justify-content-start">
-                    <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Candidatura Online <i class="bi bi-input-cursor-text"></i></a>
+                    <?= Html::a(
+                        '<i class="bi bi-arrow-right me-2"></i>Candidatura Online <i class="bi bi-input-cursor-text"></i>',
+                        ['site/apply', 'animal_id' => $model->id],
+                        ['class' => 'h5 bg-light py-2 px-3 mb-2']
+                    ) ?>
                     <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Pedir mais Informações <i class="bi bi-info-circle"></i></a>
                     <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Agendar Visita <i class="bi bi-calendar-date"></i></a>
                     <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>????????????</a>

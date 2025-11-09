@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use Cassandra\Exception\UnauthorizedException;
+use common\models\Application;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -347,17 +348,6 @@ class SiteController extends Controller
         ]);
     }
 
-
-
-
-
-
-
-
-
-
-
-
     public function actionUpload()
     {
         $model = new File();
@@ -375,7 +365,6 @@ class SiteController extends Controller
 
         return $this->render('upload', ['model' => $model]);
     }
-
 
 
     public function actionCreateListing()
@@ -466,4 +455,22 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
+    public function actionApply($animal_id) {
+
+        $model = new Application();
+
+        // 1. Ir buscar o animal para mostrar o nome, etc.
+        $animal = \common\models\Animal::findOne($animal_id);
+        if ($animal === null) {
+            throw new \yii\web\NotFoundHttpException('Animal não encontrado.');
+        }
+
+        // 2. A action renderiza a view 'apply.php'
+        return $this->render('apply', [
+            'animal' => $animal,
+        ]);
+    }
+
+
 }
