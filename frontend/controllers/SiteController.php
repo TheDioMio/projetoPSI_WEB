@@ -469,6 +469,7 @@ class SiteController extends Controller
         // 2. A action renderiza a view 'apply.php'
         return $this->render('apply', [
             'animal' => $animal,
+            'model' => $model,
         ]);
     }
 

@@ -15,6 +15,7 @@ use Yii;
  * @property int|null $type
  * @property string|null $created_at
  * @property int|null $target_user_id
+ * @property string|null $data
  *
  * @property Animal $animal
  * @property User $targetUser
@@ -38,11 +39,11 @@ class Application extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['description', 'type', 'created_at', 'target_user_id'], 'default', 'value' => null],
+            [['description', 'type', 'created_at', 'target_user_id', 'data'], 'default', 'value' => null],
             [['status'], 'default', 'value' => 0],
             [['status', 'user_id', 'animal_id', 'type', 'target_user_id'], 'integer'],
             [['user_id', 'animal_id'], 'required'],
-            [['created_at'], 'safe'],
+            [['created_at', 'data'], 'safe'],
             [['description'], 'string', 'max' => 255],
             [['animal_id'], 'exist', 'skipOnError' => true, 'targetClass' => Animal::class, 'targetAttribute' => ['animal_id' => 'id']],
             [['target_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['target_user_id' => 'id']],
@@ -64,6 +65,7 @@ class Application extends \yii\db\ActiveRecord
             'type' => 'Type',
             'created_at' => 'Created At',
             'target_user_id' => 'Target User ID',
+            'data' => 'Data',
         ];
     }
 

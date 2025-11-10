@@ -5,11 +5,32 @@ use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this
  * @var \common\models\Animal $animal
- * @var common\models\Application $model*/
+ * @var \common\models\Application $model*/
 
 
 
 $this->title = 'Candidatura';
+
+
+// Opçoes para dropdown
+
+
+$home = [
+    1 => 'Própria',
+    2 => 'Arrendada (Senhorio autoriza animais)',
+    3 => 'Arrendada (Senhorio não autoriza animais)',
+];
+
+
+$vacinas = [
+    0 => 'Não Vacinado',
+    1 => 'Vacinado (Básicas)',
+    2 => 'Vacinado (Completo)',
+    3 => 'Não Aplicável / Desconhecido',
+];
+
+//$posterUrl = Yii::getAlias('@web/img/adopt_me.jpg');
+
 ?>
 
 <div class="container py-5">
@@ -23,14 +44,13 @@ $this->title = 'Candidatura';
 
 <div class="bg-light rounded p-4 p-sm-5">
 
-    <p> Aviso de Processo: "Obrigado pelo seu interesse!
-        O preenchimento deste formulário é o primeiro passo para a adoção.</p>
+    <p> <h3>Obrigado pelo seu interesse! </h3>
+    O preenchimento deste formulário é o primeiro passo para a adoção.</p>
 
-    <p> Honestidade: "Por favor, seja o mais honesto e detalhado possível.
-        As suas respostas ajudam-nos a perceber se este é o animal certo para si e para a sua família."</p>
+    <p> Por favor, seja o mais honesto e detalhado possível.
+        As suas respostas ajudam-nos a perceber se este é o animal certo para si e para a sua família.</p>
 
-    <p> Próximos Passos: "A sua candidatura será revista pelo atual cuidador do animal (seja uma associação ou um particular),
-        que entrará em contacto consigo se o seu perfil for considerado compatível."</p>
+    <br />
 
 
 
@@ -39,6 +59,19 @@ $this->title = 'Candidatura';
     'action' => ['/site/apply', 'animal_id' => $animal->id],
     'method' => 'post',
 ]); ?>
+
+    <?= $form->field($model, 'data[name]')->textInput(['maxlength' => true])->label('Nome Completo') ?>
+    <?= $form->field($model, 'data[age]')->textInput(['type' => 'number'])->label('Idade') ?>
+    <?= $form->field($model, 'data[contact]')->textInput(['type' => 'number'])->label('Contacto') ?>
+    <?= $form->field($model, 'data[motive]')->textarea(['rows' => 6]) ->label('O que o motivou a adotar um animal?') ?>
+
+
+
+
+
+    <div class="form-group">
+        <?= Html::submitButton('Submeter Candidatura', ['class' => 'btn btn-primary w-100 py-3 mt-5 text-uppercase']) ?>
+    </div>
 
 
 
