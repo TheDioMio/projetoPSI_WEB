@@ -4,6 +4,10 @@ namespace console\controllers;
 use Yii;
 use yii\console\Controller;
 
+//para correr o ficheiro executer o comando
+//php yii rbac/init
+
+
 class RbacController extends Controller
 {
     public function actionInit()
@@ -25,13 +29,13 @@ class RbacController extends Controller
         // add "author" role and give this role the "createPost" permission
         $user = $auth->createRole('user');
         $auth->add($user);
-        $auth->addChild($user, $login); // so para exemplo de atribuir uma permissão
+        //$auth->addChild($user, $login); // so para exemplo de atribuir uma permissão
 
         //Criar o ROLE UserPro
         // add "author" role and give this role the "createPost" permission
         $userPro = $auth->createRole('userPro');
         $auth->add($userPro);
-        $auth->addChild($userPro, $login);
+        //$auth->addChild($userPro, $login);
 
         // add "admin" role and give this role the "updatePost" permission
         // as well as the permissions of the "author" role

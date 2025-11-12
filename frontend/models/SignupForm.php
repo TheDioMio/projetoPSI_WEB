@@ -14,6 +14,7 @@ class SignupForm extends Model
     public $username;
     public $email;
     public $password;
+    public $name;
 
 
     /**
@@ -26,7 +27,6 @@ class SignupForm extends Model
             ['username', 'required'],
             ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
             ['username', 'string', 'min' => 2, 'max' => 255],
-
             ['email', 'trim'],
             ['email', 'required'],
             ['email', 'email'],
@@ -51,12 +51,28 @@ class SignupForm extends Model
         
         $user = new User();
         $user->username = $this->username;
+        $user->name = $this->username;
         $user->email = $this->email;
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
 
-        return $user->save() /*&& $this->sendEmail($user)*/;
+        //return $user->save() && $this->sendEmail($user);
+        //return $user->save();
+//        if (!$user->save()) {
+//            Yii::error($user->getErrors(), __METHOD__);
+//            var_dump($user->getErrors());
+//            die('Erro ao salvar User');
+//        }
+
+
+        if ($user->save()) {
+            return true; //  devolve sucesso
+        } else {
+            Yii::error($user->getErrors(), __METHOD__);
+            var_dump($user->getErrors());
+            die('Erro ao salvar User');
+        }
     }
 
     /**

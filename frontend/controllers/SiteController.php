@@ -209,15 +209,77 @@ class SiteController extends Controller
     public function actionSignup()
     {
         $model = new SignupForm();
+
+
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
             Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+
             return $this->goHome();
         }
 
         return $this->render('signup', [
             'model' => $model,
         ]);
+        // Renderiza o formulário
+        return $this->render('signup', [
+            'model' => $model,
+        ]);
     }
+
+
+
+
+
+//    public function actionSignup()
+//    {
+//        $model = new SignupForm();
+//
+//        // Apenas para debug — vê se o POST chega
+//        if (Yii::$app->request->isPost) {
+//            echo "<pre>🔹 POST recebido!</pre>";
+//
+//            // Tenta carregar os dados do POST para o modelo
+//            if ($model->load(Yii::$app->request->post())) {
+//                echo "<pre>✅ Model carregado com sucesso!</pre>";
+//                echo "<pre>📦 Dados recebidos:</pre>";
+//                var_dump(Yii::$app->request->post());
+//
+//                // Tenta fazer o signup (vai validar internamente)
+//                if ($model->signup()) {
+//                    echo "<pre>🎉 Signup realizado com sucesso!</pre>";
+//                    Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+//                    return $this->goHome();
+//                } else {
+//                    echo "<pre>❌ Falha no método signup().</pre>";
+//
+//                    // Se o método signup() falhou, mostramos possíveis erros de validação
+//                    if ($model->hasErrors()) {
+//                        echo "<pre>⚠️ Erros no SignupForm:</pre>";
+//                        var_dump($model->getErrors());
+//                    } else {
+//                        echo "<pre>⚠️ Nenhum erro em SignupForm — talvez falha ao salvar o User?</pre>";
+//                    }
+//
+//                    // Opcional: se quiseres ver erros do modelo User dentro do SignupForm
+//                    if (property_exists($model, 'user') && $model->user && $model->user->hasErrors()) {
+//                        echo "<pre>⚠️ Erros no modelo User:</pre>";
+//                        var_dump($model->user->getErrors());
+//                    }
+//
+//                    exit;
+//                }
+//            } else {
+//                echo "<pre>❌ Falha ao carregar os dados do formulário (model->load falhou).</pre>";
+//                echo "<pre>📦 POST recebido:</pre>";
+//                var_dump(Yii::$app->request->post());
+//                exit;
+//            }
+//        } else {
+//            echo "<pre>ℹ️ Nenhum POST recebido ainda.</pre>";
+//        }
+
+
+
 
     /**
      * Requests password reset.
