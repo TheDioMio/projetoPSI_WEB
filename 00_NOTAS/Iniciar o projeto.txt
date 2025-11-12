@@ -2,3 +2,11 @@ Depois de fazer o clone:
 	1.º composer update (No terminal do phpstorm, pasta do projeto)
 	2.º composer install (No terminal do phpstorm, pasta do projeto)
 	3.º php init (No terminal do phpstorm, pasta do projeto)
+
+
+No caso de iniciar a BD do 0:
+    1.º Fazer php yii migrate;
+    2.º Fazer rbac/init
+    3.º Correr este comando, que marca uma migração como "concluída", para as restantes puderem ser concluídas:
+        php yii migrate/mark m251105_183221_drop_created_time_column_from_comment_table
+    4.º Correr novamente o php yii migrate.

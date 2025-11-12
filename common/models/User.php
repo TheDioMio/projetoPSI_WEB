@@ -6,25 +6,38 @@ use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\db\Expression;
 use yii\web\IdentityInterface;
 
 
 
 /**
- * User model
+ * This is the model class for table "user".
  *
- * @property integer $id
+ * @property int $id
  * @property string $name
  * @property string $username
- * @property string $password_hash
- * @property string $password_reset_token
- * @property string $verification_token
- * @property string $email
  * @property string $auth_key
- * @property integer $status
- * @property integer $created_at
- * @property integer $updated_at
- * @property string $password write-only password
+ * @property string $password_hash
+ * @property string $address
+ * @property string|null $password_reset_token
+ * @property string $email
+ * @property int $status
+ * @property string $created_at
+ * @property string $updated_at
+ * @property string|null $verification_token
+ * @property int|null $role_id
+ *
+ * @property Animal[] $animals
+ * @property Application[] $applications
+ * @property Application[] $applications0
+ * @property Comment[] $comments
+ * @property File[] $files
+ * @property Listing[] $listings
+// * @property Message[] $messages
+// * @property Message[] $messages0
+ * @property Role $role
+ * @property Visit[] $visits
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -48,7 +61,12 @@ class User extends ActiveRecord implements IdentityInterface
     public function behaviors()
     {
         return [
-            TimestampBehavior::class,
+            [
+                'class' => TimestampBehavior::class,
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => false,
+                'value' => new Expression('NOW()'),
+            ],
         ];
     }
 
@@ -65,7 +83,7 @@ class User extends ActiveRecord implements IdentityInterface
             ['password', 'required', 'on' => 'create'], // senha obrigatória ao criar
             ['password', 'string', 'min' => 6],
             [['username', 'email'], 'string', 'max' => 255],
-
+            [['role_id'], 'exist', 'skipOnError' => true, 'targetClass' => Role::class, 'targetAttribute' => ['role_id' => 'id']],
         ];
     }
 
@@ -228,4 +246,58 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
+
+
+
+    public function getAnimals()
+    {
+        return $this->hasMany(Animal::class, ['user_id' => 'id']);
+    }
+
+    public function getComments()
+    {
+        return $this->hasMany(Comment::class, ['user_id' => 'id']);
+    }
+
+    public function getFiles()
+    {
+        return $this->hasMany(File::class, ['user_id' => 'id']);
+    }
+
+    public function getListings()
+    {
+        return $this->hasMany(Listing::class, ['user_id' => 'id']);
+    }
+
+//    public function getMessages()
+//    {
+//        return $this->hasMany(Message::class, ['receiver_user_id' => 'id']);
+//    }
+
+//    public function getMessages0()
+//    {
+//        return $this->hasMany(Message::class, ['sender_user_id' => 'id']);
+//    }
+
+    /**
+     * Gets query for [[Role]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRole()
+    {
+        return $this->hasOne(Role::class, ['id' => 'role_id']);
+    }
+
+    /**
+     * Gets query for [[Visits]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVisits()
+    {
+        return $this->hasMany(Visit::class, ['user_id' => 'id']);
+    }
+
 }

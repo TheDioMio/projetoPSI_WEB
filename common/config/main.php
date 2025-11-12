@@ -15,9 +15,5 @@ return [
             // 'cache' => 'cache',
         ],
     ],
-
-
-
     'name' => 'PetPanion',
-
 ];

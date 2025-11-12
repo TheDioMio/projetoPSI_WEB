@@ -4,10 +4,8 @@ namespace console\controllers;
 use Yii;
 use yii\console\Controller;
 
-//para correr o ficheiro executer o comando
+//para correr o ficheiro executar o comando
 //php yii rbac/init
-
-
 class RbacController extends Controller
 {
     public function actionInit()

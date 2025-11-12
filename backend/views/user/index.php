@@ -1,15 +1,16 @@
 <?php
 
+use common\models\Role;
 use common\models\User;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
 /** @var yii\web\View $this */
 /** @var \common\models\UserSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
-
 $this->title = 'Gestão de Utilizadores';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -37,11 +38,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'name',
                     ],
                     'username',
-                    //'auth_key',
-                    //'password_hash',
-                    //'address',
-                    //'password_reset_token',
                     'email:email',
+                    [
+                        'label' => 'Permissões',
+                        'attribute' => 'role_id',
+                        'value' => 'role.description',
+                    ],
                     [
                         'label' => 'Data de Criação',
                         'attribute' => 'created_at',

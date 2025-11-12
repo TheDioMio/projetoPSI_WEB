@@ -73,7 +73,8 @@ class UserSearch extends User
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like','created_at', $this->created_at])
             ->andFilterWhere(['like','updated_at', $this->updated_at])
-            ->andFilterWhere(['like', 'verification_token', $this->verification_token]);
+            ->andFilterWhere(['like', 'verification_token', $this->verification_token])
+            ->andFilterWhere(['like', 'role_id', $this->role_id]);
 
         return $dataProvider;
     }
