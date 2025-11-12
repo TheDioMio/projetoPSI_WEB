@@ -68,6 +68,11 @@ $yesNo = [
                     'method' => 'post',
                 ]); ?>
 
+                <?= $form->errorSummary($model, [
+                    'class' => 'alert alert-danger',
+                    'header' => '<strong>Há erros no formulário:</strong>',
+                ]) ?>
+
                 <h4 class="mt-4 mb-3">Dados Pessoais</h4>
 
                 <?= $form->field($model, 'data[name]')->textInput(['maxlength' => true])->label('Nome Completo') ?>

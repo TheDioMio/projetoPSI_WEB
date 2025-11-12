@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\db\JsonExpression;
 
 /**
  * This is the model class for table "application".
@@ -97,6 +98,41 @@ class Application extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    public function beforeSave($insert)
+    {
+        $data = $this->data;
+
+        if (is_string($data)) {
+            $decoded = json_decode($data, true);
+            $data = json_last_error() === JSON_ERROR_NONE ? $decoded : [];
+        } elseif (!is_array($data)) {
+            $data = [];
+        }
+
+        foreach (['home','timeAlone','children','bills','followUp','age'] as $k) {
+            if (array_key_exists($k, $data) && $data[$k] !== '') {
+                if (is_numeric($data[$k])) $data[$k] = (int)$data[$k];
+            }
+        }
+
+        // Deixa o driver tratar do JSON
+        $this->data = new JsonExpression($data);
+
+        return parent::beforeSave($insert);
+    }
+
+    public function afterFind()
+    {
+        // Em geral já vem array; se vier string por algum motivo, decodifica:
+        if (is_string($this->data)) {
+            $decoded = json_decode($this->data, true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                $this->data = $decoded;
+            }
+        }
+        parent::afterFind();
     }
 
 }
