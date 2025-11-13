@@ -73,7 +73,7 @@ AppAsset::register($this);
         ],
 
         'innerContainerOptions' => [
-        'class' => 'container-fluid' ],// Isto substitui o 'container' por defeito
+        'class' => 'container-fluid' ],
 
 
         'brandOptions'    => ['class' => 'navbar-brand m-0'],
@@ -86,35 +86,49 @@ AppAsset::register($this);
         ['label' => 'Animais', 'url' => ['/site/animal'], 'linkOptions' => ['class' => 'nav-link']],
         ['label' => 'Acerca', 'url' => ['/site/about'], 'linkOptions' => ['class' => 'nav-link']],
         ['label' => 'Contactos', 'url' => ['/site/contact'], 'linkOptions' => ['class' => 'nav-link',]],
-        ['label' => 'Novo Anuncio', 'url' => ['/site/create-listing'], 'linkOptions' => ['class' => 'nav-link',]],
+
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Registar', 'url' => ['/site/signup']];
+        $menuItems[] = [
+            'label' => 'Login <i class="bi bi-arrow-right"></i>',
+            'url' => ['/site/login'],
+            'encode' => false,
+            'linkOptions' => ['class' => "nav-item nav-link nav-contact bg-primary text-white px-5 ms-lg-5"]];
+    }else {
+        $menuItems[] = ['label' => Html::encode(Yii::$app->user->identity->username),
+            'items' => [
+                ['label' => 'Novo Anuncio', 'url' => ['/site/create-listing']],
+                ['label' => 'Os Meus Anúncios', 'url' => ['/site/myListings']],
+                ['label' => 'O meu perfil', 'url' => ['/site/profile']],
+                ['label' =>
+                    Html::beginForm(['/site/logout'], 'post')
+                    . Html::submitButton('Logout', ['class' => 'btn btn-link'])
+                    . Html::endForm(),
+                    'encode' => false
+
+                ],
+            ],
+            'options' => ['class' => 'nav-item dropdown'],
+            'dropDownOptions' => ['class' => 'dropdown-menu dropdown-menu-end'],
+            'linkOptions' => [
+                'class' => 'nav-link dropdown-toggle',
+                'data-bs-toggle' => 'dropdown',
+                'role' => 'button',
+                'aria-expanded' => 'false',
+            ],
+        ];
     }
+
+
 
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav ms-auto py-0'],
+        'encodeLabels' => false,
         'items' => $menuItems,
     ]);
-    if (Yii::$app->user->isGuest) {
-        echo Html::tag('div',Html::a('Login <i class="bi bi-arrow-right"></i>',['/site/login'],
-            ['class' => ["nav-item nav-link nav-contact bg-primary text-white px-5 ms-lg-5"]]),
-            ['class' => ['d-flex', 'align-items-center', 'py-0', 'me-0']],
-
-        );
-    } else {
-        echo Html::beginForm(['/site/logout'], 'post', ['class' => 'd-flex'])
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link'],
-
-            )
-            . Html::endForm();
-    }
     NavBar::end();
     ?>
-
-
 
 <?php if (isset($this->blocks['hero'])): ?>
     <?= $this->blocks['hero'] ?>
@@ -228,6 +242,8 @@ AppAsset::register($this);
 <!-- 4) Script do template (depende dos plugins acima) -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script src="<?= $web ?>/js/main.js"></script>
 
