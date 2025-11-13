@@ -33,20 +33,29 @@ $this->params['breadcrumbs'][] = $this->title;
                         'label' => 'ID',
                         'attribute' => 'id',
                     ],
-                    [
-                        'label' => 'Nome',
-                        'attribute' => 'name',
-                    ],
                     'username',
                     'email:email',
                     [
                         'label' => 'Permissões',
-                        'attribute' => 'role_id',
+                        'attribute' => 'role_description',
                         'value' => 'role.description',
                     ],
                     [
-                        'label' => 'Data de Criação',
-                        'attribute' => 'created_at',
+                            'label'=> 'Status',
+                        'attribute'=> 'status',
+                        'value'=> function ($model) {
+                            if($model->status == 10){
+                                return 'Ativo';
+                            } else if ($model->status == 9){
+                                return 'Inativo';
+                            } else {
+                                return 'Desconhecido';
+                            }
+                        },
+                        'filter' => [
+                            10 => 'Ativo',
+                            9  => 'Inativo',
+                        ],
                     ],
                     [
                         'class' => ActionColumn::className(),

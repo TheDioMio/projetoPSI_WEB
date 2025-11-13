@@ -58,7 +58,7 @@ class Animal extends \yii\db\ActiveRecord
             [['neutered'], 'default', 'value' => 0],
             [['age_id', 'size_id', 'vaccination_id', 'animal_type_id', 'breed_id', 'neutered', 'user_id'], 'integer'],
             [['description'], 'string'],
-            [['animal_type_id'], 'required'],
+            [['animal_type_id', 'name', 'age_id', 'size_id', 'user_id', 'breed_id', 'vaccination_id', 'location'], 'required'],
             [['created_at'], 'safe'],
             [['location'], 'string', 'max' => 150],
             [['name'], 'string', 'max' => 50],
@@ -97,7 +97,7 @@ class Animal extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getAge()
+    public function getAnimalAge()
     {
         return $this->hasOne(AnimalAge::class, ['id' => 'age_id']);
     }
