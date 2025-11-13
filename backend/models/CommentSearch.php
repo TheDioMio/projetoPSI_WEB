@@ -54,6 +54,7 @@ class CommentSearch extends Comment
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+
         $dataProvider->sort->attributes['animal_name'] = [
             'asc' => [Animal::tableName() . '.name' => SORT_ASC],
             'desc' => [Animal::tableName() . '.name' => SORT_DESC],

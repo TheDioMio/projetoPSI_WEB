@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -12,25 +13,43 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'animal_type_id')
+        ->dropDownList(ArrayHelper::map($animalTypes, 'id', 'description'),
+            ['prompt'=> '--> Selecione o tipo <--' ])
+        ->label('Tipo')?>
 
-    <?= $form->field($model, 'size')->textInput() ?>
+    <?= $form->field($model, 'breed_id')
+        ->dropDownList(ArrayHelper::map($breeds, 'id', 'description'),
+            ['prompt'=> '--> Selecione a raça <--' ])
+        ->label('Raça')?>
 
-    <?= $form->field($model, 'age')->textInput() ?>
+    <?= $form->field($model, 'name')->textInput()->label('Nome') ?>
 
-    <?= $form->field($model, 'animal_type_id')->textInput() ?>
+    <?= $form->field($model, 'user_id')
+        ->dropDownList(ArrayHelper::map($users, 'id', 'name'),
+            ['prompt'=> '--> Selecione o dono <--' ])
+        ->label('Dono')?>
 
-    <?= $form->field($model, 'breed_id')->textInput() ?>
+    <?= $form->field($model, 'age_id')
+        ->dropDownList(ArrayHelper::map($ages, 'id', 'description'),
+            ['prompt'=> '--> Selecione a idade <--'])
+        ->label('Idade')?>
 
-    <?= $form->field($model, 'vaccines')->textInput() ?>
+    <?= $form->field($model, 'size_id')
+        ->dropDownList(ArrayHelper::map($sizes, 'id', 'description'),
+            ['prompt'=> '--> Selecione o tamanho <--' ])
+        ->label('Tamanho')?>
 
-    <?= $form->field($model, 'neutered')->textInput() ?>
+    <?= $form->field($model, 'vaccination_id')
+        ->dropDownList(ArrayHelper::map($vaccines, 'id', 'description'),
+            ['prompt'=> '--> Selecione o estado das vacinas <--'])
+        ->label('Estado das Vacinas')?>
+    
+    <?= $form->field($model, 'neutered')->dropDownList([0 => 'Não', 1 => 'Sim'])->label('Castrado') ?>
 
     <?= $form->field($model, 'location')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'user_id')->textInput() ?>
-
-    <?= $form->field($model, 'created_at')->textInput() ?>
+    <?= $form->field($model, 'description')->textarea(['rows' => 6])->label('Descrição') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

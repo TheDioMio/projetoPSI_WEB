@@ -11,6 +11,7 @@ use yii\data\ActiveDataProvider;
  */
 class UserSearch extends User
 {
+    public $role_description;
     /**
      * {@inheritdoc}
      */
@@ -18,7 +19,7 @@ class UserSearch extends User
     {
         return [
             [['id', 'status'], 'integer'],
-            [['name', 'username', 'created_at','updated_at','auth_key', 'password_hash', 'address', 'password_reset_token', 'email', 'verification_token'], 'safe'],
+            [['name', 'username', 'created_at','updated_at','auth_key', 'password_hash', 'address', 'password_reset_token', 'email', 'verification_token', 'role_description'], 'safe'],
         ];
     }
 
@@ -45,6 +46,7 @@ class UserSearch extends User
 
         // add conditions that should always apply here
 
+        $query->joinWith(['role']);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -56,6 +58,11 @@ class UserSearch extends User
             // $query->where('0=1');
             return $dataProvider;
         }
+
+        $dataProvider->sort->attributes['role_description'] = [
+            'asc' => [Role::tableName() . '.description' => SORT_ASC],
+            'desc' => [Role::tableName() . '.description' => SORT_DESC],
+        ];
 
         // grid filtering conditions
         $query->andFilterWhere([
@@ -74,8 +81,8 @@ class UserSearch extends User
             ->andFilterWhere(['like','created_at', $this->created_at])
             ->andFilterWhere(['like','updated_at', $this->updated_at])
             ->andFilterWhere(['like', 'verification_token', $this->verification_token])
-            ->andFilterWhere(['like', 'role_id', $this->role_id]);
-
+            ->andFilterWhere(['like', 'role_id', $this->role_id])
+            ->andFilterWhere(['like', Role::tableName(). '.description', $this->role_description]);
         return $dataProvider;
     }
 }
