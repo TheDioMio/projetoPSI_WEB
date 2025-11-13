@@ -21,26 +21,8 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title. ' | ' . Yii::$app->name) ?></title>
+
     <?php $this->head() ?>
-
-    <?php $web = Yii::getAlias('@web'); ?>
-
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Roboto:wght@700&display=swap" rel="stylesheet">
-
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="<?= $web ?>/lib/flaticon/font/flaticon.css" rel="stylesheet">
-
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <!-- Libraries Stylesheet -->
-    <link href="<?= $web ?>/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
-    <!-- Template Stylesheet (ordem: bootstrap antes, style por último) -->
-    <link href="<?= $web ?>/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?= $web ?>/css/style.css" rel="stylesheet">
 
 </head>
 <body>
@@ -68,7 +50,7 @@ AppAsset::register($this);
         'brandUrl' => Yii::$app->homeUrl,
 
         'options' => [
-            'class' => "navbar navbar-expand-lg bg-white navbar-light shadow-sm py-3 py-lg-0 px-3 px-lg-0 sticky-top",
+            'class' => "navbar navbar-expand-lg bg-white navbar-light shadow-sm py-3 py-lg-0 px-3  sticky-top",
 
         ],
 
@@ -110,12 +92,12 @@ AppAsset::register($this);
                 ],
             ],
             'options' => ['class' => 'nav-item dropdown'],
-            'dropDownOptions' => ['class' => 'dropdown-menu dropdown-menu-end'],
+           // 'dropDownOptions' => ['class' => 'dropdown-menu dropdown-menu-lg-end'],
             'linkOptions' => [
                 'class' => 'nav-link dropdown-toggle',
                 'data-bs-toggle' => 'dropdown',
                 'role' => 'button',
-                'aria-expanded' => 'false',
+                'aria-expanded' => 'false'
             ],
         ];
     }
@@ -123,7 +105,7 @@ AppAsset::register($this);
 
 
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav ms-auto py-0'],
+        'options' => ['class' => 'navbar-nav ms-auto py-0 pe-3'],
         'encodeLabels' => false,
         'items' => $menuItems,
     ]);
@@ -223,29 +205,6 @@ AppAsset::register($this);
 
 <a href="#" class="btn btn-primary py-3 fs-4 back-to-top"><i class="bi bi-arrow-up"></i></a>
 
-<!-- JavaScript Libraries -->
-<?php $web = Yii::getAlias('@web'); ?>
-
-<!-- 1) jQuery (necessário para easing/waypoints/owl e para o teu main.js) -->
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<!-- fallback local opcional, caso o CDN falhe -->
-<script>window.jQuery || document.write('<script src="<?= $web ?>/js/vendor/jquery-3.6.4.min.js"><\/script>')</script>
-
-<!-- 2) Bootstrap 5 bundle (para o collapse da navbar) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- 3) Plugins do template (dependem de jQuery) -->
-<script src="<?= $web ?>/lib/easing/easing.min.js"></script>
-<script src="<?= $web ?>/lib/waypoints/waypoints.min.js"></script>
-<script src="<?= $web ?>/lib/owlcarousel/owl.carousel.min.js"></script>
-
-<!-- 4) Script do template (depende dos plugins acima) -->
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Counter-Up/1.0.0/jquery.counterup.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<script src="<?= $web ?>/js/main.js"></script>
 
 
 <?php $this->endBody() ?>
