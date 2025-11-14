@@ -563,5 +563,10 @@ class SiteController extends Controller
         ]);
     }
 
+    public function actionMyListings() {
+
+        return $this->render('my-listings');
+    }
+
 
 }

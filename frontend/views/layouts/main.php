@@ -81,7 +81,7 @@ AppAsset::register($this);
         $menuItems[] = ['label' => '<i class="fa-solid fa-user-circle me-2"></i>' . Html::encode(Yii::$app->user->identity->username),
             'items' => [
                 ['label' => '<i class="fa-solid fa-paw"></i> Novo Anúncio', 'url' => ['/site/create-listing']],
-                ['label' => '<i class="fa-solid fa-list-ul me-2"></i> Os Meus Anúncios', 'url' => ['/site/myListings']],
+                ['label' => '<i class="fa-solid fa-list-ul me-2"></i> Os Meus Anúncios', 'url' => ['/site/my-listings']],
                 ['label' => '<i class="fa-solid fa-user-edit me-2"> </i>O meu perfil', 'url' => ['/site/profile']],
                 '-',
                 ['label' => '<span class="d-flex align-items-center">'

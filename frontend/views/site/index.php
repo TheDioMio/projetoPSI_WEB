@@ -193,7 +193,11 @@ $this->title = 'Início';
                     <h1 class="display-5 text-uppercase text-white mb-0">Tem um Animal para Adotar?</h1>
                 </div>
                 <p class="text-white mb-4">Sabemos que a vida muda. A nossa plataforma ajuda-o a encontrar uma nova família responsável para o seu companheiro.</p>
-                <a href="" class="btn btn-light py-md-3 px-md-5 me-3">Criar Anúncio</a>
+                <?= Html::a(
+                    'Criar Anúncio',
+                    ['/site/create-listing'],
+                    ['class' => 'btn btn-light py-md-3 px-md-5 me-3']
+                ) ?>
             </div>
         </div>
     </div>
