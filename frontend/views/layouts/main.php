@@ -64,14 +64,14 @@ AppAsset::register($this);
 
     ]);
     $menuItems = [
-        ['label' => 'Início', 'url' => ['/site/index'], 'linkOptions' => ['class' => 'nav-link active']],
-        ['label' => 'Animais', 'url' => ['/site/animal'], 'linkOptions' => ['class' => 'nav-link']],
-        ['label' => 'Acerca', 'url' => ['/site/about'], 'linkOptions' => ['class' => 'nav-link']],
-        ['label' => 'Contactos', 'url' => ['/site/contact'], 'linkOptions' => ['class' => 'nav-link',]],
+        ['label' => '<i class="fa-solid fa-house"></i> Início', 'url' => ['/site/index'], 'linkOptions' => ['class' => 'nav-link active']],
+        ['label' => '<i class="fa-solid fa-paw"></i> Animais', 'url' => ['/site/animal'], 'linkOptions' => ['class' => 'nav-link']],
+        ['label' => '<i class="fa-solid fa-circle-info"></i> Acerca', 'url' => ['/site/about'], 'linkOptions' => ['class' => 'nav-link']],
+        ['label' => '<i class="fa-solid fa-envelope"></i> Contactos', 'url' => ['/site/contact'], 'linkOptions' => ['class' => 'nav-link',]],
 
     ];
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Registar', 'url' => ['/site/signup']];
+        $menuItems[] = ['label' => '<i class="fa-solid fa-user-plus"></i> Registar', 'url' => ['/site/signup']];
         $menuItems[] = [
             'label' => 'Login <i class="bi bi-arrow-right"></i>',
             'url' => ['/site/login'],
@@ -134,37 +134,26 @@ AppAsset::register($this);
 <div class="container-fluid bg-light mt-5 py-5">
     <div class="container pt-5">
         <div class="row g-5">
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-4 col-md-6">
                 <h5 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Contacta-nos</h5>
                 <p class="mb-4">Na PetPanion queremos o melhor para os nossos utilizadores e animais, se tiver alguma questão não hesite em contactar-nos</p>
                 <p class="mb-2"><i class="bi bi-geo-alt text-primary me-2"></i>Leiria, Portugal</p>
                 <p class="mb-2"><i class="bi bi-envelope-open text-primary me-2"></i>info@petpanion.pt</p>
                 <p class="mb-0"><i class="bi bi-telephone text-primary me-2"></i>+351 244 875 627</p>
             </div>
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-4 col-md-6">
                 <h5 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Links Rápidos</h5>
                 <div class="d-flex flex-column justify-content-start">
                     <a class="text-body mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Início</a>
                     <a class="text-body mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Acerca</a>
-                    <a class="text-body mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Os Nossos Serviços</a>
-                    <a class="text-body mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Meet The Team</a>
-                    <a class="text-body mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Latest Blog</a>
+                    <a class="text-body mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Os nossos parceiros</a>
+                    <a class="text-body mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Os nossos Voluntários</a>
+                    <a class="text-body mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Testemunhos</a>
                     <a class="text-body" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Contacta-nos</a>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-6">
-                <h5 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Popular Links</h5>
-                <div class="d-flex flex-column justify-content-start">
-                    <a class="text-body mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Home</a>
-                    <a class="text-body mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>About Us</a>
-                    <a class="text-body mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Our Services</a>
-                    <a class="text-body mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Meet The Team</a>
-                    <a class="text-body mb-2" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Latest Blog</a>
-                    <a class="text-body" href="#"><i class="bi bi-arrow-right text-primary me-2"></i>Contact Us</a>
-                </div>
-            </div>
 
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-4 col-md-6">
                 <h5 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Segue-nos</h5>
 
 
@@ -178,16 +167,15 @@ AppAsset::register($this);
                 </div>
 
             </div>
+
             <div class="col-12 text-center text-body">
-                <a class="text-body" href="">Terms & Conditions</a>
+                <a class="text-body" href="">Termos & Condições</a>
                 <span class="mx-1">|</span>
-                <a class="text-body" href="">Privacy Policy</a>
+                <a class="text-body" href="">Política de Privacidade</a>
                 <span class="mx-1">|</span>
-                <a class="text-body" href="">Customer Support</a>
+                <a class="text-body" href="">Apoio ao Cliente</a>
                 <span class="mx-1">|</span>
-                <a class="text-body" href="">Payments</a>
-                <span class="mx-1">|</span>
-                <a class="text-body" href="">Help</a>
+                <a class="text-body" href="">Ajuda</a>
                 <span class="mx-1">|</span>
                 <a class="text-body" href="">FAQs</a>
             </div>

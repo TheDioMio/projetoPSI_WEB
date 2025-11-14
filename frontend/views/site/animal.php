@@ -124,6 +124,7 @@ $posterUrl = Yii::getAlias('@web/video/' . $escolhaAleatoria['posterFile']);
         <div class="col-lg-4">
             <!-- Search Form Start -->
             <div class="mb-5">
+                <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Pesquisa</h3>
                 <div class="input-group">
                     <input type="text" class="form-control p-3" placeholder="Pesquisa">
                     <button class="btn btn-primary px-4"><i class="bi bi-search"></i></button>
@@ -135,8 +136,8 @@ $posterUrl = Yii::getAlias('@web/video/' . $escolhaAleatoria['posterFile']);
             <div class="mb-5">
                 <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Filtros</h3>
                 <div class="d-flex flex-column justify-content-start">
-                    <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Web Design</a>
-                    <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Web Development</a>
+                    <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Especie</a>
+                    <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Raça</a>
                     <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Web Development</a>
                     <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Keyword Research</a>
                     <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Email Marketing</a>

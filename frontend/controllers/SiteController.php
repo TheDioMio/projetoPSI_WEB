@@ -568,5 +568,10 @@ class SiteController extends Controller
         return $this->render('my-listings');
     }
 
+    public function actionProfile() {
+
+        return $this->render('profile');
+    }
+
 
 }
