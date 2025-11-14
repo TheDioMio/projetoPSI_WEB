@@ -78,21 +78,24 @@ AppAsset::register($this);
             'encode' => false,
             'linkOptions' => ['class' => "nav-item nav-link nav-contact bg-primary text-white px-5 ms-lg-5"]];
     }else {
-        $menuItems[] = ['label' => Html::encode(Yii::$app->user->identity->username),
+        $menuItems[] = ['label' => '<i class="fa-solid fa-user-circle me-2"></i>' . Html::encode(Yii::$app->user->identity->username),
             'items' => [
-                ['label' => 'Novo Anuncio', 'url' => ['/site/create-listing']],
-                ['label' => 'Os Meus Anúncios', 'url' => ['/site/myListings']],
-                ['label' => 'O meu perfil', 'url' => ['/site/profile']],
-                ['label' =>
-                    Html::beginForm(['/site/logout'], 'post')
-                    . Html::submitButton('Logout', ['class' => 'btn btn-link'])
-                    . Html::endForm(),
-                    'encode' => false
+                ['label' => '<i class="fa-solid fa-paw"></i> Novo Anúncio', 'url' => ['/site/create-listing']],
+                ['label' => '<i class="fa-solid fa-list-ul me-2"></i> Os Meus Anúncios', 'url' => ['/site/myListings']],
+                ['label' => '<i class="fa-solid fa-user-edit me-2"> </i>O meu perfil', 'url' => ['/site/profile']],
+                '-',
+                ['label' => '<span class="d-flex align-items-center">'
+                    . '<i class="fa-solid fa-right-from-bracket me-2"></i>'
+                    . Html::beginForm(['/site/logout'], 'post')
+                    . Html::submitButton('Logout', ['class' => 'dropdown-item text-danger p-0 border-0 bg-transparent'])
+                    . Html::endForm()
+                    . '</span>',
+                    'encode' => false,
 
                 ],
             ],
             'options' => ['class' => 'nav-item dropdown'],
-           // 'dropDownOptions' => ['class' => 'dropdown-menu dropdown-menu-lg-end'],
+            'dropDownOptions' => ['class' => 'dropdown-menu dropdown-menu-end dropdown-menu-lg-start'],
             'linkOptions' => [
                 'class' => 'nav-link dropdown-toggle',
                 'data-bs-toggle' => 'dropdown',

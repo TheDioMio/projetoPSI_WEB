@@ -745,3 +745,55 @@
 /* ----------------------------------------------------------------------
                        FIM PÁGINA FORMULÁRIO DE CONTACTO
    ---------------------------------------------------------------------- */
+
+
+
+/* ----------------------------------------------------------------------
+                        NAVBAR
+   ---------------------------------------------------------------------- */
+
+.dropdown-menu {
+    right: 0 !important;
+    left: auto !important;
+    max-width: 270px;
+}
+
+
+
+
+.navbar .nav-item.dropdown .fa-user-circle {
+    font-size: 1.2rem;
+}
+
+/*************************************/
+
+.navbar .dropdown-menu {
+    border-radius: .75rem;
+    border: 1px solid rgba(0,0,0,.04);
+    box-shadow: 0 10px 30px rgba(0,0,0,.12);
+    padding: .4rem 0;
+    transform: translateY(6px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .16s ease, transform .16s ease;
+}
+
+.navbar .dropdown-menu.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* Hover dos itens */
+.navbar .dropdown-menu .dropdown-item:hover {
+    background-color: #f5fbfa;
+    color: #1fb39c;
+}
+
+/* Botão real do logout (está com p-0 bg-transparent) */
+.navbar .dropdown-menu span.d-flex.align-items-center:hover {
+    background-color: #fdecec;
+}
+/* ----------------------------------------------------------------------
+                       FIM NAVBAR
+   ---------------------------------------------------------------------- */
