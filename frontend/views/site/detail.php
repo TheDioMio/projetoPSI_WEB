@@ -115,7 +115,7 @@ $this->title = 'Detalhes';
 
                             <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
                                 <strong>Idade:</strong>
-                                <span><?= Html::encode($model->age ? $model->age->description : '—') ?></span>
+                                <span><?= Html::encode($model->animalAge ? $model->animalAge->description : '—') ?></span>
                             </li>
 
                             <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
