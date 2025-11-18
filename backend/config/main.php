@@ -15,11 +15,16 @@ return [
         'api' => [
             'class' => 'backend\modules\api\ModuleAPI',
         ],
+
     ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ],
         ],
+
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
@@ -48,6 +53,19 @@ return [
             'rules' => [
                 ['class' => 'yii\rest\UrlRule','controller' => 'api/user'],
                 ['class' => 'yii\rest\UrlRule','controller' => 'api/animal'],
+                //'extraPatterns' => [
+                    //'GET animalsComplete' => 'animalsComplete', // contagem é 'actionAnimalsComplete'
+                    //'GET nomes' => 'nomes',
+                    //'GET {id}/preco' => 'preco',
+                    //'GET preco/{nomeprato}' => 'precopornome',
+                    //'DELETE {nomeprato}' => 'delpornome',
+                    //'PUT {nomeprato}' => 'putprecopornome',
+                    //'POST vazio' => 'postpratovazio',
+                //],
+//                'tokens' => [
+//                    '{id}' => '<id:\\d+>',
+//                    '{nomeprato}' => '<nomeprato:\\w+>', //[a-zA-Z0-9_] 1 ou + vezes
+//                ],
             ],
         ],
 

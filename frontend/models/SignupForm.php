@@ -43,6 +43,14 @@ class SignupForm extends Model
      *
      * @return bool whether the creating new account was successful and email was sent
      */
+
+
+//        $auth = Yii::$app->authManager;
+//        $role = $auth->getRole($this->papel);
+//        if ($role) {
+//            $auth->assign($role, $user->id);
+//        }
+
     public function signup()
     {
         if (!$this->validate()) {
@@ -53,26 +61,27 @@ class SignupForm extends Model
         $user->username = $this->username;
         $user->name = $this->username;
         $user->email = $this->email;
+        $user->role_id=3;
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
 
-        //return $user->save() && $this->sendEmail($user);
-        //return $user->save();
-//        if (!$user->save()) {
-//            Yii::error($user->getErrors(), __METHOD__);
-//            var_dump($user->getErrors());
-//            die('Erro ao salvar User');
-//        }
+//        if ($user->save()) { ALTERNATIVA SEM ENVIAR O EMAIL PARA CONFIRMAR
+        if ($user->save()&& $this->sendEmail($user)) {
 
+            $auth = Yii::$app->authManager;
+            $role = $auth->getRole('user');
+            if ($role) {
+                $auth->assign($role, $user->id);
+            }
 
-        if ($user->save()) {
             return true; //  devolve sucesso
         } else {
             Yii::error($user->getErrors(), __METHOD__);
             var_dump($user->getErrors());
             die('Erro ao salvar User');
         }
+
     }
 
     /**
