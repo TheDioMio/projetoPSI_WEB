@@ -18,6 +18,10 @@ class RbacController extends Controller
         $loginFrontEnd->description = 'loginFrontEnd';
         $auth->add($loginFrontEnd);
 
+        $loginBackEnd = $auth->createPermission('loginBackEnd');
+        $loginBackEnd->description = 'loginBackEnd';
+        $auth->add($loginBackEnd);
+
         // add "updatePost" permission
         $updatePost = $auth->createPermission('updatePost');
         $updatePost->description = 'Update post';
@@ -42,6 +46,7 @@ class RbacController extends Controller
         $admin = $auth->createRole('admin');
         $auth->add($admin);
         $auth->addChild($admin, $updatePost);
+        $auth->addChild($admin, $loginBackEnd); // adicionado temporariamente para dar acesso frontend ao admin
         $auth->addChild($admin, $loginFrontEnd); // adicionado temporariamente para dar acesso frontend ao admin
         //$auth->addChild($admin, $user);
 

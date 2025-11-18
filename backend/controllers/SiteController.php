@@ -98,17 +98,52 @@ class SiteController extends Controller
      *
      * @return string|Response
      */
+//    public function actionLogin()
+//    {
+//        if (!Yii::$app->user->isGuest) {
+//            return $this->goHome();
+//        }
+//
+//        $this->layout = 'blank';
+//
+//        $model = new LoginForm();
+//        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+//            return $this->goBack();
+//        }
+//
+//        $model->password = '';
+//
+//        return $this->render('login', [
+//            'model' => $model,
+//        ]);
+//    }
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            // Verifica permissão para acessar o backend
+            if (Yii::$app->user->can('loginBackend')) {
+                return $this->goHome();
+            } else {
+                Yii::$app->user->logout();
+                Yii::$app->session->setFlash('error', 'You are not allowed to access the backend.');
+                return $this->redirect(['site/login']);
+            }
         }
 
         $this->layout = 'blank';
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+
+            // Depois do login, verificar permissão
+            if (Yii::$app->user->can('loginBackend')) {
+                return $this->goBack();
+            } else {
+                //Não está a mostrar a mensagem -----------------------------!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                Yii::$app->user->logout();
+                Yii::$app->session->setFlash('error', 'You are not allowed to access the backend.');
+                return $this->redirect(['site/login']);
+            }
         }
 
         $model->password = '';
@@ -117,6 +152,7 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
 
     /**
      * Logout action.
