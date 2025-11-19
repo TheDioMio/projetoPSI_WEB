@@ -653,93 +653,76 @@
 /* ----------------------------------------------------------------------
                        PÁGINA FORMULÁRIO DE CONTACTO
    ---------------------------------------------------------------------- */
-.contact-panel {
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    transition: all 0.3s ease-in-out;
+
+/* Define a fonte base para a secção inteira */
+.site-contact {
+    font-family: 'Poppins', sans-serif;
+    color: #333;
 }
 
-
-.form-panel { /*ISTO CONTROLA O GRADIENTE DO FORM*/
-    background: linear-gradient(to bottom left, var(--bs-primary), #6c63ff);
-    padding: 60px 45px;
-    color: #fff;
-}
-
-.form-panel h2 {
-    font-weight: 700;
+/* Estilo do Título Principal (igual ao .title-sobreNos) */
+.title-contact {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    color: #2e2e2e;
+    line-height: 1.4;
     font-size: 2rem;
-    margin-bottom: 40px;
+    margin-bottom: 1rem;
 }
 
-.form-control {
-    background-color: transparent;
-    border: none;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.5);
-    border-radius: 0;
-    color: #fff;
-    transition: all 0.3s;
+.title-infos{
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.5rem;
 }
 
-.form-control::placeholder {
-    color: rgba(255, 255, 255, 0.7);
-}
 
-.form-control:focus {
-    border-color: #fff;
-    box-shadow: none;
-}
-
-.btn-light {
-    border-radius: 50px;
-    padding: 12px 30px;
-    transition: all 0.3s;
-}
-
-.btn-light:hover {
+.card-contacto {
     background-color: #fff;
-    color: var(--bs-primary);
-    transform: translateY(-2px);
+    border: none;
+    border-left: 6px solid var(--primary);
+    border-radius: 1rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
-.info-panel {
-    background: linear-gradient(to bottom left, var(--bs-secondary), #b37c22);
-    padding: 60px 50px;
+.card-contacto h2 {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    color: #3a3a3a;
 }
 
-.info-panel h2 {
+.contact-icon {
+    font-size: 1.8rem;
+    color: var(--primary);
+    margin-right: 1rem;
+    transition: transform 0.3s;
+}
+
+.info-title {
+    font-family: 'Quicksand', sans-serif;
     font-weight: 700;
-    font-size: 2rem;
-    margin-bottom: 15px;
+    color: #2e2e2e;
+    margin-bottom: 0.2rem;
 }
 
-.info-panel p {
-    font-size: 1rem;
+/* Texto descritivo das informações */
+.info-text {
+    color: #6c757d;
+    font-size: 0.95rem;
+    font-family: 'Poppins', sans-serif;
 }
 
-.info-item {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 25px;
+/* Imagem lateral */
+.img-contact {
+    object-fit: cover;
+    width: 100%;
+    border-radius: 1rem; /* Arredondamento consistente */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-.info-item i {
-    background-color: var(--bs-primary);
-    color: #fff;
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 15px;
-    font-size: 1.2rem;
-}
-
+/* Ajuste para telemóveis */
 @media (max-width: 992px) {
-    .form-panel, .info-panel {
-        padding: 40px 30px;
+    .card-contacto {
+        padding: 30px 20px;
     }
 }
 /* ----------------------------------------------------------------------

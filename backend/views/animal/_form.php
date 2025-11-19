@@ -42,8 +42,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'vaccination_id')
         ->dropDownList(ArrayHelper::map($vaccines, 'id', 'description'),
-            ['prompt'=> '--> Selecione o estado das vacinas <--'])
-        ->label('Estado das Vacinas')?>
+            ['prompt'=> '--> Selecione o estado da vacinação <--'])
+        ->label('Vacinação')?>
     
     <?= $form->field($model, 'neutered')->dropDownList([0 => 'Não', 1 => 'Sim'])->label('Castrado') ?>
 
