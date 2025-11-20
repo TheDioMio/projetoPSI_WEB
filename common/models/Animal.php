@@ -68,6 +68,13 @@ class Animal extends \yii\db\ActiveRecord
             [['size_id'], 'exist', 'skipOnError' => true, 'targetClass' => AnimalSize::class, 'targetAttribute' => ['size_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
             [['vaccination_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vaccination::class, 'targetAttribute' => ['vaccination_id' => 'id']],
+            [['imageFiles'], 'file',
+                'skipOnEmpty' => false, // OBRIGA o utilizador a carregar pelo menos 1 ficheiro
+                'extensions' => 'png, jpg, jpeg', // Tipos de ficheiro permitidos
+                'maxFiles' => 5, // Permite o upload de 1 a 5 ficheiros
+                'tooMany' => 'Só pode carregar um máximo de 5 fotos.',
+                'maxSize' => 1024 * 1024 * 5, // 5MB por ficheiro (exemplo)
+            ],
         ];
     }
 

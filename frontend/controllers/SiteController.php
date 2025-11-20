@@ -436,6 +436,8 @@ class SiteController extends Controller
             // 2. Carregar os dados do formulário (name, age, etc.)
             $model->load(Yii::$app->request->post());
 
+            $model->user_id = Yii::$app->user->id;
+
             // 3. Apanhar as instâncias dos ficheiros
             $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
 
@@ -447,7 +449,7 @@ class SiteController extends Controller
                 try {
 
                     // 6. Definir o dono e guardar o ANIMAL
-                    $model->user_id = Yii::$app->user->id;
+                    
                     if (!$model->save(false)) { // 'false' para não validar outra vez
                         throw new \Exception('Falha ao guardar o animal.');
                     }
@@ -504,7 +506,7 @@ class SiteController extends Controller
                 }
             } else {
                 // Erro de validação (ex: nome em branco ou foto em falta)
-                Yii::$app->session->setFlash('error', 'Por favor, corrija os erros no formulário.');
+               // Yii::$app->session->setFlash('error', 'Por favor, corrija os erros no formulário.');
             }
         }
 
