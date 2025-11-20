@@ -76,13 +76,14 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'email', 'name'], 'required'],
+            [['username', 'email', 'name', 'role_id'], 'required'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
             ['name', 'string', 'max' => 120],
             ['password', 'required', 'on' => 'create'], // senha obrigatória ao criar
             ['password', 'string', 'min' => 6],
             [['username', 'email'], 'string', 'max' => 255],
+            ['role_id', 'integer'],
             [['role_id'], 'exist', 'skipOnError' => true, 'targetClass' => Role::class, 'targetAttribute' => ['role_id' => 'id']],
         ];
     }
@@ -90,7 +91,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios['create'] = ['username', 'email', 'name', 'password'];
+        $scenarios['create'] = ['username', 'email', 'name', 'password', 'role_id'];
         return $scenarios;
     }
 

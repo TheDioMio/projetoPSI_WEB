@@ -18,6 +18,7 @@ $this->params['breadcrumbs'][] = 'Update';
         <div class="card-body">
             <?= $this->render('_form', [
                 'model' => $model,
+                'roles' => $roles,
             ]) ?>
         </div>
     </div>

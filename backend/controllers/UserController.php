@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use common\models\Comment;
 use common\models\Listing;
+use common\models\Role;
 use common\models\User;
 use common\models\UserSearch;
 use yii\filters\VerbFilter;
@@ -85,6 +86,8 @@ class UserController extends Controller
     {
         $model = new User();
         $model->scenario = 'create'; // ativa a regra da senha
+        $roles = Role::find()->select(['id','description'])->indexBy('id')->asArray()->all();
+
 
         if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
 
@@ -93,20 +96,29 @@ class UserController extends Controller
 //            $model->generateAuthKey();
 
             if ($model->save()) {
-                // Obter o authManager
                 $auth = Yii::$app->authManager;
-                // Buscar a role existente
-                $adminRole = $auth->getRole('admin');
-                // Atribuir ao utilizador (exemplo: utilizador que vem no model)
-                $auth->assign($adminRole, $model->id);
+                /*Para atribuição de roles, POR AGORA, temos de fazer o mapeamento manual, já que na nossa tabela
+                auth_item temos os roles escritos de forma diferente aos da tabela roles (ex. "Admin", "Administrator").
+                */
+                $roleMap = [
+                    1 => 'admin',
+                    2 => 'userPro',
+                    3 => 'user',
+                ];
+                // Verifica se o ID que veio do form (ex. 2) existe no nosso mapa
+                if (isset($roleMap[$model->role_id])) {
+                    $roleName = $roleMap[$model->role_id];
+                    $authorRole = $auth->getRole($roleName);
+                    if ($authorRole) {
+                        $auth->assign($authorRole, $model->id);
+                    }
+                }
                 return $this->redirect(['view', 'id' => $model->id]);
             }
-        } else {
-            $model->loadDefaultValues();
         }
-
         return $this->render('create', [
             'model' => $model,
+            'roles' => $roles,
         ]);
     }
 
@@ -122,6 +134,7 @@ class UserController extends Controller
         $model = $this->findModel($id);
 
         $oldPasswordHash = $model->password_hash;
+        $roles = Role::find()->select(['id','description'])->indexBy('id')->asArray()->all();
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
 
@@ -133,22 +146,34 @@ class UserController extends Controller
             }
 
             if ($model->save()) {
+                $auth = Yii::$app->authManager;
+                $auth->revokeAll($model->id); // Limpa anteriores
+
+                /*Para atribuição de roles, POR AGORA, temos de fazer o mapeamento manual, já que na nossa tabela
+                auth_item temos os roles escritos de forma diferente aos da tabela roles (ex. "Admin", "Administrator").
+                */
+                $roleMap = [
+                    1 => 'admin',
+                    2 => 'userPro',
+                    3 => 'user',
+                ];
+                // Verifica se o ID que veio do form (ex. 2) existe no nosso mapa
+                if (isset($roleMap[$model->role_id])) {
+                    $roleName = $roleMap[$model->role_id];
+                    $authorRole = $auth->getRole($roleName);
+                    if ($authorRole) {
+                        $auth->assign($authorRole, $model->id);
+                    }
+                }
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
-
         return $this->render('update', [
             'model' => $model,
+            'roles' => $roles,
         ]);
     }
 
-    /**
-     * Deletes an existing User model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
@@ -156,13 +181,6 @@ class UserController extends Controller
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the User model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return User the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = User::findOne(['id' => $id])) !== null) {
