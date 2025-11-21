@@ -20,7 +20,7 @@ $txtTelefone = '+351 244 875 627';
         <div class="text-center mb-5">
             <h1 class="title-contact display-5 fw-bold mb-0"><?= Html::encode($this->title) ?></h1>
             <p class="text-muted">
-                <?=Html::encode('Estamos aqui esclarecer as suas dúvidas.')?>
+                <?=Html::encode('Estamos aqui para esclarecer as suas dúvidas.')?>
             </p>
         </div>
 

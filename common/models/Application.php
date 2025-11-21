@@ -100,6 +100,19 @@ class Application extends \yii\db\ActiveRecord
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
+    //Para ser mais fácil perceber quem é candidato, quem é o dono do animal na BD, e fazer a distinção no SearchController:
+    public function getCandidate()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    public function getAnimalOwner()
+    {
+        return $this->hasOne(User::class, ['id' => 'target_user_id']);
+    }
+
+
+
     public function beforeSave($insert)
     {
         $data = $this->data;

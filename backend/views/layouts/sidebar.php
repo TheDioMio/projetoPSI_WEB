@@ -61,6 +61,7 @@ $userLogado = $this->params['userLogado']->username;
                         'items' => [
                             ['label' => 'Users', 'url' => ['user/index'], 'icon' => 'none'],
                             ['label' => 'Listagens', 'url' => ['listing/index'], 'icon' => 'none'],
+                            ['label' => 'Candidaturas', 'url' => ['application/index'], 'icon' => 'none'],
                             ['label' => 'Comentários', 'url' => ['comment/index'], 'icon' => 'none'],
                         ]
 

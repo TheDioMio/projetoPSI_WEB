@@ -1,5 +1,5 @@
-- Criar menu dropdown na navbar no utilizador logado com as opçoes:
-	Perfil
-	Logout
+- Erros a resolver:
+Quando se cria um animal no frontend, a idade não é passada, e o animal vai para
+a BD sem a idade
 
-- Fazer a página Reset Password
+Ao submeter uma candidatura no frontend, a description não é passada, nem o type
