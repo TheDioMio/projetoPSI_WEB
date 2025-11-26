@@ -1,53 +1,69 @@
 <?php
 
 namespace backend\controllers;
-
-use common\models\AnimalType;
-use backend\models\AnimalTypeSearch;
 use Yii;
+use common\models\AnimalAge;
+use backend\models\AnimalAgeSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * AnimalTypeController implements the CRUD actions for AnimalType model.
+ * AnimalAgeController implements the CRUD actions for AnimalAge model.
  */
-class AnimalTypeController extends Controller
+class AnimalAgeController extends Controller
 {
     /**
      * @inheritDoc
      */
     public function behaviors()
     {
-        return array_merge(
-            parent::behaviors(),
-            [
-                'access' => [
-                    'class' => AccessControl::class,
-                    'rules' => [
-                        [
-                            'allow' => true,
-                            'roles' => ['loginBackend'],
-                        ],
+        return array_merge(parent::behaviors(), [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['loginBackend'], // só quem tem permissão entra
                     ],
                 ],
-                'verbs' => [
-                    'class' => VerbFilter::className(),
-                    'actions' => [
-                        'delete' => ['POST'],
-                        'logout' => ['POST'],
-                    ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'delete' => ['POST'],
+                    'logout' => ['POST'],
                 ],
-            ]
-        );
+            ],
+        ]);
     }
 
-    /**
-     * Lists all AnimalType models.
-     *
-     * @return string
-     */
-
+//
+//
+//    public function behaviors()
+//    {
+//        return array_merge(
+//            parent::behaviors(),
+//            [
+//                'access' => [
+//                    'class' => AccessControl::class,
+//                    'rules' => [
+//                        [
+//                            'allow' => true,
+//                            'roles' => ['loginBackend'],
+//                        ],
+//                    ],
+//                ],
+//                'verbs' => [
+//                    'class' => VerbFilter::className(),
+//                    'actions' => [
+//                        'delete' => ['POST'],
+//                        'logout' => ['POST'],
+//                    ],
+//                ],
+//            ]
+//        );
+//    }
 
     public function beforeAction($action)
     {
@@ -60,10 +76,18 @@ class AnimalTypeController extends Controller
 
         return true;
     }
+
+
+    /**
+     * Lists all AnimalAge models.
+     *
+     * @return string
+     */
     public function actionIndex()
     {
-        $searchModel = new AnimalTypeSearch();
+        $searchModel = new AnimalAgeSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -71,7 +95,7 @@ class AnimalTypeController extends Controller
     }
 
     /**
-     * Displays a single AnimalType model.
+     * Displays a single AnimalAge model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -84,13 +108,13 @@ class AnimalTypeController extends Controller
     }
 
     /**
-     * Creates a new AnimalType model.
+     * Creates a new AnimalAge model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new AnimalType();
+        $model = new AnimalAge();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -106,7 +130,7 @@ class AnimalTypeController extends Controller
     }
 
     /**
-     * Updates an existing AnimalType model.
+     * Updates an existing AnimalAge model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -126,7 +150,7 @@ class AnimalTypeController extends Controller
     }
 
     /**
-     * Deletes an existing AnimalType model.
+     * Deletes an existing AnimalAge model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -140,15 +164,15 @@ class AnimalTypeController extends Controller
     }
 
     /**
-     * Finds the AnimalType model based on its primary key value.
+     * Finds the AnimalAge model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return AnimalType the loaded model
+     * @return AnimalAge the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = AnimalType::findOne(['id' => $id])) !== null) {
+        if (($model = AnimalAge::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

@@ -29,10 +29,23 @@ class AnimalController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'denyCallback' => function () {
+                        return Yii::$app->response->redirect(['/site/login']);
+                    },
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['loginBackend'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                        'logout' => ['POST'],
                     ],
                 ],
             ]
@@ -86,36 +99,37 @@ class AnimalController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate()
-    {
-        $model = new Animal();
-
-        $sizes = AnimalSize::find()->select(['id','description'])->indexBy('id')->asArray()->all();
-        $breeds = Breed::find()->select(['id','description'])->indexBy('id')->asArray()->all();
-        $animalTypes = AnimalType::find()->select(['id','description'])->indexBy('id')->asArray()->all();
-        $users = User::find()->select(['id', 'name'])->indexBy('id')->asArray()->all();
-        $vaccines = Vaccination::find()->select(['id', 'description'])->indexBy('id')->asArray()->all();
-        $ages = AnimalAge::find()->select(['id', 'description'])->indexBy('id')->asArray()->all();
-
-
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
-        } else {
-            $model->loadDefaultValues();
-        }
-
-        return $this->render('create', [
-            'model' => $model,
-            'sizes' => $sizes,
-            'breeds' => $breeds,
-            'animalTypes' => $animalTypes,
-            'users' => $users,
-            'vaccines' => $vaccines,
-            'ages' => $ages,
-        ]);
-    }
+//    public function actionCreate()
+//    {
+//        $model = new Animal();
+//
+//        $sizes = AnimalSize::find()->select(['id','description'])->indexBy('id')->asArray()->all();
+//        $breeds = Breed::find()->select(['id','description'])->indexBy('id')->asArray()->all();
+//        $animalTypes = AnimalType::find()->select(['id','description'])->indexBy('id')->asArray()->all();
+//        $users = User::find()->select(['id', 'name'])->indexBy('id')->asArray()->all();
+//        $vaccines = Vaccination::find()->select(['id', 'description'])->indexBy('id')->asArray()->all();
+//        $ages = AnimalAge::find()->select(['id', 'description'])->indexBy('id')->asArray()->all();
+//
+//
+//        if ($this->request->isPost) {
+//            if ($model->load($this->request->post()) && $model->save()) {
+//                return $this->redirect(['view', 'id' => $model->id]);
+//            }
+//        } else {
+//            $model->loadDefaultValues();
+//        }
+//
+//
+//        return $this->render('create', [
+//            'model' => $model,
+//            'sizes' => $sizes,
+//            'breeds' => $breeds,
+//            'animalTypes' => $animalTypes,
+//            'users' => $users,
+//            'vaccines' => $vaccines,
+//            'ages' => $ages,
+//        ]);
+//    }
 
     /**
      * Updates an existing Animal model.

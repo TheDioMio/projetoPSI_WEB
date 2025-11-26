@@ -66,6 +66,15 @@ $userLogado = $this->params['userLogado']->username;
                         ]
 
                     ],
+                    [
+                        'label' => 'Definições de Animais', 'icon'=>'fas fa-users',
+                        'items' => [
+                            ['label' => 'Idade', 'url' => ['animal-age/index'], 'icon' => 'none'],
+                            ['label' => 'Tamanho', 'url' => ['animal-size/index'], 'icon' => 'none'],
+                            ['label' => 'Vacinas', 'url' => ['vaccination/index'], 'icon' => 'none'],
+                        ]
+
+                    ],
 //                    ['label' => 'Yii2 PROVIDED', 'header' => true],
 //                    ['label' => 'Login', 'url' => ['site/login'], 'icon' => 'sign-in-alt', 'visible' => Yii::$app->user->isGuest],
 //                    ['label' => 'Gii',  'icon' => 'file-code', 'url' => ['/gii'], 'target' => '_blank'],

@@ -22,11 +22,15 @@ class SiteController extends Controller
     /**
      * {@inheritdoc}
      */
+
     public function behaviors()
     {
         return [
             'access' => [
                 'class' => AccessControl::class,
+                'denyCallback' => function () {
+                    return Yii::$app->response->redirect(['/site/login']);
+                },
                 'rules' => [
                     [
                         'allow' => true,
@@ -34,7 +38,6 @@ class SiteController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['logout', 'index'],
                         'roles' => ['@'],
                     ],
                 ],
@@ -48,17 +51,32 @@ class SiteController extends Controller
         ];
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function actions()
+
+    // Diogo comentei este codigo, pois não estava a tratar os erros como devia... esperoi que não interfira com mais nada que tinhas desenvolvido
+//    public function actions()
+//    {
+//        return [
+//            'error' => [
+//                'class' => \yii\web\ErrorAction::class,
+//            ],
+//        ];
+//    }
+
+    public function actionError()
     {
-        return [
-            'error' => [
-                'class' => \yii\web\ErrorAction::class,
-            ],
-        ];
+        $exception = Yii::$app->errorHandler->exception;
+
+        // Se NÃO estiver logado → redireciona para LOGIN
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['/site/login']);
+        }
+
+        return $this->render('error', [
+            'exception' => $exception,
+        ]);
     }
 
     public function beforeAction($action)

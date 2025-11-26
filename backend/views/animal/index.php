@@ -15,11 +15,11 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="animal-index container-fluid">
     <div class="card card-outline card-primary shadow-sm">
-        <div class="card-header">
-            <div class="card-tools float-right">
-                <?= Html::a('<i class="fas fa-plus-circle"></i> Criar Animal', ['create'], ['class' => 'btn btn-success btn-sm']) ?>
-            </div>
-        </div>
+<!--        <div class="card-header">-->
+<!--            <div class="card-tools float-right">-->
+<!--                --><?php //= Html::a('<i class="fas fa-plus-circle"></i> Criar Animal', ['create'], ['class' => 'btn btn-success btn-sm']) ?>
+<!--            </div>-->
+<!--        </div>-->
         <div class="card-body p-0">
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'label'=>'Idade',
-                        'attribute'=>'animal_age',
+                        'attribute'=>'animalAge',
                         'value'=>'animalAge.description',
                     ],
                     [

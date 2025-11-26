@@ -46,7 +46,7 @@ class AnimalSearch extends Animal
     public function search($params, $formName = null)
     {
         $query = Animal::find();
-        $query->joinWith(['animalType', 'animalAge']); // <-- MUDANÇA AQUI
+        $query->joinWith(['animalType', 'animalAge']);
         // ... (resto do código)
 
         $dataProvider = new ActiveDataProvider([
