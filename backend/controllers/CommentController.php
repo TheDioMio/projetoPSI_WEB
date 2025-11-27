@@ -7,6 +7,7 @@ use app\models\CommentSearch;
 use common\models\Listing;
 use common\models\User;
 use Yii;
+use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -27,6 +28,9 @@ class CommentController extends Controller
             [
                 'access' => [
                     'class' => AccessControl::class,
+                    'denyCallback' => function () {
+                        return Yii::$app->response->redirect(['/site/login']);
+                    },
                     'rules' => [
                         [
                             'allow' => true,

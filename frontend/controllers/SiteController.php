@@ -377,7 +377,7 @@ class SiteController extends Controller
         // Usamos ->with() para otimizar e ir buscar as relações (raça, tipo)
         $model = Animal::find()
             ->where(['id' => $id])
-            ->with('animalType', 'breed') // Carrega as tabelas relacionadas
+            ->with('animalType', 'breed', ) // Carrega as tabelas relacionadas
             ->one();
 
         // 2. Verifica se o animal existe
@@ -385,7 +385,10 @@ class SiteController extends Controller
             throw new NotFoundHttpException('O animal que procura não existe.');
         }
 
-        // 3. O Controller ENVIA o $model para a View
+        // 3. Vamos buscar os Comments do animal e enviamos para a vista
+
+
+        // 4. O Controller ENVIA o $model para a View
         return $this->render('detail', [
             'model' => $model, // <-- AQUI ESTÁ A VARIÁVEL QUE FALTAVA
         ]);

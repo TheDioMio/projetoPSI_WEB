@@ -6,6 +6,7 @@ use common\models\Application;
 use app\models\ApplicationSearch;
 use common\models\User;
 use Yii;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -20,6 +21,9 @@ class ApplicationController extends Controller
             [
                 'access' => [
                     'class' => AccessControl::class,
+                    'denyCallback' => function () {
+                        return Yii::$app->response->redirect(['/site/login']);
+                    },
                     'rules' => [
                         [
                             'allow' => true,

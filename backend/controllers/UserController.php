@@ -7,6 +7,7 @@ use common\models\Listing;
 use common\models\Role;
 use common\models\User;
 use common\models\UserSearch;
+use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -27,6 +28,9 @@ class UserController extends Controller
             [
                 'access' => [
                     'class' => AccessControl::class,
+                    'denyCallback' => function () {
+                        return Yii::$app->response->redirect(['/site/login']);
+                    },
                     'rules' => [
                         [
                             'allow' => true,

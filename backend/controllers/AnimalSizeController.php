@@ -4,6 +4,7 @@ namespace backend\controllers;
 use Yii;
 use common\models\AnimalSize;
 use backend\models\AnimalSizeSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -23,6 +24,9 @@ class AnimalSizeController extends Controller
             [
                 'access' => [
                     'class' => AccessControl::class,
+                    'denyCallback' => function () {
+                        return Yii::$app->response->redirect(['/site/login']);
+                    },
                     'rules' => [
                         [
                             'allow' => true,

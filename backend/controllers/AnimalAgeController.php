@@ -21,10 +21,13 @@ class AnimalAgeController extends Controller
         return array_merge(parent::behaviors(), [
             'access' => [
                 'class' => AccessControl::class,
+                'denyCallback' => function () {
+                    return Yii::$app->response->redirect(['/site/login']);
+                },
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['loginBackend'], // só quem tem permissão entra
+                        'roles' => ['loginBackend'],
                     ],
                 ],
             ],
@@ -38,32 +41,6 @@ class AnimalAgeController extends Controller
         ]);
     }
 
-//
-//
-//    public function behaviors()
-//    {
-//        return array_merge(
-//            parent::behaviors(),
-//            [
-//                'access' => [
-//                    'class' => AccessControl::class,
-//                    'rules' => [
-//                        [
-//                            'allow' => true,
-//                            'roles' => ['loginBackend'],
-//                        ],
-//                    ],
-//                ],
-//                'verbs' => [
-//                    'class' => VerbFilter::className(),
-//                    'actions' => [
-//                        'delete' => ['POST'],
-//                        'logout' => ['POST'],
-//                    ],
-//                ],
-//            ]
-//        );
-//    }
 
     public function beforeAction($action)
     {

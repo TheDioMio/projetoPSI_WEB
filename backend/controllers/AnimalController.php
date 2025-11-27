@@ -12,6 +12,7 @@ use common\models\Listing;
 use common\models\User;
 use common\models\Vaccination;
 use Yii;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

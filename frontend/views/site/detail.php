@@ -54,36 +54,67 @@ $this->title = 'Detalhes';
 
             <!-- Comment List Start -->
             <div class="mb-5">
-                <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4 pt-10">3 Comentários</h3>
-                <div class="d-flex mb-4">
-                    <img src="../img/user.jpg" class="img-fluid" style="width: 45px; height: 45px;">
-                    <div class="ps-3">
-                        <h6><a href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>
-                        <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor labore
-                            accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed eirmod</p>
-                        <button class="btn btn-sm btn-light">Reply</button>
-                    </div>
-                </div>
-                <div class="d-flex mb-4">
-                    <img src="../img/user.jpg" class="img-fluid" style="width: 45px; height: 45px;">
-                    <div class="ps-3">
-                        <h6><a href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>
-                        <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor labore
-                            accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed eirmod</p>
-                        <button class="btn btn-sm btn-light">Reply</button>
-                    </div>
-                </div>
-                <div class="d-flex ms-5 mb-4">
-                    <img src="../img/user.jpg" class="img-fluid" style="width: 45px; height: 45px;">
-                    <div class="ps-3">
-                        <h6><a href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>
-                        <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor labore
-                            accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed eirmod</p>
-                        <button class="btn btn-sm btn-light">Reply</button>
-                    </div>
-                </div>
+                <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4 pt-10">
+                    <?= count($comments) ?> Comentário(s)
+                </h3>
+
+                <?php if (!empty($comments)): ?>
+                    <?php foreach ($comments as $comment): ?>
+                        <div class="d-flex mb-4 <?= $comment->parent_id ? 'ms-5' : '' ?>">
+                            <img src="/img/user.jpg" class="img-fluid" style="width: 45px; height: 45px;">
+
+                            <div class="ps-3">
+                                <h6>
+                                    <a href="#"><?= htmlspecialchars($comment->author_name) ?></a>
+                                    <small><i><?= Yii::$app->formatter->asDate($comment->created_at) ?></i></small>
+                                </h6>
+
+                                <p><?= nl2br(htmlspecialchars($comment->text)) ?></p>
+
+                                <button class="btn btn-sm btn-light">Reply</button>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+
+                <?php else: ?>
+                    <p class="text-muted">Ainda não existem comentários.</p>
+                <?php endif; ?>
             </div>
             <!-- Comment List End -->
+
+
+            <!--            <!-- Comment List Start -->-->
+<!--            <div class="mb-5">-->
+<!--                <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4 pt-10">3 Comentários</h3>-->
+<!--                <div class="d-flex mb-4">-->
+<!--                    <img src="../img/user.jpg" class="img-fluid" style="width: 45px; height: 45px;">-->
+<!--                    <div class="ps-3">-->
+<!--                        <h6><a href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>-->
+<!--                        <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor labore-->
+<!--                            accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed eirmod</p>-->
+<!--                        <button class="btn btn-sm btn-light">Reply</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="d-flex mb-4">-->
+<!--                    <img src="../img/user.jpg" class="img-fluid" style="width: 45px; height: 45px;">-->
+<!--                    <div class="ps-3">-->
+<!--                        <h6><a href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>-->
+<!--                        <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor labore-->
+<!--                            accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed eirmod</p>-->
+<!--                        <button class="btn btn-sm btn-light">Reply</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="d-flex ms-5 mb-4">-->
+<!--                    <img src="../img/user.jpg" class="img-fluid" style="width: 45px; height: 45px;">-->
+<!--                    <div class="ps-3">-->
+<!--                        <h6><a href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>-->
+<!--                        <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor labore-->
+<!--                            accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed eirmod</p>-->
+<!--                        <button class="btn btn-sm btn-light">Reply</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <!-- Comment List End -->-->
 
             <!-- Comment Form Start -->
             <div class="bg-light rounded p-5">
