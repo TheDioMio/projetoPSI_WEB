@@ -2,20 +2,15 @@
 
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
+use yii\web\YiiAsset;
 use yii\widgets\DetailView;
-
-/** @var yii\web\View $this */
-/** @var common\models\Comment $model */
-
 $this->title = 'Detalhes do Comentário #' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Comments', 'url' => ['index']];
 $this->params['breadcrumbs'][] = 'Ver';
-\yii\web\YiiAsset::register($this);
+YiiAsset::register($this);
 ?>
 <div class="comment-view">
-
     <div class="card card-outline card-primary shadow-sm">
-
         <div class="card-header">
             <div class="card-tools float-right">
                 <?= Html::a('<i class="fas fa-arrow-left"></i> Voltar à Lista', ['index'], ['class' => 'btn btn-default btn-sm']) ?>

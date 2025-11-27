@@ -14,15 +14,8 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\base\Action;
 
-/**
- * Site controller
- */
 class SiteController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
-
     public function behaviors()
     {
         return [
@@ -50,20 +43,6 @@ class SiteController extends Controller
             ],
         ];
     }
-
-    /**
-     * {@inheritdoc}
-     */
-
-    // Diogo comentei este codigo, pois não estava a tratar os erros como devia... esperoi que não interfira com mais nada que tinhas desenvolvido
-//    public function actions()
-//    {
-//        return [
-//            'error' => [
-//                'class' => \yii\web\ErrorAction::class,
-//            ],
-//        ];
-//    }
 
     public function actionError()
     {
@@ -97,12 +76,6 @@ class SiteController extends Controller
         return true;
     }
 
-
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
     public function actionIndex()
     {
         $animais = Animal::find()->all();
@@ -111,11 +84,6 @@ class SiteController extends Controller
         return $this->render('index', ['animais'=>$animais, 'utilizadores'=>$utilizadores, 'listagens'=>$listagens]);
     }
 
-    /**
-     * Login action.
-     *
-     * @return string|Response
-     */
 //    public function actionLogin()
 //    {
 //        if (!Yii::$app->user->isGuest) {
@@ -171,12 +139,6 @@ class SiteController extends Controller
         ]);
     }
 
-
-    /**
-     * Logout action.
-     *
-     * @return Response
-     */
     public function actionLogout()
     {
         Yii::$app->user->logout();

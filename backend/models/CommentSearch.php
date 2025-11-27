@@ -6,18 +6,10 @@ use common\models\Comment;
 use common\models\Animal;
 use common\models\User;
 
-/**
- * CommentSearch represents the model behind the search form of `common\models\Comment`.
- */
-
 class CommentSearch extends Comment
 {
     public $animal_name;
     public $user_username;
-
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -27,23 +19,12 @@ class CommentSearch extends Comment
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
-    /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     * @param string|null $formName Form name to be used into `->load()` method.
-     *
-     * @return ActiveDataProvider
-     */
     public function search($params, $formName = null)
     {
         $query = Comment::find();

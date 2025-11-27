@@ -13,14 +13,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use Yii;
 
-/**
- * UserController implements the CRUD actions for User model.
- */
 class UserController extends Controller
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
         return array_merge(
@@ -49,18 +43,11 @@ class UserController extends Controller
         );
     }
 
-    /**
-     * Lists all User models.
-     *
-     * @return string
-     */
-
     public function beforeAction($action)
     {
         if (!parent::beforeAction($action)) {
             return false;
         }
-
         // Lógica para passar o utilizador para o LAYOUT/SIDEBAR
         $this->view->params['userLogado'] = Yii::$app->user->identity;
 
@@ -77,12 +64,6 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single User model.
-     * @param int $id ID
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionView($id)
     {
         return $this->render('view', [
@@ -90,21 +71,12 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new User model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
-
     public function actionCreate()
     {
         $model = new User();
         $model->scenario = 'create'; // ativa a regra da senha
         $roles = Role::find()->select(['id','description'])->indexBy('id')->asArray()->all();
-
-
         if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
-
             // Gera hash com a senha digitada
             $model->setPassword($model->password);
 //            $model->generateAuthKey();
@@ -127,38 +99,29 @@ class UserController extends Controller
                         $auth->assign($authorRole, $model->id);
                     }
                 }
+
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
+
         return $this->render('create', [
             'model' => $model,
             'roles' => $roles,
         ]);
     }
 
-    /**
-     * Updates an existing User model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
         $oldPasswordHash = $model->password_hash;
         $roles = Role::find()->select(['id','description'])->indexBy('id')->asArray()->all();
-
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-
             if (!empty($model->password)) {
                 $model->setPassword($model->password); // este método gera o hash
             } else {
                 // Se vier vazio, mantém o hash antigo
                 $model->password_hash = $oldPasswordHash;
             }
-
             if ($model->save()) {
                 $auth = Yii::$app->authManager;
                 $auth->revokeAll($model->id); // Limpa anteriores
@@ -182,6 +145,7 @@ class UserController extends Controller
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
+
         return $this->render('update', [
             'model' => $model,
             'roles' => $roles,

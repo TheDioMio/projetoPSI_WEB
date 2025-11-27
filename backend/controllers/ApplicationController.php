@@ -13,7 +13,6 @@ use yii\filters\VerbFilter;
 
 class ApplicationController extends Controller
 {
-
     public function behaviors()
     {
         return array_merge(
@@ -65,7 +64,6 @@ class ApplicationController extends Controller
         ]);
     }
 
-
     public function actionView($id)
     {
         return $this->render('view', [
@@ -105,7 +103,6 @@ class ApplicationController extends Controller
             'model' => $model,
         ]);
     }
-
 
     public function actionDelete($id)
     {

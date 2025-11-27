@@ -1,15 +1,13 @@
 <?php
 
 use yii\helpers\Html;
+use yii\web\YiiAsset;
 use yii\widgets\DetailView;
-
-/** @var yii\web\View $this */
-/** @var common\models\User $model */
 
 $this->title = 'Detalhes do utilizador '.mb_strtoupper($model->username);
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
+YiiAsset::register($this);
 ?>
 <div class="user-view">
     <div class="card card-outline card-primary shadow-sm">

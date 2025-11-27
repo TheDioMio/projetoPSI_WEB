@@ -24,19 +24,11 @@ use yii\db\JsonExpression;
  */
 class Application extends \yii\db\ActiveRecord
 {
-
-
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'application';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -70,31 +62,16 @@ class Application extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * Gets query for [[Animal]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getAnimal()
     {
         return $this->hasOne(Animal::class, ['id' => 'animal_id']);
     }
 
-    /**
-     * Gets query for [[TargetUser]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getTargetUser()
     {
         return $this->hasOne(User::class, ['id' => 'target_user_id']);
     }
 
-    /**
-     * Gets query for [[User]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
@@ -110,8 +87,6 @@ class Application extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'target_user_id']);
     }
-
-
 
     public function beforeSave($insert)
     {

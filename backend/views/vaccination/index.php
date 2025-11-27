@@ -6,39 +6,35 @@ use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 
-/** @var yii\web\View $this */
-/** @var backend\models\VaccinationSearch $searchModel */
-/** @var yii\data\ActiveDataProvider $dataProvider */
-
-$this->title = 'Vaccinations';
+$this->title = 'Gestão de Status de Vacinação';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="vaccination-index">
+<div class="vaccination-index container-fluid">
+    <div class="card card-outline card-primary shadow-sm">
+        <div class="card-header">
+            <div class="card-tools float-right">
+                <?= Html::a('<i class="fas fa-plus-circle"></i> Criar Status Vacinação', ['create'], ['class' => 'btn btn-success btn-sm']) ?>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'tableOptions' => ['class' => 'table table-hover table-striped table-sm'],
+                'layout' => "{items}\n{summary}\n{pager}",
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Vaccination', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'description',
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Vaccination $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
-        ],
-    ]); ?>
-
-
+                    'id',
+                    'description',
+                    [
+                        'class' => ActionColumn::className(),
+                        'urlCreator' => function ($action, Vaccination $model, $key, $index, $column) {
+                            return Url::toRoute([$action, 'id' => $model->id]);
+                        }
+                    ],
+                ],
+            ]); ?>
+        </div>
+    </div>
 </div>

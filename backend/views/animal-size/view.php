@@ -1,37 +1,36 @@
 <?php
 
 use yii\helpers\Html;
+use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 
-/** @var yii\web\View $this */
-/** @var common\models\AnimalSize $model */
-
-$this->title = $model->id;
+$this->title = 'Detalhes do Tipo de Tamanho do Animal #' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Animal Sizes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
+YiiAsset::register($this);
 ?>
 <div class="animal-size-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'description',
-        ],
-    ]) ?>
-
+    <div class="card card-outline card-primary shadow-sm">
+        <div class="card-header">
+            <div class="card-tools float-right">
+                <?= Html::a('<i class="fas fa-arrow-left"></i> Voltar à Lista', ['index'], ['class' => 'btn btn-default btn-sm']) ?>
+                <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+                    'class' => 'btn btn-danger btn-sm',
+                    'data' => [
+                        'confirm' => 'Tem a certeza que deseja eliminar este tipo de tamanho de animal?',
+                        'method' => 'post',
+                    ],
+                ]) ?>
+            </div>
+        </div>
+        <div class="card-body">
+            <?= DetailView::widget([
+                'model' => $model,
+                'attributes' => [
+                    'id',
+                    'description',
+                ],
+            ]) ?>
+        </div>
+    </div>
 </div>

@@ -11,14 +11,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
-/**
- * BreedController implements the CRUD actions for Breed model.
- */
 class BreedController extends Controller
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
         return array_merge(
@@ -47,18 +41,11 @@ class BreedController extends Controller
         );
     }
 
-    /**
-     * Lists all Breed models.
-     *
-     * @return string
-     */
-
     public function beforeAction($action)
     {
         if (!parent::beforeAction($action)) {
             return false;
         }
-
         // Lógica para passar o utilizador para o LAYOUT/SIDEBAR
         $this->view->params['userLogado'] = Yii::$app->user->identity;
 
@@ -75,12 +62,6 @@ class BreedController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single Breed model.
-     * @param int $id ID
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionView($id)
     {
         return $this->render('view', [
@@ -88,11 +69,6 @@ class BreedController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new Breed model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
     public function actionCreate()
     {
         $model = new Breed();
@@ -112,13 +88,6 @@ class BreedController extends Controller
         ]);
     }
 
-    /**
-     * Updates an existing Breed model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -133,13 +102,6 @@ class BreedController extends Controller
         ]);
     }
 
-    /**
-     * Deletes an existing Breed model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
@@ -147,13 +109,6 @@ class BreedController extends Controller
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Breed model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return Breed the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = Breed::findOne(['id' => $id])) !== null) {

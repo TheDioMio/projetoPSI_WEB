@@ -1,5 +1,6 @@
 <?php
 
+use hail812\adminlte\widgets\Menu;
 use yii\bootstrap5\Html;
 use yii\helpers\Url;
 $this->registerCssFile('@web/css/style.css', [
@@ -43,37 +44,34 @@ $userLogado = $this->params['userLogado']->username;
 
         <nav class="mt-2">
             <?php
-            echo \hail812\adminlte\widgets\Menu::widget([
+            echo Menu::widget([
                 'items' => [
                     ['label' => 'Dashboard', 'url' => ['site/index'], 'iconStyle' => 'far'],
                     ['label' => 'CRUD e Consulta de BD', 'header' => true],
                     [
                         'label' => 'Menu Animais', 'icon'=>'fas fa-bone',
                         'items' => [
-                            ['label' => 'Animais', 'url' => ['animal/index'], 'icon' => 'none'],
-                            ['label' => 'Tipos de Animal', 'url' => ['animal-type/index'], 'icon' => 'none'],
-                            ['label' => 'Raças', 'url' => ['breed/index'], 'icon' => 'none'],
-
+                            ['label' => 'Animais', 'url' => ['animal/index'], 'iconStyle' => 'far'],
+                            ['label' => 'Tipos de Animal', 'url' => ['animal-type/index'], 'iconStyle' => 'far'],
+                            ['label' => 'Raças', 'url' => ['breed/index'], 'iconStyle' => 'far'],
+                            [
+                                    'label' => 'Definições de Animais', 'iconStyle' => 'far',
+                                'items' => [
+                                    ['label' => 'Idade', 'url' => ['animal-age/index'], 'icon' => 'dot-circle'],
+                                    ['label' => 'Tamanho', 'url' => ['animal-size/index'], 'icon' => 'dot-circle'],
+                                    ['label' => 'Vacinas', 'url' => ['vaccination/index'], 'icon' => 'dot-circle'],
+                                ]
+                            ]
                         ]
                     ],
                     [
                         'label' => 'Menu Utilizadores', 'icon'=>'fas fa-users',
                         'items' => [
-                            ['label' => 'Users', 'url' => ['user/index'], 'icon' => 'none'],
-                            ['label' => 'Listagens', 'url' => ['listing/index'], 'icon' => 'none'],
-                            ['label' => 'Candidaturas', 'url' => ['application/index'], 'icon' => 'none'],
-                            ['label' => 'Comentários', 'url' => ['comment/index'], 'icon' => 'none'],
+                            ['label' => 'Users', 'url' => ['user/index'], 'iconStyle' => 'far'],
+                            ['label' => 'Listagens', 'url' => ['listing/index'], 'iconStyle' => 'far'],
+                            ['label' => 'Candidaturas', 'url' => ['application/index'], 'iconStyle' => 'far'],
+                            ['label' => 'Comentários', 'url' => ['comment/index'], 'iconStyle' => 'far'],
                         ]
-
-                    ],
-                    [
-                        'label' => 'Definições de Animais', 'icon'=>'fas fa-users',
-                        'items' => [
-                            ['label' => 'Idade', 'url' => ['animal-age/index'], 'icon' => 'none'],
-                            ['label' => 'Tamanho', 'url' => ['animal-size/index'], 'icon' => 'none'],
-                            ['label' => 'Vacinas', 'url' => ['vaccination/index'], 'icon' => 'none'],
-                        ]
-
                     ],
 //                    ['label' => 'Yii2 PROVIDED', 'header' => true],
 //                    ['label' => 'Login', 'url' => ['site/login'], 'icon' => 'sign-in-alt', 'visible' => Yii::$app->user->isGuest],

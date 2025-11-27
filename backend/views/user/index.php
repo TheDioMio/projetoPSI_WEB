@@ -1,5 +1,4 @@
 <?php
-
 use common\models\Role;
 use common\models\User;
 use yii\grid\ActionColumn;
@@ -8,9 +7,6 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-/** @var yii\web\View $this */
-/** @var \common\models\UserSearch $searchModel */
-/** @var yii\data\ActiveDataProvider $dataProvider */
 $this->title = 'Gestão de Utilizadores';
 $this->params['breadcrumbs'][] = $this->title;
 ?>

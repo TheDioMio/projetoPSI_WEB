@@ -1,21 +1,14 @@
 <?php
-
 namespace backend\controllers;
 use Yii;
 use common\models\AnimalAge;
 use backend\models\AnimalAgeSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
-/**
- * AnimalAgeController implements the CRUD actions for AnimalAge model.
- */
 class AnimalAgeController extends Controller
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
         return array_merge(parent::behaviors(), [
@@ -54,12 +47,6 @@ class AnimalAgeController extends Controller
         return true;
     }
 
-
-    /**
-     * Lists all AnimalAge models.
-     *
-     * @return string
-     */
     public function actionIndex()
     {
         $searchModel = new AnimalAgeSearch();
@@ -71,12 +58,6 @@ class AnimalAgeController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single AnimalAge model.
-     * @param int $id ID
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionView($id)
     {
         return $this->render('view', [
@@ -84,11 +65,6 @@ class AnimalAgeController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new AnimalAge model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
     public function actionCreate()
     {
         $model = new AnimalAge();
@@ -106,13 +82,6 @@ class AnimalAgeController extends Controller
         ]);
     }
 
-    /**
-     * Updates an existing AnimalAge model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -126,13 +95,6 @@ class AnimalAgeController extends Controller
         ]);
     }
 
-    /**
-     * Deletes an existing AnimalAge model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
@@ -140,13 +102,6 @@ class AnimalAgeController extends Controller
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the AnimalAge model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return AnimalAge the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = AnimalAge::findOne(['id' => $id])) !== null) {

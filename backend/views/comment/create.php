@@ -3,9 +3,6 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-/** @var yii\web\View $this */
-/** @var common\models\Comment $model */
-
 $this->title = 'Criar Comentário';
 $this->params['breadcrumbs'][] = ['label' => 'Gestão de Comentários', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;

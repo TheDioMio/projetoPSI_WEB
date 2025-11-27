@@ -17,14 +17,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
-/**
- * AnimalController implements the CRUD actions for Animal model.
- */
 class AnimalController extends Controller
 {
-    /**
-     * @inheritDoc
-     */
     public function behaviors()
     {
         return array_merge(
@@ -53,21 +47,13 @@ class AnimalController extends Controller
         );
     }
 
-    /**
-     * Lists all Animal models.
-     *
-     * @return string
-     */
-
     public function beforeAction($action)
     {
         if (!parent::beforeAction($action)) {
             return false;
         }
-
         // Lógica para passar o utilizador para o LAYOUT/SIDEBAR
         $this->view->params['userLogado'] = Yii::$app->user->identity;
-
         return true;
     }
 
@@ -75,19 +61,12 @@ class AnimalController extends Controller
     {
         $searchModel = new AnimalSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
-    /**
-     * Displays a single Animal model.
-     * @param int $id ID
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionView($id)
     {
         return $this->render('view', [
@@ -95,11 +74,6 @@ class AnimalController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new Animal model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
 //    public function actionCreate()
 //    {
 //        $model = new Animal();
@@ -132,13 +106,6 @@ class AnimalController extends Controller
 //        ]);
 //    }
 
-    /**
-     * Updates an existing Animal model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -165,33 +132,17 @@ class AnimalController extends Controller
         ]);
     }
 
-    /**
-     * Deletes an existing Animal model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Animal model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return Animal the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = Animal::findOne(['id' => $id])) !== null) {
             return $model;
         }
-
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

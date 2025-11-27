@@ -1,15 +1,13 @@
 <?php
 
 use yii\helpers\Html;
+use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 
-/** @var yii\web\View $this */
-/** @var common\models\Breed $model */
-
-$this->title = 'Detalhes da Raça '. mb_strtoupper($model->description);
+$this->title = 'Detalhes da Raça ' . mb_strtoupper($model->description);
 $this->params['breadcrumbs'][] = ['label' => 'Breeds', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
+YiiAsset::register($this);
 ?>
 <div class="breed-view">
     <div class="card card-outline card-primary shadow-sm">
@@ -30,7 +28,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'model' => $model,
                 'attributes' => [
                     'id',
-                    'description',
+                    [
+                        'label' => 'Descrição',
+                        'attribute' => 'description',
+                    ],
                     [
                         'label' => 'Tipo de Animal',
                         'attribute' => 'animalType.description',

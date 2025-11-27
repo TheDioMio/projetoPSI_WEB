@@ -10,14 +10,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
-/**
- * AnimalTypeController implements the CRUD actions for AnimalType model.
- */
 class AnimalTypeController extends Controller
 {
-    /**
-     * @inheritDoc
-     */
+
     public function behaviors()
     {
         return array_merge(
@@ -46,19 +41,11 @@ class AnimalTypeController extends Controller
         );
     }
 
-    /**
-     * Lists all AnimalType models.
-     *
-     * @return string
-     */
-
-
     public function beforeAction($action)
     {
         if (!parent::beforeAction($action)) {
             return false;
         }
-
         // Lógica para passar o utilizador para o LAYOUT/SIDEBAR
         $this->view->params['userLogado'] = Yii::$app->user->identity;
 
@@ -74,12 +61,6 @@ class AnimalTypeController extends Controller
         ]);
     }
 
-    /**
-     * Displays a single AnimalType model.
-     * @param int $id ID
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionView($id)
     {
         return $this->render('view', [
@@ -87,11 +68,6 @@ class AnimalTypeController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new AnimalType model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
     public function actionCreate()
     {
         $model = new AnimalType();
@@ -109,13 +85,6 @@ class AnimalTypeController extends Controller
         ]);
     }
 
-    /**
-     * Updates an existing AnimalType model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -129,13 +98,6 @@ class AnimalTypeController extends Controller
         ]);
     }
 
-    /**
-     * Deletes an existing AnimalType model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
@@ -143,13 +105,6 @@ class AnimalTypeController extends Controller
         return $this->redirect(['index']);
     }
 
-    /**
-     * Finds the AnimalType model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return AnimalType the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     protected function findModel($id)
     {
         if (($model = AnimalType::findOne(['id' => $id])) !== null) {

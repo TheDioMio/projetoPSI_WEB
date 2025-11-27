@@ -2,20 +2,22 @@
 
 use yii\helpers\Html;
 
-/** @var yii\web\View $this */
-/** @var common\models\Vaccination $model */
-
-$this->title = 'Update Vaccination: ' . $model->id;
+$this->title = 'Atualizar Status de Vacinação #' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Vaccinations', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="vaccination-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
-        'model' => $model,
-    ]) ?>
-
+<div class="vaccination-update container-fluid">
+    <div class="card card-outline card-success shadow-sm">
+        <div class="card-header">
+            <div class="card-tools">
+                <?= Html::a('<i class="fas fa-arrow-left"></i> Voltar à Lista', ['index'], ['class' => 'btn btn-default btn-sm']) ?>
+            </div>
+        </div>
+        <div class="card-body">
+            <?= $this->render('_form', [
+                'model' => $model,
+            ]) ?>
+        </div>
+    </div>
 </div>
