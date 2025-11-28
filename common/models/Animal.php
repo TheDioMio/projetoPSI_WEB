@@ -156,7 +156,7 @@ class Animal extends \yii\db\ActiveRecord
      */
     public function getListings()
     {
-        return $this->hasMany(Listing::class, ['animal_id' => 'id']);
+        return $this->hasOne(Listing::class, ['animal_id' => 'id']);
     }
 
     /**

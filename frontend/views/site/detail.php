@@ -60,18 +60,18 @@ $this->title = 'Detalhes';
 
                 <?php if (!empty($comments)): ?>
                     <?php foreach ($comments as $comment): ?>
-                        <div class="d-flex mb-4 <?= $comment->parent_id ? 'ms-5' : '' ?>">
+                        <div class="d-flex mb-4 <?= $comment->user_id ? 'ms-5' : '' ?>">
                             <img src="/img/user.jpg" class="img-fluid" style="width: 45px; height: 45px;">
 
                             <div class="ps-3">
                                 <h6>
-                                    <a href="#"><?= htmlspecialchars($comment->author_name) ?></a>
+                                    <a href="#"><?= htmlspecialchars($comment->user->name) ?></a>
                                     <small><i><?= Yii::$app->formatter->asDate($comment->created_at) ?></i></small>
                                 </h6>
 
                                 <p><?= nl2br(htmlspecialchars($comment->text)) ?></p>
 
-                                <button class="btn btn-sm btn-light">Reply</button>
+<!--                                <button class="btn btn-sm btn-light">Reply</button>-->
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -82,56 +82,33 @@ $this->title = 'Detalhes';
             </div>
             <!-- Comment List End -->
 
-
-            <!--            <!-- Comment List Start -->-->
-<!--            <div class="mb-5">-->
-<!--                <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4 pt-10">3 Comentários</h3>-->
-<!--                <div class="d-flex mb-4">-->
-<!--                    <img src="../img/user.jpg" class="img-fluid" style="width: 45px; height: 45px;">-->
-<!--                    <div class="ps-3">-->
-<!--                        <h6><a href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>-->
-<!--                        <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor labore-->
-<!--                            accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed eirmod</p>-->
-<!--                        <button class="btn btn-sm btn-light">Reply</button>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="d-flex mb-4">-->
-<!--                    <img src="../img/user.jpg" class="img-fluid" style="width: 45px; height: 45px;">-->
-<!--                    <div class="ps-3">-->
-<!--                        <h6><a href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>-->
-<!--                        <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor labore-->
-<!--                            accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed eirmod</p>-->
-<!--                        <button class="btn btn-sm btn-light">Reply</button>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="d-flex ms-5 mb-4">-->
-<!--                    <img src="../img/user.jpg" class="img-fluid" style="width: 45px; height: 45px;">-->
-<!--                    <div class="ps-3">-->
-<!--                        <h6><a href="">John Doe</a> <small><i>01 Jan 2045</i></small></h6>-->
-<!--                        <p>Diam amet duo labore stet elitr invidunt ea clita ipsum voluptua, tempor labore-->
-<!--                            accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed eirmod</p>-->
-<!--                        <button class="btn btn-sm btn-light">Reply</button>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <!-- Comment List End -->-->
-
             <!-- Comment Form Start -->
             <div class="bg-light rounded p-5">
-                <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Deixe o seu comentário</h3>
-                <form>
-                    <div class="row g-3">
-                        <div class="col-12">
-                            <textarea class="form-control bg-white border-0" rows="5" placeholder="Escreva aqui o seu comentário"></textarea>
-                        </div>
-                        <div class="col-12">
-                            <button class="btn btn-primary w-100 py-3" type="submit">Enviar</button>
-                        </div>
-                    </div>
-                </form>
+                <?php $form = \yii\widgets\ActiveForm::begin([
+                    'action' => ['/comment/create', 'listing_id' => $model->listings->id],
+                ]); ?>
+
+                <div class="bg-light rounded p-5">
+                    <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">
+                        Deixe o seu comentário
+                    </h3>
+
+                    <?= $form->field($comment, 'text')->textarea([
+                        'rows' => 5,
+                        'placeholder' => 'Escreva aqui o seu comentário'
+                    ])->label(false) ?>
+
+                    <button class="btn btn-primary w-100 py-3" type="submit">Enviar</button>
+                </div>
+
+                <?php \yii\widgets\ActiveForm::end(); ?>
+
             </div>
             <!-- Comment Form End -->
         </div>
+
+
+
 
         <!-- Sidebar Start -->
         <div class="col-lg-4">

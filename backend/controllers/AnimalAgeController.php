@@ -15,6 +15,7 @@ class AnimalAgeController extends Controller
             'access' => [
                 'class' => AccessControl::class,
                 'denyCallback' => function () {
+
                     return Yii::$app->response->redirect(['/site/login']);
                 },
                 'rules' => [

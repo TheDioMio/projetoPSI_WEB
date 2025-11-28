@@ -14,6 +14,10 @@ class RbacController extends Controller
         $auth->removeAll();
 
         // add "createPost" permission
+        $createComment = $auth->createPermission('createComment');
+        $createComment->description = 'createComment';
+        $auth->add($createComment);
+
         $loginFrontend = $auth->createPermission('loginFrontend');
         $loginFrontend->description = 'loginFrontend';
         $auth->add($loginFrontend);
@@ -32,6 +36,7 @@ class RbacController extends Controller
         $user = $auth->createRole('user');
         $auth->add($user);
         $auth->addChild($user, $loginFrontend);
+        $auth->addChild($user, $createComment);
         //$auth->addChild($user, $login); // so para exemplo de atribuir uma permissão
 
         //Criar o ROLE UserPro
@@ -39,13 +44,14 @@ class RbacController extends Controller
         $userPro = $auth->createRole('userPro');
         $auth->add($userPro);
         $auth->addChild($userPro, $loginFrontend);
+        $auth->addChild($user, $createComment);
         //$auth->addChild($userPro, $login);
 
         // add "admin" role and give this role the "updatePost" permission
         // as well as the permissions of the "author" role
         $admin = $auth->createRole('admin');
         $auth->add($admin);
-        $auth->addChild($admin, $updatePost);
+        //$auth->addChild($admin, $updatePost);
         $auth->addChild($admin, $loginBackend);
         $auth->addChild($admin, $loginFrontend); // adicionado temporariamente para dar acesso frontend ao admin
         //$auth->addChild($admin, $user);
