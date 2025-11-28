@@ -65,7 +65,7 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => '<i class="fa-solid fa-house"></i> Início', 'url' => ['/site/index'], 'linkOptions' => ['class' => 'nav-link active']],
-        ['label' => '<i class="fa-solid fa-paw"></i> Animais', 'url' => ['/site/animal'], 'linkOptions' => ['class' => 'nav-link']],
+        ['label' => '<i class="fa-solid fa-paw"></i> Animais', 'url' => ['/listings/animal'], 'linkOptions' => ['class' => 'nav-link']],
         ['label' => '<i class="fa-solid fa-circle-info"></i> Acerca', 'url' => ['/site/about'], 'linkOptions' => ['class' => 'nav-link']],
         ['label' => '<i class="fa-solid fa-envelope"></i> Contactos', 'url' => ['/site/contact'], 'linkOptions' => ['class' => 'nav-link',]],
 
@@ -80,10 +80,10 @@ AppAsset::register($this);
     }else {
         $menuItems[] = ['label' => '<i class="fa-solid fa-user-circle me-2"></i>' . Html::encode(Yii::$app->user->identity->username),
             'items' => [
-                ['label' => '<i class="fa-solid fa-paw"></i> Novo Anúncio', 'url' => ['/site/create-listing']],
-                ['label' => '<i class="fa-solid fa-list-ul me-2"></i> Os Meus Anúncios', 'url' => ['/site/my-listings']],
-                ['label' => '<i class="fa-solid fa-list-ul me-2"></i> As minhas candidaturas', 'url' => ['/site/myApplications']],
-                ['label' => '<i class="fa-solid fa-user-edit me-2"> </i>O meu perfil', 'url' => ['/site/profile']],
+                ['label' => '<i class="fa-solid fa-paw"></i> Novo Anúncio', 'url' => ['/listings/create-listing']],
+                ['label' => '<i class="fa-solid fa-list-ul me-2"></i> Os Meus Anúncios', 'url' => ['/listings/my-listings']],
+                ['label' => '<i class="fa-solid fa-list-ul me-2"></i> As minhas candidaturas', 'url' => ['/application/my-applications']],
+                ['label' => '<i class="fa-solid fa-user-edit me-2"> </i>O meu perfil', 'url' => ['/profile/profile']],
                 '-',
                 ['label' => '<span class="d-flex align-items-center">'
                     . '<i class="fa-solid fa-right-from-bracket me-2"></i>'
