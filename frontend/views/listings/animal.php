@@ -90,7 +90,7 @@ $posterUrl = Yii::getAlias('@web/video/' . $escolhaAleatoria['posterFile']);
                                 <?php
                                 echo Html::a(
                                     'Detalhes<i class="bi bi-chevron-right"></i>',
-                                    ['/site/detail', 'id' => $animal->id],
+                                    ['/listings/detail', 'id' => $animal->id],
                                     ['class' => 'text-primary text-uppercase']
                                 );
                                 ?>
