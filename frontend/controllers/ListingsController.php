@@ -6,6 +6,7 @@ use yii;
 use common\models\Animal;
 use common\models\File;
 use common\models\Listing;
+use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
@@ -18,25 +19,54 @@ class ListingsController extends \yii\web\Controller
     {
         /* return $this->render('animal'); */
 
+
+       // $listings = Listing::find()->all();
+
+        //dd($listings[0]->animal->animalType->description);
+
+        $query = Listing::find()->where(['status' => 1]);
+
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'created_at' => SORT_DESC,
+                ]
+            ],
+        ]);
+
+        return $this->render('animal', [
+            'provider' => $provider,
+            'listings' => $provider->getModels(),
+        ]);
+
+
+        /*
+
         $listings = Listing::find()
             ->where(['status' => 1]) // Assumindo que '1' = Anúncio Aprovado
-            ->with('animal', 'animal.animalType') // Otimização: Carrega os animais e tipos de uma só vez
             ->orderBy(['created_at' => SORT_DESC]) // Mostrar os mais recentes primeiro
             ->all(); // Pede todos os resultados como um array
 
-        // 2. Enviamos o array de $listings para a view
-        return $this->render('animal', [
-            'listings' => $listings,
-        ]);
-    }
+            // 2. Enviamos o array de $listings para a view
+            return $this->render('animal', [
+                'listings' => $listings,
+            ]);
 
+        */
+
+
+    }
 
     public function actionDetail($id)
     {
         // 1. O Controller PROCURA o animal na Base de Dados
         // Usamos ->with() para otimizar e ir buscar as relações (raça, tipo)
         $model = Animal::find()
-            ->with('animalType', 'breed', 'listings.comments.user') // Carrega as tabelas relacionadas
+           // ->with('animalType', 'breed', 'listings.comments.user') // Carrega as tabelas relacionadas
             ->where(['id' => $id])
             ->one();
 
