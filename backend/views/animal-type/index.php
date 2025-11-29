@@ -5,9 +5,6 @@ use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 
-/** @var yii\web\View $this */
-/** @var backend\models\AnimalTypeSearch $searchModel */
-/** @var yii\data\ActiveDataProvider $dataProvider */
 $this->title = 'Gestão de Tipos de Animal';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -27,7 +24,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
                     'id',
-                    'description',
+                    [
+                            'label' => 'Descrição',
+                        'attribute' => 'description',
+                    ],
                     [
                         'class' => ActionColumn::class,
                         'template' => '{view} {delete}',

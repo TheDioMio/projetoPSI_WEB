@@ -1,5 +1,4 @@
 <?php
-
 use yii\helpers\Html;
 
 $this->title = 'Atualizar Status de Vacinação #' . $model->id;

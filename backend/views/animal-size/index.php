@@ -24,7 +24,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
                     'id',
-                    'description',
+                    [
+                            'label' => 'Descrição',
+                        'attribute' => 'description',
+                    ],
                     [
                         'class' => ActionColumn::className(),
                         'urlCreator' => function ($action, AnimalSize $model, $key, $index, $column) {

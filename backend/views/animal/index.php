@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'label'=>'Idade',
-                        'attribute'=>'animalAge',
+                        'attribute'=>'animal_age',
                         'value'=>'animalAge.description',
                     ],
                     [

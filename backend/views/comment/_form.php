@@ -1,15 +1,10 @@
 <?php
-
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-/** @var yii\web\View $this */
-/** @var common\models\Comment $model */
-/** @var yii\widgets\ActiveForm $form */
 ?>
 <div class="comment-form">
-
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'listing_id')

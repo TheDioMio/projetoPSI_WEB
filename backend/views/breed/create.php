@@ -1,9 +1,5 @@
 <?php
-
 use yii\helpers\Html;
-
-/** @var yii\web\View $this */
-/** @var common\models\Breed $model */
 
 $this->title = 'Criar Raça';
 $this->params['breadcrumbs'][] = ['label' => 'Breeds', 'url' => ['index']];

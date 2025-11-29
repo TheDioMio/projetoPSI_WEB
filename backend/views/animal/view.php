@@ -33,16 +33,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'model' => $model,
                 'attributes' => [
                     'id',
-                    'description:ntext',
-//            'size',
-//            'age',
-//            'animal_type_id',
-//            'breed_id',
-//            'vaccines',
-//            'neutered',
-//            'location',
-//            'user_id',
-//            'created_at',
+                    [
+                            'label' => 'Descrição',
+                        'attribute' => 'description'
+                    ],
                 ],
             ]) ?>
         </div>

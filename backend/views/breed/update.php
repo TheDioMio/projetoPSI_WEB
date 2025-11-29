@@ -2,9 +2,6 @@
 
 use yii\helpers\Html;
 
-/** @var yii\web\View $this */
-/** @var common\models\Breed $model */
-
 $this->title = 'Atualizar Raça ' . mb_strtoupper($model->description);
 $this->params['breadcrumbs'][] = ['label' => 'Breeds', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];

@@ -1,5 +1,4 @@
 <?php
-
 use yii\helpers\Html;
 use yii\web\YiiAsset;
 use yii\widgets\DetailView;

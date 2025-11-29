@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use backend\models\AnimalSearch;
 use common\models\Animal;
+use common\models\Application;
 use common\models\Listing;
 use common\models\LoginForm;
 use common\models\User;
@@ -86,7 +87,13 @@ class SiteController extends Controller
         $animais = Animal::find()->all();
         $utilizadores = User::find()->all();
         $listagens = Listing::find()->all();
-        return $this->render('index', ['animais'=>$animais, 'utilizadores'=>$utilizadores, 'listagens'=>$listagens]);
+        $candidaturas = Application::find()->all();
+        return $this->render('index', [
+            'animais'=>$animais,
+            'utilizadores'=>$utilizadores,
+            'listagens'=>$listagens,
+            'candidaturas'=>$candidaturas,
+        ]);
     }
 
 //    public function actionLogin()

@@ -1,23 +1,15 @@
 <?php
-
 namespace backend\models;
-
 use common\models\AnimalAge;
 use common\models\AnimalType;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\Animal;
 
-/**
- * AnimalSearch represents the model behind the search form of `common\models\Animal`.
- */
 class AnimalSearch extends Animal
 {
     public $animal_type;
     public $animal_age;
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -34,15 +26,6 @@ class AnimalSearch extends Animal
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
-
-    /**
-     * Creates data provider instance with search query applied
-     *
-     * @param array $params
-     * @param string|null $formName Form name to be used into `->load()` method.
-     *
-     * @return ActiveDataProvider
-     */
     public function search($params, $formName = null)
     {
         $query = Animal::find();

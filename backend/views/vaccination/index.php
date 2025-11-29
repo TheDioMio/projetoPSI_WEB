@@ -1,5 +1,4 @@
 <?php
-
 use common\models\Vaccination;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -24,9 +23,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'layout' => "{items}\n{summary}\n{pager}",
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
-
                     'id',
-                    'description',
+                    [
+                            'label' => 'Descrição',
+                        'attribute' => 'description',
+                    ],
                     [
                         'class' => ActionColumn::className(),
                         'urlCreator' => function ($action, Vaccination $model, $key, $index, $column) {

@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 use yii\db\Expression;
 
 /**
@@ -33,10 +34,8 @@ use yii\db\Expression;
  * @property Vaccination $vaccination
  * @property Visit[] $visits
  */
-class Animal extends \yii\db\ActiveRecord
+class Animal extends ActiveRecord
 {
-
-
     /**
      * {@inheritdoc}
      * @var UploadedFile[]
