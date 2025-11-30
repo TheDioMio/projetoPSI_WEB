@@ -268,6 +268,11 @@ class User extends ActiveRecord implements IdentityInterface
         return $this->hasMany(File::class, ['user_id' => 'id']);
     }
 
+    public function getApplications()
+    {
+        return $this->hasMany(Application::class, ['user_id' => 'id']);
+    }
+
     public function getListings()
     {
         return $this->hasMany(Listing::class, ['user_id' => 'id']);
@@ -301,6 +306,19 @@ class User extends ActiveRecord implements IdentityInterface
     public function getVisits()
     {
         return $this->hasMany(Visit::class, ['user_id' => 'id']);
+    }
+
+    public function getListingsCount(): int
+    {
+
+        return $this->getListings()->count();
+    }
+
+
+    public function getApplicationsCount(): int
+    {
+
+        return $this->getApplications()->count();
     }
 
 }
