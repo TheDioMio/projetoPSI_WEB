@@ -29,14 +29,16 @@ class CommentController extends \yii\web\Controller
 
             $model->listing_id = $listing_id;
             $model->user_id = Yii::$app->user->id;
+            $model->created_at = date('Y-m-d H:i:s');
+
 
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', 'Comentário enviado com sucesso!');
-                return $this->redirect(['/site/detail', 'id' => $listing->animal_id]);
+                return $this->redirect(['/listings/detail', 'id' => $listing->animal_id]);
             }
         }
 
-        return $this->redirect(['/site/detail', 'id' => $listing->animal_id]);
+        return $this->redirect(['/listings/detail', 'id' => $listing->animal_id]);
 
     }
 }

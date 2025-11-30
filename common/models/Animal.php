@@ -153,7 +153,7 @@ class Animal extends ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getListings()
+    public function getListing()
     {
         return $this->hasOne(Listing::class, ['animal_id' => 'id']);
     }

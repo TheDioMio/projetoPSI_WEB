@@ -66,7 +66,7 @@ class ListingsController extends \yii\web\Controller
         // 1. O Controller PROCURA o animal na Base de Dados
         // Usamos ->with() para otimizar e ir buscar as relações (raça, tipo)
         $model = Animal::find()
-           // ->with('animalType', 'breed', 'listings.comments.user') // Carrega as tabelas relacionadas
+            ->with('animalType', 'breed', 'listing.comments.user') // Carrega as tabelas relacionadas
             ->where(['id' => $id])
             ->one();
 
@@ -78,15 +78,15 @@ class ListingsController extends \yii\web\Controller
         // 3. Vamos buscar os Comments do animal e enviamos para a vista
 
         // Comentários via relação: Animal → Listing → Comments
-        $comments = $model->listings ? $model->listings->comments : [];
+        $comments = $model->listing ? $model->listing->comments : [];
 
-        $comment = new \common\models\Comment();
+        $newComment = new \common\models\Comment();
 
         // 4. O Controller ENVIA o $model para a View
         return $this->render('detail', [
             'model' => $model,
             'comments' => $comments,
-            'comment' => $comment,
+            'newComment' => $newComment,
         ]);
     }
 

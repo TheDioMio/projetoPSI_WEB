@@ -85,15 +85,16 @@ $this->title = 'Detalhes';
             <!-- Comment Form Start -->
             <div class="bg-light rounded p-5">
                 <?php $form = \yii\widgets\ActiveForm::begin([
-                    'action' => ['/comment/create', 'listing_id' => $model->listings->id],
-                ]); ?>
+                    'action' => ['/comment/create', 'listing_id' => $model->listing->id],
+                ]);?>
 
                 <div class="bg-light rounded p-5">
                     <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">
                         Deixe o seu comentário
                     </h3>
-
-                    <?= $form->field($comment, 'text')->textarea([
+                    <?php
+                    ?>
+                    <?= $form->field($newComment, 'text')->textarea([
                         'rows' => 5,
                         'placeholder' => 'Escreva aqui o seu comentário'
                     ])->label(false) ?>
