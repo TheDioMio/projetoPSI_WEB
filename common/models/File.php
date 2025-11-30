@@ -116,7 +116,8 @@ class File extends \yii\db\ActiveRecord
 
     public function getUrl(): string
     {
-        return $this->path;
+       // return $this->path;
+        return Yii::getAlias('@web') . $this->path;
     }
 
 }

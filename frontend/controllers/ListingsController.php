@@ -63,14 +63,8 @@ class ListingsController extends \yii\web\Controller
 
     public function actionDetail($id)
     {
-        // 1. O Controller PROCURA o animal na Base de Dados
-        // Usamos ->with() para otimizar e ir buscar as relações (raça, tipo)
-        $model = Animal::find()
-            ->with('animalType', 'breed', 'listing.comments.user') // Carrega as tabelas relacionadas
-            ->where(['id' => $id])
-            ->one();
 
-        // 2. Verifica se o animal existe
+        $model = Animal::findOne($id);
         if ($model === null) {
             throw new NotFoundHttpException('O animal que procura não existe.');
         }

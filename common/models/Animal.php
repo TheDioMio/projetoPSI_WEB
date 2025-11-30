@@ -211,4 +211,12 @@ class Animal extends ActiveRecord
         ];
     }
 
+    public function getPrimaryImage()
+    {
+
+        return $this->hasOne(File::class, ['animal_id' => 'id'])
+            ->where (['type_id' => 1])
+            ->orderBy(['animal_id' => SORT_ASC]); // Ou outro critério de ordenação/prioridade
+    }
+
 }

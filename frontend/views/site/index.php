@@ -123,7 +123,11 @@ $this->title = 'Início';
                 <div class="pb-5">
                     <div class="product-item position-relative bg-light d-flex flex-column text-center">
 
-                        <img class="img-fluid mb-4" src="../img/blog-1.jpg" alt="<?= Html::encode($animal->name) ?>" style="object-fit: cover; height: 200px;">
+                        <?php $primaryImage = $animal->primaryImage; ?>
+                        <img class="img-fluid mb-4"
+                             src="<?= $primaryImage ? Yii::getAlias('@web') . '/' . Html::encode($primaryImage->path) : Yii::getAlias('@web') . '/images/no-image.png' ?>"
+                             alt="<?= Html::encode($animal->name) ?>"
+                             style="object-fit: cover; height: 200px;">
 
                         <h6 class="text-uppercase"><?= Html::encode($animal->name) ?></h6>
 
@@ -134,7 +138,7 @@ $this->title = 'Início';
                         <div class="btn-action d-flex justify-content-center">
                             <?= Html::a(
                                 '<i class="bi bi-eye"></i>',
-                                ['/site/detail', 'id' => $animal->id],
+                                ['/listings/detail', 'id' => $animal->id],
                                 ['class' => 'btn btn-primary py-2 px-3']
                             ) ?>
                         </div>

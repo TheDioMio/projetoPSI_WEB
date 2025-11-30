@@ -5,37 +5,72 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 
 $this->title = 'Detalhes';
+
+$images = $model->files;
+$totalImages = count($images);
+
+// Inicializa variáveis para o HTML
+$carouselIndicators = '';
+$carouselItems = '';
+$i = 0;
+
+
+
+
+
+
 ?>
 <!-- Blog Start -->
 <div class="container py-5">
     <div class="row g-5">
         <div class="col-lg-8">
 
+            <?php foreach ($images as $image):
+                $isActive = ($i === 0) ? 'active' : ''; // O primeiro item é sempre ativo
+
+                // O seu ListingsController guarda o URL completo na propriedade 'path'
+                $imageUrl = $image->url;
+
+                // A. Constrói os Indicadores (os botões em baixo)
+                $carouselIndicators .= '<button type="button" data-bs-target="#animalCarousel" data-bs-slide-to="' . $i . '" class="' . $isActive . '" aria-current="' . ($isActive ? 'true' : 'false') . '" aria-label="Slide ' . ($i + 1) . '"></button>';
+
+                // B. Constrói os Itens (as imagens)
+                $carouselItems .= '<div class="carousel-item ' . $isActive . '">';
+                $carouselItems .= Html::img($imageUrl, [
+                    'class' => 'd-block w-100 rounded',
+                    'alt' => $model->name . ' - Foto ' . ($i + 1),
+                    // Defina uma altura fixa para evitar saltos no layout. Use 'object-fit: cover' para preencher a área.
+                    'style' => 'height: 450px; object-fit: contain;'
+                ]);
+                $carouselItems .= '</div>';
+
+                $i++;
+            endforeach; ?>
+
             <!-- Blog Detail Start -->
-            <div id="carouselExampleIndicators" class="carousel slide">
-                <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                </div>
-                <div class="carousel-inner">
-                    <div class="carousel-item active">
-                        <img src="../img/hero.jpg" class="d-block w-100" alt="...">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="../img/offer.jpg" class="d-block w-100" alt="...">
+            <div id="carouselExampleIndicators" class="carousel-dark slide">
+                <div id="animalCarousel" class="carousel slide" data-bs-ride="carousel">
+
+                    <div class="carousel-indicators">
+                        <?= $carouselIndicators ?>
                     </div>
 
+                    <div class="carousel-inner">
+                        <?= $carouselItems ?>
+                    </div>
+
+                    <?php if ($totalImages > 1): ?>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#animalCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Anterior</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#animalCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Próximo</span>
+                        </button>
+                    <?php endif; ?>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                </button>
             </div>
-
-
-
 
             <div class="mb-5">
 
