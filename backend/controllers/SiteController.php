@@ -1,5 +1,4 @@
 <?php
-
 namespace backend\controllers;
 
 use backend\models\AnimalSearch;
@@ -88,11 +87,40 @@ class SiteController extends Controller
         $utilizadores = User::find()->all();
         $listagens = Listing::find()->all();
         $candidaturas = Application::find()->all();
+        $animaisRecentes = Animal::find()
+            ->with(['animalType', 'breed'])
+            ->orderBy(['created_at' => SORT_DESC]) // Ou 'id' => SORT_DESC
+            ->limit(5)
+            ->all();
+
+        //Candidaturas Pendentes (Considerei que status = 0 é 'pendente')
+        $candidaturasPendentes = Application::find()
+            ->where(['status' => '0'])
+            ->orderBy(['created_at' => SORT_DESC])
+            ->limit(4)
+            ->all();
+
+        //Hardcoded (1 = Cão, 2 = Gato, 3 = Outros) conforme a tabela animal_type
+        $totalCaes = Animal::find()->where(['animal_type_id' => 1])->count();
+        $totalGatos = Animal::find()->where(['animal_type_id' => 2])->count();
+        $totalOutros = Animal::find()->where(['animal_type_id' => 3])->count();
+
+        $total = $totalCaes + $totalGatos + $totalOutros;
+        $percentagemCaes = $total > 0 ? ($totalCaes / $total) * 100 : 0;
+        $percentagemGatos = $total > 0 ? ($totalGatos / $total) * 100 : 0;
+        $percentagemOutros = $total > 0 ? ($totalOutros / $total) * 100 : 0;
+
+
         return $this->render('index', [
             'animais'=>$animais,
             'utilizadores'=>$utilizadores,
             'listagens'=>$listagens,
             'candidaturas'=>$candidaturas,
+            'animaisRecentes'=>$animaisRecentes,
+            'candidaturasPendentes' => $candidaturasPendentes,
+            'percentagemCaes' => $percentagemCaes,
+            'percentagemGatos' => $percentagemGatos,
+            'percentagemOutros' => $percentagemOutros,
         ]);
     }
 

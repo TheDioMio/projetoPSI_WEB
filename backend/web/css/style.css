@@ -11,3 +11,11 @@ Colocar isto na parte de cima do <?php ?>
     max-width: 70px;
     max-height: 70px;
 }
+
+.btn-quickactions {
+    min-width: 80px;
+}
+
+.progress-bar {
+    aria-valuemin: 0;
+}
