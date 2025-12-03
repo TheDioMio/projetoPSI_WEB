@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 use yii\db\JsonExpression;
 
 /**
@@ -22,11 +23,30 @@ use yii\db\JsonExpression;
  * @property User $targetUser
  * @property User $user
  */
-class Application extends \yii\db\ActiveRecord
+class Application extends ActiveRecord
 {
+    //Isto aqui é para os diferentes cenários de cada candidatura
+    const SCENARIO_ADOPTION = 'adoption';
+    const SCENARIO_USER_PRO = 'user_pro';
+
+
+    //Tipos de candidatura (isto vai para a coluna 'type' dentro da nossa tabela "Application")
+    const TYPE_ADOPTION = 1;
+    const TYPE_USER_PRO = 2;
+
     public static function tableName()
     {
         return 'application';
+    }
+
+    //ISTO É IMPORTANTE PARA OS CENÁRIOS FUNCIONAREM!
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        // No cenário USER_PRO, permitimos guardar estes campos:
+        $scenarios[self::SCENARIO_USER_PRO] = ['user_id', 'type', 'status', 'created_at', 'description', 'data'];
+
+        return $scenarios;
     }
 
     public function rules()
@@ -35,7 +55,12 @@ class Application extends \yii\db\ActiveRecord
             [['description', 'type', 'created_at', 'target_user_id', 'data'], 'default', 'value' => null],
             [['status'], 'default', 'value' => 0],
             [['status', 'user_id', 'animal_id', 'type', 'target_user_id'], 'integer'],
-            [['user_id', 'animal_id'], 'required'],
+
+            //user ID é SEMPRE obrigatório, independentemente do cenário
+            [['user_id'], 'required'],
+            //animal_id só é obrigatório no cenário de ADOÇÃO (ou default)
+            [['animal_id'], 'required', 'on' => [self::SCENARIO_DEFAULT, self::SCENARIO_ADOPTION]],
+
             [['created_at', 'data'], 'safe'],
             [['description'], 'string', 'max' => 255],
             [['animal_id'], 'exist', 'skipOnError' => true, 'targetClass' => Animal::class, 'targetAttribute' => ['animal_id' => 'id']],

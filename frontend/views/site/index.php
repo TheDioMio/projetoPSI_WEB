@@ -199,7 +199,6 @@ $this->title = 'Início';
                             <p class="small mb-0 text-white-50"><?=Html::encode('Junte a sua instituição à nossa rede.')?></p>
                         </div>
                     </div>
-
                     <?= Html::a(
                         'Candidatar-se agora <i class="bi bi-arrow-right"></i>',
                         ['/application/apply-user-pro'],
@@ -207,7 +206,6 @@ $this->title = 'Início';
                             'class' => 'btn btn-light text-primary fw-bold text-uppercase rounded-pill shadow-sm',
                         ]
                     ) ?>
-
                 </div>
             </div>
         </div>
