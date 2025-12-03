@@ -1,5 +1,4 @@
 <?php
-
 namespace frontend\controllers;
 
 use common\models\Animal;
@@ -8,9 +7,8 @@ use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
-class ApplicationController extends \yii\web\Controller
+class ApplicationController extends Controller
 {
-
     public function actionApply($animal_id)
     {
         // tem de estar autenticado para candidatar (opcional)
@@ -55,13 +53,14 @@ class ApplicationController extends \yii\web\Controller
             'model'  => $model,
         ]);
     }
-
-
-
-
     public function actionMyApplications()
     {
         return $this->render('my-applications');
     }
 
+
+    public function actionApplyUserPro()
+    {
+        return $this->render('apply-user-pro');
+    }
 }
