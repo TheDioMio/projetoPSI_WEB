@@ -117,7 +117,8 @@ $disponibilidade = [
                     <input class="form-check-input" type="checkbox" id="termsCheck" required>
                     <label class="form-check-label small text-muted" for="termsCheck">
                         <?=Html::encode('Declaro que todas as informações prestadas são verdadeiras e aceito a ')?>
-                        <?=Html::a('Política de Privacidade', ['#'])?> <?=Html::encode(' e os ')?> <?=Html::a('Termos para Parceiros', ['#'])?>
+                        <?=Html::a('Política de Privacidade', ['#'])?> <?=Html::encode(' e os ')?>
+                        <?=Html::a('Termos para Parceiros', ['#'])?>
                     </label>
                 </div>
 

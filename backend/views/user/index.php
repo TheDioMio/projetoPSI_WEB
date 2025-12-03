@@ -37,21 +37,35 @@ $this->params['breadcrumbs'][] = $this->title;
                         'value' => 'role.description',
                     ],
                     [
-                            'label'=> 'Status',
-                        'attribute'=> 'status',
-                        'value'=> function ($model) {
-                            if($model->status == 10){
-                                return 'Ativo';
-                            } else if ($model->status == 9){
-                                return 'Inativo';
+                        'label' => 'Status',
+                        'attribute' => 'status',
+                        'format' => 'raw', //Tem que ser raw, para os botões serem renderizados (Botões HTML)
+                        'value' => function ($model) {
+                            if ($model->status == 10) {
+                                //Se for ativo (10), mostra o botão verde, e ao clicar desativa
+                                return Html::a('Ativo', ['update-status', 'id' => $model->id], [
+                                    'class' => 'btn btn-xs btn-success btn-block',
+                                    'data' => [
+                                        'confirm' => 'Tem a certeza que deseja desativar este utilizador?',
+                                        'method' => 'post',
+                                    ],
+                                ]);
                             } else {
-                                return 'Desconhecido';
+                                //Se for inativo (10), mostra o botão vermelho, e ao clicar ativa
+                                return Html::a('Inativo', ['update-status', 'id' => $model->id], [
+                                    'class' => 'btn btn-xs btn-secondary btn-danger btn-block',
+                                    'data' => [
+                                        'confirm' => 'Tem a certeza que deseja ativar este utilizador?',
+                                        'method' => 'post',
+                                    ],
+                                ]);
                             }
                         },
                         'filter' => [
                             10 => 'Ativo',
                             9  => 'Inativo',
                         ],
+                        'contentOptions' => ['style' => 'width: 100px; text-align: center;'],
                     ],
                     [
                         'class' => ActionColumn::className(),

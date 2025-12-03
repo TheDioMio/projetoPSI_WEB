@@ -83,9 +83,6 @@ class UserController extends Controller
 
             if ($model->save()) {
                 $auth = Yii::$app->authManager;
-                /*Para atribuição de roles, POR AGORA, temos de fazer o mapeamento manual, já que na nossa tabela
-                auth_item temos os roles escritos de forma diferente aos da tabela roles (ex. "Admin", "Administrator").
-                */
                 $roleMap = [
                     1 => 'admin',
                     2 => 'userPro',
@@ -126,9 +123,6 @@ class UserController extends Controller
                 $auth = Yii::$app->authManager;
                 $auth->revokeAll($model->id); // Limpa anteriores
 
-                /*Para atribuição de roles, POR AGORA, temos de fazer o mapeamento manual, já que na nossa tabela
-                auth_item temos os roles escritos de forma diferente aos da tabela roles (ex. "Admin", "Administrator").
-                */
                 $roleMap = [
                     1 => 'admin',
                     2 => 'userPro',
@@ -166,5 +160,22 @@ class UserController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionUpdateStatus($id){
+        $model = $this->findModel($id);
+
+        if ($model->status == 10) {
+            $model->status = 9;
+            Yii::$app->session->setFlash('warning', 'Utilizador desativado!');
+        } else {
+            $model->status = 10;
+            Yii::$app->session->setFlash('success', 'Utilizador ativado!');
+        }
+
+        $model->save(false); //tem que estar false, se não explode
+
+        //Este redirect é feito um pouco mais "estranho" do que o normal para preservar filtros que estejam aplicados
+        return $this->redirect(Yii::$app->request->referrer ?: ['index']);
     }
 }

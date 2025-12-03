@@ -12,10 +12,10 @@ use yii\helpers\Url;
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="<?=\yii\helpers\Url::home()?>" class="nav-link">Home</a>
+            <a href="<?=Url::home()?>" class="nav-link">Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="<?= \yii\helpers\Url::to(['users/index']) ?>" class="nav-link">Users</a>
+            <a href="<?=Url::to(['users/index']) ?>" class="nav-link">Users</a>
         </li>
         <li class="nav-item dropdown">
             <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">Dropdown</a>
@@ -147,6 +147,8 @@ use yii\helpers\Url;
                 <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
             </div>
         </li>
+
+
         <!-- Notifications Dropdown Menu -->
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">

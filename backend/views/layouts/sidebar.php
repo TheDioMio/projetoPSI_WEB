@@ -67,12 +67,13 @@ $userLogado = $this->params['userLogado']->username;
                     [
                         'label' => 'Menu Utilizadores', 'icon'=>'fas fa-users',
                         'items' => [
-                            ['label' => 'Users', 'url' => ['user/index'], 'iconStyle' => 'far'],
+                            ['label' => 'Utilizadores', 'url' => ['user/index'], 'iconStyle' => 'far'],
                             ['label' => 'Listagens', 'url' => ['listing/index'], 'iconStyle' => 'far'],
                             ['label' => 'Candidaturas', 'url' => ['application/index'], 'iconStyle' => 'far'],
                             ['label' => 'Comentários', 'url' => ['comment/index'], 'iconStyle' => 'far'],
                         ]
                     ],
+                    ['label' => 'Candidaturas', 'header' => true],
 //                    ['label' => 'Yii2 PROVIDED', 'header' => true],
 //                    ['label' => 'Login', 'url' => ['site/login'], 'icon' => 'sign-in-alt', 'visible' => Yii::$app->user->isGuest],
 //                    ['label' => 'Gii',  'icon' => 'file-code', 'url' => ['/gii'], 'target' => '_blank'],

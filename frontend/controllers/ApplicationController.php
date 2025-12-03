@@ -97,7 +97,7 @@ class ApplicationController extends Controller
                 $application->animal_id = 16; //FORÇA A ENVIAR UM ANIMAL_ID, já que na Application é obrigatório um animal_id. Só para testes.
 
                 //Professional name é o mesmo que o nosso 'name', esqueci-me que tínhamos essa coluna na BD, mas está a funcionar por isso, por agora, não se mexe
-                $application->description = 'Candidatura UserPro: ' . $formModel->professional_name;
+                $application->description = $formModel->professional_name;
 
                 //Empacotar tudo no JSON para a 'data'
                 $dataToSave = $formModel->getAttributes();
@@ -106,15 +106,13 @@ class ApplicationController extends Controller
                 //B. Guardar
                 if ($application->save()) {
                     //Isto é tipo o Toast de Android
-                    Yii::$app->session->setFlash('success', 'Candidatura submetida com sucesso! Vamos analisar os teus dados.');
+                    Yii::$app->session->setFlash('success', 'Candidatura submetida com sucesso! Vamos analisar os seus dados.');
                     return $this->redirect(['site/index']);
                 } else {
-                    //Isto é tipo o Toast de Android
                     Yii::$app->session->setFlash('error', 'Erro ao guardar a candidatura na base de dados.');
                 }
             } else {
-                //Isto é tipo o Toast de Android
-                Yii::$app->session->setFlash('error', 'Por favor corrige os erros no formulário.');
+                Yii::$app->session->setFlash('error', 'Corrija, por favor, os erros no formulário.');
             }
         }
 

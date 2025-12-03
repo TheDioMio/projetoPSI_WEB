@@ -6,6 +6,7 @@ use common\models\Application;
 use app\models\ApplicationSearch;
 use common\models\User;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -57,16 +58,30 @@ class ApplicationController extends Controller
     {
         $searchModel = new ApplicationSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        $pendingUserProApplications = new ActiveDataProvider([
+            'query' => Application::find()
+                ->where(['type' => Application::TYPE_USER_PRO])
+                ->andWhere(['status' => 0]) // 0 = Pendente
+                ->orderBy(['created_at' => SORT_DESC]), // Mais recentes primeiro
+        ]);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'pendingUserProApplications' => $pendingUserProApplications,
         ]);
     }
 
     public function actionView($id)
     {
         return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    public function actionViewUserPro($id)
+    {
+        return $this->render('view-user-pro', [
             'model' => $this->findModel($id),
         ]);
     }
