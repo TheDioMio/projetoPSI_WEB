@@ -58,11 +58,28 @@ class ApplicationController extends Controller
     {
         $searchModel = new ApplicationSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+
+        //Query que vai buscar todas as aplicações que tenham o type_user_pro e que o status seja 0
+        $queryUserPro = Application::find()
+            ->joinWith(['candidate'])
+            ->where(['type' => Application::TYPE_USER_PRO])
+            ->andWhere(['application.status' => 0]);
+
+
+
         $pendingUserProApplications = new ActiveDataProvider([
-            'query' => Application::find()
-                ->where(['type' => Application::TYPE_USER_PRO])
-                ->andWhere(['status' => 0]) // 0 = Pendente
-                ->orderBy(['created_at' => SORT_DESC]), // Mais recentes primeiro
+            'query' => $queryUserPro,
+            'sort' => [
+                'defaultOrder' => ['created_at' => SORT_DESC],
+                'attributes' => [
+                    'created_at',
+                    'description',
+                    'candidate_name' => [
+                        'asc' => ['user.name' => SORT_ASC],
+                        'desc' => ['user.name' => SORT_DESC],
+                    ],
+                ],
+            ],
         ]);
 
         return $this->render('index', [

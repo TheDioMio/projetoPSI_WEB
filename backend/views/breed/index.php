@@ -22,7 +22,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'tableOptions' => ['class' => 'table table-hover table-striped table-sm text-nowrap'],
                 'layout' => "{items}\n{summary}\n{pager}",
                 'columns' => [
-                    ['class' => 'yii\grid\SerialColumn'],
                     'id',
                     [
                         'label' => 'Raça',

@@ -25,22 +25,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 'tableOptions' => ['class' => 'table table-hover table-striped table-sm'],
                 'layout' => "{items}\n{summary}\n{pager}",
                 'columns' => [
-                    ['class' => 'yii\grid\SerialColumn'],
-                    'id',
                     [
-                            'label'=> 'Candidato',
-                        'value'=>'candidate.name',
-                        'attribute'=>'candidate_name',
+                        'label' => 'Candidato',
+                        'value' => 'candidate.name',
+                        'attribute' => 'candidate_name',
                     ],
                     [
-                        'label'=> 'Dono do Animal',
-                        'value'=>'animalOwner.name',
-                        'attribute'=>'animal_owner_name',
+                        'label' => 'Dono do Animal',
+                        'value' => 'animalOwner.name',
+                        'attribute' => 'animal_owner_name',
                     ],
                     [
-                        'label'=> 'Animal',
-                        'value'=>'animal.name',
-                        'attribute'=>'animal_name',
+                        'label' => 'Animal',
+                        'value' => 'animal.name',
+                        'attribute' => 'animal_name',
                     ],
 
                     [
@@ -74,18 +72,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'layout' => "{items}\n{pager}",
                 'tableOptions' => ['class' => 'table table-valign-middle table-hover'],
                 'columns' => [
-                    ['class' => 'yii\grid\SerialColumn'],
                     [
-                        'attribute' => 'id',
-                        'contentOptions' => ['style' => 'width: 60px;'],
-                    ],
-                    [
-                        'label' => 'Utilizador',
-                        'value' => 'candidate.username', // username ou name? logo se vê
+                        'label' => 'Candidato',
+                        'value' => 'candidate.name',
+                        'attribute' => 'candidate_name',
                     ],
                     [
                         'attribute' => 'description',
-                        'label' => 'Detalhes / Empresa',
+                        'label' => 'Empresa',
                     ],
                     [
                         'attribute' => 'created_at',
@@ -102,7 +96,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                 $novoUrl = Url::to(['view-user-pro', 'id' => $model->id]);
                                 return Html::a('<i class="fas fa-eye"></i> Analisar', $novoUrl, [
                                     'class' => 'btn btn-xs btn-primary',
-                                    'title' => 'Ver detalhes e aprovar'
                                 ]);
                             },
                         ],

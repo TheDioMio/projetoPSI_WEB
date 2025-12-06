@@ -24,7 +24,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'tableOptions' => ['class' => 'table table-hover table-striped table-sm'],
                 'layout' => "{items}\n{summary}\n{pager}",
                 'columns' => [
-                    ['class' => 'yii\grid\SerialColumn'],
                     [
                         'label' => 'ID',
                         'attribute' => 'id',
@@ -46,7 +45,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                 return Html::a('Ativo', ['update-status', 'id' => $model->id], [
                                     'class' => 'btn btn-xs btn-success btn-block',
                                     'data' => [
-                                        'confirm' => 'Tem a certeza que deseja desativar este utilizador?',
                                         'method' => 'post',
                                     ],
                                 ]);
@@ -55,7 +53,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                 return Html::a('Inativo', ['update-status', 'id' => $model->id], [
                                     'class' => 'btn btn-xs btn-secondary btn-danger btn-block',
                                     'data' => [
-                                        'confirm' => 'Tem a certeza que deseja ativar este utilizador?',
                                         'method' => 'post',
                                     ],
                                 ]);
@@ -69,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     [
                         'class' => ActionColumn::className(),
-                        'urlCreator' => function ($action, User $model, $key, $index, $column) {
+                        'urlCreator' => function ($action, User $model) {
                             return Url::toRoute([$action, 'id' => $model->id]);
                         }
                     ],

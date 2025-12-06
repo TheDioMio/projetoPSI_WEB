@@ -2,16 +2,18 @@
 
 namespace frontend\controllers;
 
+use common\models\Comment;
 use yii;
 use common\models\Animal;
 use common\models\File;
 use common\models\Listing;
 use yii\data\ActiveDataProvider;
+use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
 
-class ListingsController extends \yii\web\Controller
+class ListingsController extends Controller
 {
 
 
@@ -74,7 +76,7 @@ class ListingsController extends \yii\web\Controller
         // Comentários via relação: Animal → Listing → Comments
         $comments = $model->listing ? $model->listing->comments : [];
 
-        $newComment = new \common\models\Comment();
+        $newComment = new Comment();
 
         // 4. O Controller ENVIA o $model para a View
         return $this->render('detail', [
