@@ -2,6 +2,7 @@
 
 namespace backend\modules\api\controllers;
 
+use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
 use yii\rest\ActiveController;
 
@@ -17,7 +18,7 @@ class AnimalController extends ActiveController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator'] = [
-            'class' => QueryParamAuth::className(),
+            'class' => HttpBearerAuth::className(),
             // 'exept' => ['index', 'view'],
         ];
         return $behaviors;

@@ -19,5 +19,6 @@ class ModuleAPI extends \yii\base\Module
     {
         parent::init();
         \Yii::$app->user->enableSession = false;
+        \Yii::$app->user->loginUrl = null; // devolve 401 em caso de acesso nao autorizado
     }
 }

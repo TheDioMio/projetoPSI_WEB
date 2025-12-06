@@ -1,0 +1,54 @@
+<?php
+
+namespace backend\modules\api\controllers;
+
+use Yii;
+use yii\filters\auth\HttpBasicAuth;
+use yii\rest\Controller;
+use yii\web\UnauthorizedHttpException;
+use common\models\User;
+
+class AuthController extends Controller
+{
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+
+        // Login por Basic Auth
+        $behaviors['authenticator'] = [
+            'class' => HttpBasicAuth::class,
+            'auth' => function ($username, $password) {
+                $user = User::findByUsername($username);
+                if ($user && $user->status == User::STATUS_ACTIVE && $user->validatePassword($password)) {
+                    return $user;
+                }
+                return null;
+            },
+        ];
+
+        return $behaviors;
+    }
+
+    public function verbs()
+    {
+        return [
+            'login' => ['POST'],
+        ];
+    }
+
+    public function actionLogin()
+    {
+        /** @var User|null $user */
+        $user = Yii::$app->user->identity;
+
+        if (!$user) {
+            throw new UnauthorizedHttpException('Invalid credentials.');
+        }
+
+        return [
+            'token' => $user->auth_key,
+            'user_id' => $user->id,
+            'username' => $user->username,
+        ];
+    }
+}
