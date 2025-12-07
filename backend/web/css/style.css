@@ -1,11 +1,3 @@
-/*
-PARA DAR LINK A ESTE CSS A QUALQUER VIEW NO BACKEND:
-$this->registerCssFile('@web/css/style.css', [
-    'depends' => [\hail812\adminlte3\assets\AdminLteAsset::class],
-]);
-
-Colocar isto na parte de cima do <?php ?>
-*/
 
 .img-logo-dashboard {
     max-width: 70px;
@@ -16,6 +8,31 @@ Colocar isto na parte de cima do <?php ?>
     min-width: 80px;
 }
 
-.progress-bar {
-    aria-valuemin: 0;
+
+/*CSS PÁGINA ANIMAL VIEW*/
+/* Animação de entrada suave */
+.fade-in-up {
+    animation: fadeInUp 0.5s ease-out;
 }
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-size: 50%, 50%;
+}
+
+.mr-2 { margin-right: 0.5rem; }
+
+.content-header h1,
+.page-header h1 {
+    display: none !important;
+}
+
+.content-header {
+    padding: 0 !important;
+    margin-bottom: 10px !important;
+}
+/*FIM CSS PÁGINA ANIMAL VIEW*/

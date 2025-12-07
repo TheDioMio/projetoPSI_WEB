@@ -108,11 +108,9 @@ $txtTelefone = '+351 244 875 627';
                             'name' => 'contact-button'
                         ]) ?>
                     </div>
-
                     <?php ActiveForm::end(); ?>
                 </div>
             </div>
-
         </div>
     </div>
 </div>

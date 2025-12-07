@@ -1,5 +1,6 @@
 <?php
 
+use hail812\adminlte3\assets\AdminLteAsset;
 use yii\helpers\Html;
 use yii\web\YiiAsset;
 use yii\widgets\DetailView;
@@ -68,15 +69,12 @@ if ($totalImages > 0) {
     <div class="row align-items-stretch">
         <div class="col-lg-5 mb-4">
             <div class="card shadow border-0 overflow-hidden h-100">
-                <div class="card-header bg-white border-0 pt-3 pb-0">
-                    <h5 class="card-title text-muted"><i class="fas fa-images mr-2"></i>Galeria</h5>
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-images mr-2"></i><?=Html::encode('Fotos')?></h5>
                 </div>
-
                 <div class="card-body p-0 d-flex align-items-center bg-light justify-content-center" style="min-height: 400px;">
                     <?php if ($totalImages > 0): ?>
-
                         <div id="animalCarousel" class="carousel slide w-100" data-ride="carousel">
-
                             <ol class="carousel-indicators">
                                 <?= $carouselIndicators ?>
                             </ol>
@@ -132,14 +130,26 @@ if ($totalImages > 0) {
                             ],
                             [
                                 'label' => 'Dono',
-                                'attribute' => 'user.username',
-                                'contentOptions' => ['class' => 'text-primary align-middle'],
+                                'format' => 'raw', //Raw porque o nome do dono é um botão (a)
+                                'value' => function ($model) {
+                                    if (!$model->user) {
+                                        return '<span class="text-muted">(Sem dono associado)</span>';
+                                    }
+                                    return Html::a(
+                                        $model->user->username, //Texto que aparece no botão (nome do dono)
+                                        ['user/view', 'id' => $model->user->id], //A rota para onde vai (backend/user/view)
+                                        [
+                                            'target' => '_blank',
+                                        ]
+                                    );
+                                },
+                                'contentOptions' => ['class' => 'align-middle'],
                                 'captionOptions' => ['class' => 'align-middle'],
                             ],
                             [
                                 'label' => 'Raça',
                                 'attribute' => 'breed.description',
-                                'contentOptions' => ['class' => 'font-weight-bold align-middle'],
+                                'contentOptions' => ['class' => 'align-middle'],
                                 'captionOptions' => ['class' => 'align-middle'],
                             ],
                             [
@@ -174,42 +184,3 @@ if ($totalImages > 0) {
         </div>
     </div>
 </div>
-
-<style>
-    /* Animação de entrada suave */
-    .fade-in-up {
-        animation: fadeInUp 0.5s ease-out;
-    }
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Efeitos de Tabela */
-    .table th {
-        width: 30%;
-        color: #6c757d;
-        font-weight: 600;
-        vertical-align: middle;
-    }
-    .table td {
-        vertical-align: middle;
-    }
-
-    .carousel-control-prev-icon,
-    .carousel-control-next-icon {
-        background-size: 50%, 50%;
-    }
-
-    .mr-2 { margin-right: 0.5rem; }
-
-    .content-header h1,
-    .page-header h1 {
-        display: none !important;
-    }
-
-    .content-header {
-        padding: 0 !important;
-        margin-bottom: 10px !important;
-    }
-</style>

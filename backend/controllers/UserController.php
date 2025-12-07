@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\Application;
 use common\models\Comment;
 use common\models\Listing;
 use common\models\Role;
@@ -60,17 +61,26 @@ class UserController extends Controller
     {
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        $userLogado = Yii::$app->user->identity;
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'userLogado' => $userLogado,
         ]);
     }
 
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+
+        $totalUserApplications = $model->getApplications()->count();
+        $totalUserAnimais = $model->getAnimals()->count();
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'totalUserApplications' => $totalUserApplications,
+            'totalUserAnimais' => $totalUserAnimais,
         ]);
     }
 
