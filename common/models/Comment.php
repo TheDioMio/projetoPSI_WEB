@@ -42,7 +42,9 @@ class Comment extends \yii\db\ActiveRecord
             [['created_at'], 'safe'],
             [['listing_id'], 'exist', 'skipOnError' => true, 'targetClass' => Listing::class, 'targetAttribute' => ['listing_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
-        ];
+            [['text'], 'required', 'message' => 'O comentário não pode ser vazio.'],
+
+            ];
     }
 
     /**
@@ -57,6 +59,7 @@ class Comment extends \yii\db\ActiveRecord
             'text' => 'Text',
             'created_at' => 'Created At',
             'created_time' => 'Created Time',
+            'subject' => 'Subject',
         ];
     }
 

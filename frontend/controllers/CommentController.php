@@ -5,10 +5,31 @@ namespace frontend\controllers;
 use Yii;
 use common\models\Comment;
 use common\models\Listing;
+use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 
 class CommentController extends \yii\web\Controller
 {
+
+    public function behaviors()
+    {
+        return array_merge(parent::behaviors(), [
+            'access' => [
+                'class' => AccessControl::class,
+                'denyCallback' => function () {
+                    Yii::$app->session->setFlash('error', 'Não tem permissões para criar um comentário.');
+                    return Yii::$app->response->redirect(['/site/index']);
+                },
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['create'],
+                        'roles' => ['createComment'],
+                    ],
+                ],
+            ],
+        ]);
+    }
     public function actionCreate($listing_id)
     {
         $listing = Listing::findOne($listing_id);

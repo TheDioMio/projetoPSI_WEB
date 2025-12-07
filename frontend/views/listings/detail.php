@@ -118,6 +118,8 @@ $i = 0;
             <!-- Comment List End -->
 
             <!-- Comment Form Start -->
+
+            <?php if (Yii::$app->user->can('createComment')): ?>
             <div class="bg-light rounded p-5">
                 <?php $form = \yii\widgets\ActiveForm::begin([
                     'action' => ['/comment/create', 'listing_id' => $model->listing->id],
@@ -140,6 +142,7 @@ $i = 0;
                 <?php \yii\widgets\ActiveForm::end(); ?>
 
             </div>
+            <?php endif; ?>
             <!-- Comment Form End -->
         </div>
 
@@ -206,7 +209,12 @@ $i = 0;
                         ['application/apply', 'animal_id' => $model->id],
                         ['class' => 'h5 bg-light py-2 px-3 mb-2']
                     ) ?>
-                    <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Pedir mais Informações <i class="bi bi-info-circle"></i></a>
+                    <?= Html::a(
+                        '<i class="bi bi-arrow-right me-2"></i>Pedir mais Informações <i class="bi bi-input-cursor-text"></i>',
+                        ['message/create', 'user_id' => $model->user_id, "from"=>"listing", "listing_id"=>$model->id],
+                        ['class' => 'h5 bg-light py-2 px-3 mb-2']
+                    ) ?>
+
                     <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Agendar Visita <i class="bi bi-calendar-date"></i></a>
                     <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>????????????</a>
                     <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>????????????</a>
