@@ -15,12 +15,47 @@ $this->title = 'O Meu Perfil';
             <div class="card shadow-sm">
                 <div class="card-body text-center">
                     <!-- Avatar -->
-                    <div class="mb-3">
-                        <img src="/img/default-avatar.png"
-                             alt="Avatar"
-                             class="rounded-circle img-fluid"
-                             style="width: 120px; height: 120px; object-fit: cover;">
+                    <div class="mb-3 text-center">
+
+                        <?php
+                        // pegar avatar do utilizador
+                        $avatar = Yii::$app->request->baseUrl . '/img/default-avatar.png';
+
+                        if ($user->profileImage) {
+                            $avatar = Yii::$app->request->baseUrl . '/' . ltrim($user->profileImage->path, '/');
+                        }
+                        ?>
+
+                        <!-- Preview da foto -->
+                        <img id="avatar-preview"
+                             src="<?= $avatar ?>"
+                             class="rounded-circle img-fluid mb-2"
+                             style="width: 120px; height:120px; object-fit:cover">
+
+                        <!-- Formulário de upload -->
+                        <?php $form = \yii\widgets\ActiveForm::begin([
+                            'action' => ['profile/upload-image'],
+                            'options' => ['enctype' => 'multipart/form-data']
+                        ]); ?>
+
+<!--                        --><?php //= $form->field($user, 'imageFile')->fileInput([
+//                            'accept' => 'image/*',
+//                            'onchange' => 'previewAvatar(event)'
+//                        ])->label(false) ?>
+                        <label class="btn btn-outline-secondary btn-sm">
+                            Selecionar imagem
+                            <?= $form->field($user, 'imageFile')->fileInput([
+                                'accept' => 'image/*',
+                                'onchange' => 'previewAvatar(event)',
+                                'style' => 'display:none'
+                            ])->label(false) ?>
+                        </label>
+
+                        <button class="btn btn-primary btn-sm">Guardar imagem</button>
+
+                        <?php \yii\widgets\ActiveForm::end(); ?>
                     </div>
+
 
                     <!-- Nome e role -->
                     <h5 class="card-title mb-0">
@@ -88,3 +123,19 @@ $this->title = 'O Meu Perfil';
         </div>
     </div>
 </div>
+
+<script>
+    function previewAvatar(event) {
+        const file = event.target.files[0];
+
+        if (!file) return;
+
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            document.getElementById('avatar-preview').src = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+    }
+</script>

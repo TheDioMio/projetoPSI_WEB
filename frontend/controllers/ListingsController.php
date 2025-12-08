@@ -74,7 +74,13 @@ class ListingsController extends Controller
         // 3. Vamos buscar os Comments do animal e enviamos para a vista
 
         // Comentários via relação: Animal → Listing → Comments
-        $comments = $model->listing ? $model->listing->comments : [];
+        $comments = $model->listing
+            ? $model->listing
+                ->getComments()
+                ->with(['user', 'userImage'])
+                ->orderBy(['created_at' => SORT_DESC])
+                ->all()
+            : [];
 
         $newComment = new Comment();
 

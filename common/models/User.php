@@ -38,6 +38,7 @@ use yii\web\IdentityInterface;
 // * @property Message[] $messages0
  * @property Role $role
  * @property Visit[] $visits
+ *
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -46,6 +47,8 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_ACTIVE = 10;
 
     public $password;
+
+    public $imageFile;
 
     /**
      * {@inheritdoc}
@@ -85,6 +88,8 @@ class User extends ActiveRecord implements IdentityInterface
             [['username', 'email'], 'string', 'max' => 255],
             ['role_id', 'integer'],
             [['role_id'], 'exist', 'skipOnError' => true, 'targetClass' => Role::class, 'targetAttribute' => ['role_id' => 'id']],
+            ['imageFile', 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, png, jpeg', 'maxSize' => 5*1024*1024],
+
         ];
     }
 
@@ -266,6 +271,12 @@ class User extends ActiveRecord implements IdentityInterface
     public function getFiles()
     {
         return $this->hasMany(File::class, ['user_id' => 'id']);
+    }
+
+    public function getProfileImage()
+    {
+        return $this->hasOne(File::class, ['user_id' => 'id'])
+            ->andWhere(['type_id' => 2]);
     }
 
     public function getApplications()

@@ -99,6 +99,7 @@ class Listing extends \yii\db\ActiveRecord
         return $this->hasMany(Comment::class, ['listing_id' => 'id']);
     }
 
+
     /**
      * Gets query for [[User]].
      *

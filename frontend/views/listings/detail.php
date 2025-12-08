@@ -95,8 +95,24 @@ $i = 0;
 
                 <?php if (!empty($comments)): ?>
                     <?php foreach ($comments as $comment): ?>
-                        <div class="d-flex mb-4 <?= $comment->user_id ? 'ms-5' : '' ?>">
-                            <img src="/img/user.jpg" class="img-fluid" style="width: 45px; height: 45px;">
+
+
+                        <?php
+                        // imagem por defeito
+                        $imgPath = Yii::$app->request->baseUrl . '/img/default-avatar.png';
+
+                        // se existir user e imagem de perfil
+                        if ($comment->user && $comment->user->profileImage && $comment->user->profileImage->path) {
+                            $imgPath = Yii::$app->request->baseUrl . '/' . ltrim($comment->user->profileImage->path, '/');
+                        }
+                        ?>
+
+
+
+                        <div class="d-flex mb-4">
+
+                            <img src="<?= $imgPath ?>" class="img-fluid"
+                                 style="width: 45px; height: 45px; object-fit: cover; border-radius: 50%;">
 
                             <div class="ps-3">
                                 <h6>

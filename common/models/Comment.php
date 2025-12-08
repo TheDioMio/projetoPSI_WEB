@@ -82,4 +82,10 @@ class Comment extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
+
+    public function getUserImage()
+    {
+        return $this->hasOne(File::class, ['user_id' => 'user_id'])
+            ->andOnCondition(['type_id' => 2]); // type 2 = foto de user
+    }
 }

@@ -3,6 +3,7 @@ namespace frontend\controllers;
 
 use common\models\Animal;
 use common\models\Application;
+
 use Yii;
 use yii\base\DynamicModel;
 use yii\web\Controller;
@@ -24,13 +25,17 @@ class ApplicationController extends Controller
             throw new NotFoundHttpException('Animal não encontrado.');
         }
 
-        $model = new Application([
-            'animal_id'      => $animal->id,
-            'user_id'        => Yii::$app->user->id,
-            'target_user_id' => $animal->user_id, //Dono do animal
-            'status'         => 0,
-            'created_at'     => date('Y-m-d H:i:s'),
-        ]);
+        $model = new Application();
+        $model->scenario = Application::SCENARIO_ADOPTION;
+        $model->animal_id = $animal_id;
+        $model->user_id = Yii::$app->user->id;
+        $model->target_user_id = Yii::$app->user->id;
+        $model->status =0;
+        $model->created_at = date('Y-m-d H:i:s');
+
+        $model->type = Application::TYPE_ADOPTION;
+
+
 
         // Trata o POST
         if ($model->load(Yii::$app->request->post())) {
@@ -38,10 +43,14 @@ class ApplicationController extends Controller
             if (!is_array($model->data)) {
                 $model->data = (array)$model->data;
             }
+            //guardar o nome da candidatura na descrição
+            if (isset($model->data['name'])) {
+                $model->description = $model->data['name'];
+            }
 
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', 'Candidatura enviada com sucesso!');
-                return $this->redirect(['detail', 'id' => $animal->id]);
+                return $this->redirect(['listings/detail', 'id' => $animal->id]);
             } else {
                 Yii::error(['apply_save_errors' => $model->errors], __METHOD__);
                 Yii::$app->session->setFlash('error', 'Corrige os erros do formulário.');

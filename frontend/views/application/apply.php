@@ -45,7 +45,7 @@ $yesNo = [
                     As suas respostas ajudam-nos a perceber se este é o animal certo para si e para a sua família.')?></p>
                 <?php $form = ActiveForm::begin([
                     'id' => 'apply-form',
-                    'action' => ['/site/apply', 'animal_id' => $animal->id],
+                    'action' => ['/application/apply', 'animal_id' => $animal->id],
                     'method' => 'post',
                 ]); ?>
 
