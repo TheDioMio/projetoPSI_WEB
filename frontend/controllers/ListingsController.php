@@ -19,12 +19,6 @@ class ListingsController extends Controller
 
     public function actionAnimal()
     {
-        /* return $this->render('animal'); */
-
-
-       // $listings = Listing::find()->all();
-
-        //dd($listings[0]->animal->animalType->description);
 
         $query = Listing::find()->where(['status' => 1]);
 
@@ -44,23 +38,6 @@ class ListingsController extends Controller
             'provider' => $provider,
             'listings' => $provider->getModels(),
         ]);
-
-
-        /*
-
-        $listings = Listing::find()
-            ->where(['status' => 1]) // Assumindo que '1' = Anúncio Aprovado
-            ->orderBy(['created_at' => SORT_DESC]) // Mostrar os mais recentes primeiro
-            ->all(); // Pede todos os resultados como um array
-
-            // 2. Enviamos o array de $listings para a view
-            return $this->render('animal', [
-                'listings' => $listings,
-            ]);
-
-        */
-
-
     }
 
     public function actionDetail($id)
@@ -97,12 +74,14 @@ class ListingsController extends Controller
     {
         // 1. CRIAMOS O MODELO VAZIO
         $model = new Animal();
+        $listingModel = new Listing();
+        $address = Yii::$app->user->identity->address;
 
         if ($this->request->isPost) {
 
             // 2. Carregar os dados do formulário (name, age, etc.)
             $model->load(Yii::$app->request->post());
-
+            $listingModel->load(Yii::$app->request->post());
             $model->user_id = Yii::$app->user->id;
 
             // 3. Apanhar as instâncias dos ficheiros
@@ -152,8 +131,9 @@ class ListingsController extends Controller
 
                     }
 
+
+
                     // 8. (Opcional) Criar o Listing (Anúncio)
-                    $listingModel = new Listing();
                     $listingModel->animal_id = $model->id;
                     $listingModel->user_id = Yii::$app->user->id;
                     $listingModel->status = 1; // 0 = Pendente de Aprovação
@@ -181,6 +161,8 @@ class ListingsController extends Controller
         // Enviar o $model (vazio) para a view
         return $this->render('create-listing', [
             'model' => $model,
+            'listingModel' => $listingModel,
+            'userAddress' => $address,
         ]);
     }
 
@@ -202,11 +184,6 @@ class ListingsController extends Controller
 
         return $this->render('upload', ['model' => $model]);
     }
-
-
-
-
-
 
 
 

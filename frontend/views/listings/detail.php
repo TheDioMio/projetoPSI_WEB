@@ -73,18 +73,51 @@ $i = 0;
             </div>
 
             <div class="mb-5">
+<!--                nome do animal-->
+                <h1 class="text-uppercase text-center mb-4"><?= Html::encode($model->name)?></h1>
+<!--                descrição do animal-->
+                <h4>Descrição do Animal</h4>
+                <p><?= Html::encode($model->description) ?></p>
 
-                <h1 class="text-uppercase mb-4"><?= Html::encode($model->name)?></h1>
-                <p> <?= Html::encode($model->description)?></p>
+<!--                descrição do anuncio -->
+                <h4>Descrição do Anúncio</h4>
+                <p><?= Html::encode($model->listing->description) ?></p>
 
             </div>
             <!-- Blog Detail End -->
+
+            <?php
+            $ownerAvatar = Yii::$app->request->baseUrl . '/img/default-avatar.png';
+
+            if ($model->user && $model->user->profileImage && $model->user->profileImage->path) {
+                $ownerAvatar = Yii::$app->request->baseUrl . '/' . ltrim($model->user->profileImage->path, '/');
+            }
+            ?>
+
+            <img src="<?= $ownerAvatar ?>"
+                 class="img-fluid"
+                 style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+            <span><?= Html::encode($model->user->name) ?></span>
 
             <iframe class="position-relative w-100 mb-5"
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d565.315930341978!2d-8.796304639772064!3d39.730868391230864!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd2273a5f1339db1%3A0xbf6fd68c4f4fcccd!2sAssocia%C3%A7%C3%A3o%20Zo%C3%B3fila%20de%20Leiria%20-%20Fi%C3%A9is%20Amigos!5e1!3m2!1spt-PT!2spt!4v1761435578952!5m2!1spt-PT!2spt"
                     frameborder="0" style="height: 300px; border:0;" allowfullscreen="" aria-hidden="false"
                     tabindex="0"></iframe>
 
+<!--            precisa de chave da api da google, mas localizava logo o address do user-->
+            <?php if (!empty($userAddress)) : ?>
+                <iframe
+                        width="100%"
+                        height="300"
+                        style="border:0"
+                        loading="lazy"
+                        allowfullscreen
+                        referrerpolicy="no-referrer-when-downgrade"
+                        src="https://www.google.com/maps/embed/v1/place?key=YOUR_GOOGLE_MAPS_API_KEY&q=<?= urlencode($userAddress) ?>">
+                </iframe>
+            <?php else: ?>
+                <p>Sem localização definida para o seu perfil.</p>
+            <?php endif; ?>
 
 
             <!-- Comment List Start -->
@@ -177,16 +210,6 @@ $i = 0;
                         <ul class="list-group list-group-flush">
 
                             <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
-                                <strong>Idade:</strong>
-                                <span><?= Html::encode($model->animalAge ? $model->animalAge->description : '—') ?></span>
-                            </li>
-
-                            <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
-                                <strong>Porte:</strong>
-                                <span><?= Html::encode($model->size ? $model->size->description : '—') ?></span>
-                            </li>
-
-                            <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
                                 <strong>Tipo:</strong>
                                 <span> <?= Html::encode($model->animalType ? $model->animalType->description : '—') ?> </span>
                             </li>
@@ -197,6 +220,16 @@ $i = 0;
                             </li>
 
                             <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
+                                <strong>Idade:</strong>
+                                <span><?= Html::encode($model->animalAge ? $model->animalAge->description : '—') ?></span>
+                            </li>
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
+                                <strong>Porte:</strong>
+                                <span><?= Html::encode($model->size ? $model->size->description : '—') ?></span>
+                            </li>
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
                                 <strong>Esterilizado:</strong>
                                 <span><?= \yii\helpers\Html::encode($model->neutered ? 'Sim' : 'Não') ?></span>
                             </li>
@@ -204,6 +237,14 @@ $i = 0;
                             <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
                                 <strong>Vacinas:</strong>
                                 <span><?= Html::encode($model->vaccination ? $model->vaccination->description : '—') ?></span>
+                            </li>
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">
+                                <strong>Dono:</strong>
+                                <img src="<?= $ownerAvatar ?>"
+                                     class="img-fluid"
+                                     style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                                <span><?= Html::encode($model->user->name) ?></span>
                             </li>
 
                             <li class="list-group-item d-flex justify-content-between align-items-center bg-light px-0">

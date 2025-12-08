@@ -11,6 +11,7 @@ use common\models\Vaccination;
 
 /** @var yii\web\View $this */
 /** @var common\models\Animal $model */ // O $model é um 'Animal' vazio, vindo do Controller
+/** @var common\models\Listing $listingModel */ // O $model é um 'Linsting' anuncio vazio, vindo do Controller
 
 // --- Dropdowns vindos da BD ---
 $tiposDeAnimal = ArrayHelper::map(
@@ -69,6 +70,11 @@ $this->params['breadcrumbs'][] = $this->title; // Adiciona ao "breadcrumb"
 
                 <?= $form->field($model, 'description')->textarea(['rows' => 8])->label('História e Comportamento')
                     ->hint('Descreva o animal. É calmo? Gosta de crianças? Tem necessidades especiais?') ?>
+
+                <?= $form->field($listingModel, 'description')->textarea([
+                    'rows' => 6,
+                ])->label('Descrição do Anúncio')
+                    ->hint('Texto apelativo para o anúncio. Ex: Este animal procura novo lar...'); ?>
 
                 <hr class="my-4">
 
