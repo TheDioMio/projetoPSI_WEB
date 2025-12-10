@@ -99,6 +99,56 @@ class ApplicationController extends Controller
         ]);
     }
 
+    public function actionDenyApplication($id) {
+        $model = $this->findModel($id);
+
+        //Status da candidatura= 0 => pending, 1 => denied, 2 => accepted.
+        $statusDenied = '1';
+        $model->status = $statusDenied;
+
+        $model->save(false); //tem que estar false, se não explode
+
+        //Depois da aplicação ser negada, dar redirect para o index.
+        return $this->redirect(['index']);
+    }
+
+    public function actionAcceptApplication($id) {
+        $model = $this->findModel($id);
+        $model->status = 2;
+        // Aceder ao candidato (User) através da relação
+        $candidate = $model->candidate;
+
+        // Só prossegue se conseguir guardar a candidatura EEEEEEE se o candidato existir
+        if ($candidate && $model->save(false)) {
+            $candidate->role_id = 2;
+
+            // Guardamos o User (false para saltar validações de password/imagem que não interessam agora)
+            if ($candidate->save(false)) {
+                $auth = Yii::$app->authManager;
+                $auth->revokeAll($candidate->id);
+                $roleMap = [
+                    1 => 'admin',
+                    2 => 'userPro',
+                    3 => 'user',
+                ];
+
+                if (isset($roleMap[$candidate->role_id])) {
+                    $roleName = $roleMap[$candidate->role_id];
+                    $authorRole = $auth->getRole($roleName);
+
+                    if ($authorRole) {
+                        $auth->assign($authorRole, $candidate->id);
+                    }
+                }
+                Yii::$app->session->setFlash('success', 'Candidatura aceite. Utilizador promovido a UserPro.');
+            }
+        } else {
+            Yii::$app->session->setFlash('error', 'Erro ao aceitar a candidatura.');
+            $model->status = 0;
+        }
+        return $this->redirect(['index']);
+    }
+
     public function actionViewUserPro($id)
     {
         return $this->render('view-user-pro', [

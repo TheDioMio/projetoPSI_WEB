@@ -13,37 +13,6 @@ $this->params['breadcrumbs'][] = ['label' => 'Animais', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 YiiAsset::register($this);
-
-// --- LÓGICA DE IMAGENS ---
-$images = $model->files;
-$totalImages = count($images);
-$carouselIndicators = '';
-$carouselItems = '';
-$i = 0;
-
-if ($totalImages > 0) {
-    foreach ($images as $image) {
-        $isActive = ($i === 0) ? 'active' : '';
-
-        // Como as imagens são guardadas no caminho de frontend, temos que substituir para o backend:
-        $rawUrl = $image->url;
-        $imageUrl = str_replace('/backend/web', '/frontend/web', $rawUrl);
-
-        if (strpos($imageUrl, 'http') === false && substr($imageUrl, 0, 1) !== '/') {
-            $imageUrl = '/' . $imageUrl;
-        }
-
-        $carouselIndicators .= '<li data-target="#animalCarousel" data-slide-to="' . $i . '" class="' . $isActive . '"></li>';
-        $carouselItems .= '<div class="carousel-item ' . $isActive . '">';
-        $carouselItems .= Html::img($imageUrl, [
-            'class' => 'd-block w-100',
-            'alt' => $model->name,
-            'style' => 'height: 400px; object-fit: cover; width: 100%;'
-        ]);
-        $carouselItems .= '</div>';
-        $i++;
-    }
-}
 ?>
 <div class="animal-view fade-in-up">
     <div class="d-flex justify-content-between align-items-center mb-4 ">
@@ -86,20 +55,18 @@ if ($totalImages > 0) {
                             <?php if ($totalImages > 1): ?>
                                 <a class="carousel-control-prev" href="#animalCarousel" role="button" data-slide="prev">
                                     <span class="carousel-control-prev-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
-                                    <span class="sr-only">Anterior</span>
+                                    <span class="sr-only"><?=Html::encode('Anterior')?></span>
                                 </a>
                                 <a class="carousel-control-next" href="#animalCarousel" role="button" data-slide="next">
                                     <span class="carousel-control-next-icon bg-dark rounded-circle p-2" aria-hidden="true"></span>
-                                    <span class="sr-only">Próximo</span>
+                                    <span class="sr-only"><?=Html::encode('Próximo')?></span>
                                 </a>
                             <?php endif; ?>
-
                         </div>
-
                     <?php else: ?>
                         <div class="text-center text-muted p-5">
                             <i class="fas fa-camera fa-4x mb-3 text-secondary opacity-50"></i>
-                            <p>Sem fotografias disponíveis</p>
+                            <p><?=Html::encode('Sem fotografias disponíveis')?></p>
                         </div>
                     <?php endif; ?>
                 </div>
@@ -108,11 +75,9 @@ if ($totalImages > 0) {
 
         <div class="col-lg-7 mb-4">
             <div class="card shadow-sm border-0 h-100 d-flex flex-column">
-
                 <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0"><i class="fas fa-info-circle mr-2"></i>Ficha Técnica</h5>
+                    <h5 class="mb-0"><i class="fas fa-info-circle mr-2"></i><?=Html::encode('Ficha Técnica')?></h5>
                 </div>
-
                 <div class="card-body p-0 h-100">
                     <?= DetailView::widget([
                         'model' => $model,

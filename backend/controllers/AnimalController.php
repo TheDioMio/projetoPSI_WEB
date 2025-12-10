@@ -13,6 +13,7 @@ use common\models\User;
 use common\models\Vaccination;
 use Yii;
 use yii\filters\AccessControl;
+use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -72,8 +73,44 @@ class AnimalController extends Controller
 
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+
+        // --- LÓGICA DE IMAGENS ---
+        $images = $model->files;
+        $totalImages = count($images);
+        $carouselIndicators = '';
+        $carouselItems = '';
+        $i = 0;
+
+        if ($totalImages > 0) {
+            foreach ($images as $image) {
+                $isActive = ($i === 0) ? 'active' : '';
+
+                // Como as imagens são guardadas no caminho de frontend, temos que substituir para o backend:
+                $rawUrl = $image->url;
+                $imageUrl = str_replace('/backend/web', '/frontend/web', $rawUrl);
+
+                if (strpos($imageUrl, 'http') === false && substr($imageUrl, 0, 1) !== '/') {
+                    $imageUrl = '/' . $imageUrl;
+                }
+
+                $carouselIndicators .= '<li data-target="#animalCarousel" data-slide-to="' . $i . '" class="' . $isActive . '"></li>';
+                $carouselItems .= '<div class="carousel-item ' . $isActive . '">';
+                $carouselItems .= Html::img($imageUrl, [
+                    'class' => 'd-block w-100',
+                    'alt' => $model->name,
+                    'style' => 'height: 400px; object-fit: cover; width: 100%;'
+                ]);
+                $carouselItems .= '</div>';
+                $i++;
+            }
+        }
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'totalImages' => $totalImages,
+            'carouselIndicators' => $carouselIndicators,
+            'carouselItems' => $carouselItems,
         ]);
     }
 

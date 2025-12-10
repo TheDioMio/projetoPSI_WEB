@@ -10,7 +10,6 @@ use yii\widgets\DetailView;
 $this->title = 'Perfil de ' . $model->username;
 $this->params['breadcrumbs'][] = ['label' => 'Utilizadores', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-
 YiiAsset::register($this);
 ?>
 
@@ -142,10 +141,19 @@ YiiAsset::register($this);
             <div class="card shadow-sm border-0 mb-4 text-center">
                 <div class="card-body p-5">
                     <div class="mb-3">
-                        <span class="fa-stack fa-4x">
-                          <i class="fas fa-circle fa-stack-2x text-light"></i>
-                          <i class="fas fa-user fa-stack-1x text-secondary"></i>
-                        </span>
+                        <div class="mb-3 d-flex justify-content-center">
+                            <?php if ($avatar == null): ?>
+                                <span class="fa-stack fa-4x">
+                                    <i class="fas fa-circle fa-stack-2x text-light"></i>
+                                    <i class="fas fa-user fa-stack-1x text-secondary"></i>
+                                </span>
+                            <?php else: ?>
+                            <img src="<?= $avatar ?>"
+                                 class="img-circle elevation-2 user-image"
+                                 alt="User Image"
+                            >
+                            <?php endif; ?>
+                        </div>
                     </div>
                     <h4 class="font-weight-bold mb-1"><?= Html::encode($model->name)?></h4>
                     <p class="text-muted"><?= Html::encode($model->email)?></p>

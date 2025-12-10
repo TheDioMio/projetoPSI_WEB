@@ -16,10 +16,17 @@ YiiAsset::register($this);
         <div class="card-header">
             <div class="card-tools float-right">
                 <?= Html::a('<i class="fas fa-arrow-left"></i> Voltar à Lista', ['index'], ['class' => 'btn btn-default btn-sm']) ?>
-                <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+                <?= Html::a('Negar', ['deny-application', 'id' => $model->id], [
                     'class' => 'btn btn-danger btn-sm',
                     'data' => [
-                        'confirm' => 'Tem a certeza que deseja eliminar esta candidatura?',
+                        'confirm' => 'Tem a certeza que deseja negar esta candidatura?',
+                        'method' => 'post',
+                    ],
+                ]) ?>
+                <?= Html::a('Aceitar', ['accept-application', 'id' => $model->id], [
+                    'class' => 'btn btn-success btn-sm',
+                    'data' => [
+                        'confirm' => 'Tem a certeza que deseja aceitar esta candidatura?',
                         'method' => 'post',
                     ],
                 ]) ?>

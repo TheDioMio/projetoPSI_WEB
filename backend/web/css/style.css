@@ -36,3 +36,12 @@
     margin-bottom: 10px !important;
 }
 /*FIM CSS PÁGINA ANIMAL VIEW*/
+
+/*CSS PÁGINA USER VIEW*/
+.user-image {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+}
+
+/*FIM CSS PÁGINA USER VIEW*/

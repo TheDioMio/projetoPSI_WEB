@@ -30,6 +30,7 @@ class ApplicationController extends Controller
         $model->animal_id = $animal_id;
         $model->user_id = Yii::$app->user->id;
         $model->target_user_id = Yii::$app->user->id;
+        //Status da candidatura= 0 => pending, 1 => denied, 2 => accepted.
         $model->status =0;
         $model->created_at = date('Y-m-d H:i:s');
 
@@ -100,6 +101,7 @@ class ApplicationController extends Controller
                 $application->scenario = Application::SCENARIO_USER_PRO; //NUNCA ESQUECER DE DECLARAR QUAL É O CENÁRIO!!!!!
                 $application->user_id = Yii::$app->user->id;
                 $application->type = Application::TYPE_USER_PRO; //Declara logo que a candidatura é de tipo 2 (userPro), ISTO ESTÁ TUDO DEFINIDO EM CIMA, CONSTANTES!
+                //Status da candidatura= 0 => pending, 1 => denied, 2 => accepted.
                 $application->status = 0; //Está pendente, ainda não foi vista sequer.
                 $application->created_at = date('Y-m-d H:i:s');
 

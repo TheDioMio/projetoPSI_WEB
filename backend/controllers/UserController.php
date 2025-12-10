@@ -73,14 +73,25 @@ class UserController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
-
         $totalUserApplications = $model->getApplications()->count();
         $totalUserAnimais = $model->getAnimals()->count();
+
+        /*PARA CARREGAR A IMAGEM DO USER PARA O VIEW*/
+        /* 1. Trocar os links, igual ao animal view, o link das imagens vem do frontend
+        e temos que mudar o link para vir do backend*/
+        $backendBaseUrl = Yii::$app->request->baseUrl; // /projeto/backend/web
+        $frontendBaseUrl = str_replace('/backend/web', '/frontend/web', $backendBaseUrl); // /projeto/frontend/web
+        $avatar = '';
+        //2. Carregar a foto do user, concatenação para conseguirmos o URL certo
+        if ($model->profileImage) {
+            $avatar = $frontendBaseUrl . '/' . ltrim($model->profileImage->path, '/');
+        }
 
         return $this->render('view', [
             'model' => $model,
             'totalUserApplications' => $totalUserApplications,
             'totalUserAnimais' => $totalUserAnimais,
+            'avatar' => $avatar,
         ]);
     }
 
@@ -120,8 +131,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id) {
         $model = $this->findModel($id);
         $oldPasswordHash = $model->password_hash;
         $roles = Role::find()->select(['id','description'])->indexBy('id')->asArray()->all();

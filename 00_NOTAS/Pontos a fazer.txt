@@ -1,5 +1,3 @@
 - Erros a resolver:
 Quando se cria um animal no frontend, a idade não é passada, e o animal vai para
 a BD sem a idade
-
-Ao submeter uma candidatura no frontend, a description não é passada, nem o type
