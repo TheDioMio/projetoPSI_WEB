@@ -8,6 +8,8 @@ use common\models\Breed;
 use common\models\AnimalAge;
 use common\models\AnimalSize;
 use common\models\Vaccination;
+use frontend\controllers\BreedController;
+use yii\helpers\Url;
 
 /** @var yii\web\View $this */
 /** @var common\models\Animal $model */ // O $model é um 'Animal' vazio, vindo do Controller
@@ -44,7 +46,12 @@ $vacinas = ArrayHelper::map(
     'description'
 );
 
-$this->title = 'Criar Novo Anúncio';
+ if (!$model->isNewRecord){
+     $this->title = 'Editar Anúncio';
+ } else{
+     $this->title = 'Criar Novo Anúncio';
+ }
+
 $this->params['breadcrumbs'][] = $this->title; // Adiciona ao "breadcrumb"
 ?>
 
@@ -77,22 +84,48 @@ $this->params['breadcrumbs'][] = $this->title; // Adiciona ao "breadcrumb"
                     ->hint('Texto apelativo para o anúncio. Ex: Este animal procura novo lar...'); ?>
 
                 <hr class="my-4">
+<!---->
+<!--                <div class="row g-3">-->
+<!--                    <div class="col-md-6">-->
+<!--                        --><?php //= $form->field($model, 'animal_type_id')->dropDownList(
+//                            $tiposDeAnimal,
+//                            ['prompt' => 'Selecione o Tipo...']
+//                        )->label('Tipo de Animal') ?>
+<!--                    </div>-->
+<!---->
+<!--                    <div class="col-md-6">-->
+<!--                        --><?php //= $form->field($model, 'breed_id')->dropDownList(
+//                            $racas,
+//                            ['prompt' => 'Selecione a Raça...']
+//                        )->label('Raça') ?>
+<!--                    </div>-->
+<!--                </div>-->
 
                 <div class="row g-3">
+
                     <div class="col-md-6">
                         <?= $form->field($model, 'animal_type_id')->dropDownList(
                             $tiposDeAnimal,
-                            ['prompt' => 'Selecione o Tipo...']
-                        )->label('Tipo de Animal') ?>
+                            [
+                                'prompt' => 'Selecione o Tipo...',
+                                'id' => 'animal-type'
+                            ]
+                        ) ?>
                     </div>
 
                     <div class="col-md-6">
+
                         <?= $form->field($model, 'breed_id')->dropDownList(
-                            $racas,
-                            ['prompt' => 'Selecione a Raça...']
-                        )->label('Raça') ?>
+                            [],
+                            [
+                                'prompt' => 'Selecione a Raça...',
+                                'id' => 'breed'
+                            ]
+                        ) ?>
                     </div>
+
                 </div>
+
 
                 <div class="row g-3">
                     <div class="col-md-6">
@@ -128,6 +161,49 @@ $this->params['breadcrumbs'][] = $this->title; // Adiciona ao "breadcrumb"
                         <?= $form->field($model, 'neutered')->checkbox()->label('Animal Esterilizado') ?>
                     </div>
                 </div>
+
+                <hr class="my-4">
+
+                <?php if (!empty($existingImages)): ?>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Fotografias atuais:</label>
+
+                        <div class="row">
+                            <?php foreach ($existingImages as $img): ?>
+                                <div class="col-4 mb-3 text-center">
+
+                                    <img src="<?= Yii::$app->request->baseUrl . $img->path ?>"
+                                         class="img-fluid rounded border"
+                                         style="max-height:150px;">
+
+                                    <br>
+
+                                    <?php if (count($existingImages) > 1): ?>
+                                        <!-- só mostra o botão remover se tiver mais de uma foto -->
+                                        <?= Html::a(
+                                            'Remover',
+                                            ['/file/delete', 'id' => $img->id],
+                                            [
+                                                'class' => 'btn btn-sm btn-danger mt-2',
+                                                'data-confirm' => 'Tem certeza que quer remover esta foto?',
+                                                'data-method' => 'post'
+                                            ]
+                                        ) ?>
+                                    <?php else: ?>
+                                        <!-- mensagem informativa opcional -->
+                                        <small class="text-muted d-block mt-2">
+                                            Não pode remover a última foto.
+                                        </small>
+                                    <?php endif; ?>
+
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+
+                <?php endif; ?>
+
 
                 <hr class="my-4">
 
@@ -173,3 +249,34 @@ $this->params['breadcrumbs'][] = $this->title; // Adiciona ao "breadcrumb"
         </div>
     </div>
 </div>
+
+<?php
+$url = Url::to(['breed/get-by-type']);
+$js = <<<JS
+$('#animal-type').on('change', function() {
+    var typeId = $(this).val();
+
+    $.getJSON('$url', {id: typeId}, function(data) {
+        var breedSelect = $('#breed');
+        breedSelect.empty();
+        breedSelect.append('<option value="">Selecione a Raça...</option>');
+      
+        $.each(data, function(id, desc) {
+         breedSelect.append('<option value="' + id + '">' + desc + '</option>');
+});
+
+    });
+});
+JS;
+
+$this->registerJs($js);
+?>
+
+
+
+
+
+
+
+
+

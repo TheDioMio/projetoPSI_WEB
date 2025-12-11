@@ -1,3 +1,41 @@
 - Erros a resolver:
-Quando se cria um animal no frontend, a idade não é passada, e o animal vai para
-a BD sem a idade
+
+
+Ao submeter uma candidatura no frontend, a description não é passada, nem o type
+
+falta:
+
+API
+MQTT
+
+CRUD visitas
+
+pesquisar e filtrar animais - Mário
+
+as minhas candidaturas (recebidas e enviadas) - Igor
+cancelar candidatura - Igor
+avaliação de candidaturas - Igor
+
+
+adicionar e remover animais dos favoritos - Diogo
+
+adicionar data ao estado do animal (fazer no fim) - Diogo
+estatísticas (continuar) - Diogo
+
+Os meus animais (Frontend UserPro) CRUD
+
+notas do animal(só é visto pelo userPro)
+
+pós adoção
+estatísticas do userPro 
+Contrato digital (fazer no fim)
+denuncias de anuncio (amadurecer adeia)
+
+
+ponderar:
+perdidos e achados 
+
+
+
+
+ --------------------não esquecer o Android --------------------------------

@@ -24,7 +24,7 @@ $i = 0;
 <div class="container py-5">
     <div class="row g-5">
         <div class="col-lg-8">
-
+            <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-5">Detalhes do Animal</h3>
             <?php foreach ($images as $image):
                 $isActive = ($i === 0) ? 'active' : ''; // O primeiro item é sempre ativo
 
@@ -73,6 +73,12 @@ $i = 0;
             </div>
 
             <div class="mb-5">
+                <div class="text-end">
+                    <h2 class="me-3 ">
+                        <i class="bi bi-eye me-2"></i>
+                        <?= Html::encode($model->listing->views) ?>
+                    </h2>
+                </div>
 <!--                nome do animal-->
                 <h1 class="text-uppercase text-center mb-4"><?= Html::encode($model->name)?></h1>
 <!--                descrição do animal-->

@@ -89,6 +89,11 @@ $posterUrl = Yii::getAlias('@web/video/' . $escolhaAleatoria['posterFile']);
 
                                 <h5 class="text-uppercase mb-3"><?php echo $animal->name ?></h5>
 
+                                <p class="card-text">
+                                    <strong>Raça:</strong> <?= $listing->animal->breed->description ?? 'Sem informação' ?><br>
+                                    <strong>Idade:</strong> <?= $listing->animal->animalAge->description ?? 'Sem informação' ?>
+                                </p>
+
                                 <p>
                                     <?= Html::encode(StringHelper::truncate($animal->description, 100, '...')) ?>
                                 </p>
@@ -100,6 +105,13 @@ $posterUrl = Yii::getAlias('@web/video/' . $escolhaAleatoria['posterFile']);
                                     ['class' => 'text-primary text-uppercase']
                                 );
                                 ?>
+                                <div class="text-end">
+                                    <small class="me-3 ">
+                                        <i class="bi bi-eye me-2"></i>
+                                        <?= Html::encode($animal->listing->views) ?>
+                                    </small>
+                                </div>
+
                             </div>
                         </div>
                     </div>

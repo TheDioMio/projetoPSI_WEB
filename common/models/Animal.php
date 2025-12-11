@@ -45,6 +45,29 @@ class Animal extends ActiveRecord
         return 'animal';
     }
 
+    const STATUS_INACTIVE = 0;
+    const STATUS_ACTIVE   = 1;
+    const STATUS_DELETED  = 2;
+    const STATUS_DEAD     = 3;
+    const STATUS_ADOPTED  = 4;
+
+    public static function getStatusLabels()
+    {
+        return [
+            self::STATUS_INACTIVE => 'Inativo',
+            self::STATUS_ACTIVE   => 'Ativo',
+            self::STATUS_DELETED  => 'Apagado',
+            self::STATUS_DEAD     => 'Falecido',
+            self::STATUS_ADOPTED  => 'Adotado',
+        ];
+    }
+
+    public function getStatusLabel()
+    {
+        return self::getStatusLabels()[$this->status] ?? 'Desconhecido';
+    }
+
+
     public $imageFiles;
 
     /**
@@ -67,8 +90,10 @@ class Animal extends ActiveRecord
             [['size_id'], 'exist', 'skipOnError' => true, 'targetClass' => AnimalSize::class, 'targetAttribute' => ['size_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
             [['vaccination_id'], 'exist', 'skipOnError' => true, 'targetClass' => Vaccination::class, 'targetAttribute' => ['vaccination_id' => 'id']],
+
             [['imageFiles'], 'file',
-                'skipOnEmpty' => false, // OBRIGA o utilizador a carregar pelo menos 1 ficheiro
+                'skipOnEmpty' => (true),//obriga a carregar uma imagem
+                'on' => ['create'],//mas só obriga no scenario create
                 'extensions' => 'png, jpg, jpeg', // Tipos de ficheiro permitidos
                 'maxFiles' => 5, // Permite o upload de 1 a 5 ficheiros
                 'tooMany' => 'Só pode carregar um máximo de 5 fotos.',
@@ -76,6 +101,21 @@ class Animal extends ActiveRecord
             ],
         ];
     }
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+
+        // Cenário CREATE → obriga a ter fotos
+        $scenarios['create'] = $scenarios[self::SCENARIO_DEFAULT];
+        $scenarios['create'][] = 'imageFiles';
+
+        // Cenário UPDATE → NÃO obriga a ter fotos
+        $scenarios['update'] = $scenarios[self::SCENARIO_DEFAULT];
+
+        return $scenarios;
+    }
+
 
     /**
      * {@inheritdoc}

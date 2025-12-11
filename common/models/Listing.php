@@ -26,6 +26,28 @@ class Listing extends \yii\db\ActiveRecord
 {
 
 
+    const STATUS_INACTIVE = 0;
+    const STATUS_ACTIVE   = 1;
+    const STATUS_DELETED  = 2;
+    const STATUS_DEAD     = 3;
+    const STATUS_ADOPTED  = 4;
+
+    public static function getStatusLabels()
+    {
+        return [
+            self::STATUS_INACTIVE => 'Inativo',
+            self::STATUS_ACTIVE   => 'Ativo',
+            self::STATUS_DELETED  => 'Apagado',
+            self::STATUS_DEAD     => 'Falecido',
+            self::STATUS_ADOPTED  => 'Adotado',
+        ];
+    }
+
+    public function getStatusLabel()
+    {
+        return self::getStatusLabels()[$this->status] ?? 'Desconhecido';
+    }
+
     /**
      * {@inheritdoc}
      */

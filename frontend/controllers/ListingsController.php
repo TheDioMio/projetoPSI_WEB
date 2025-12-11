@@ -48,6 +48,9 @@ class ListingsController extends Controller
             throw new NotFoundHttpException('O animal que procura não existe.');
         }
 
+        if ($model->listing) {
+            $model->listing->updateCounters(['views' => 1]);
+        }
         // 3. Vamos buscar os Comments do animal e enviamos para a vista
 
         // Comentários via relação: Animal → Listing → Comments
@@ -77,6 +80,7 @@ class ListingsController extends Controller
         $listingModel = new Listing();
         $address = Yii::$app->user->identity->address;
 
+        $model->scenario = 'create';
         if ($this->request->isPost) {
 
             // 2. Carregar os dados do formulário (name, age, etc.)
@@ -100,38 +104,40 @@ class ListingsController extends Controller
                         throw new \Exception('Falha ao guardar o animal.');
                     }
 
+
                     // 7. Guardar os Ficheiros (agora que temos o $model->id)
+                    $animalId = $model->id;
+
+                    // Criar pasta: uploads/animals/{id}
+                    $directory = Yii::getAlias('@webroot/uploads/animals/' . $animalId);
+                    if (!is_dir($directory)) {
+                        mkdir($directory, 0777, true);
+                    }
+
+                    // Loop pelas imagens
                     foreach ($model->imageFiles as $file) {
 
-                        // 7a. Gerar caminhos (usando os 'aliases')
-                        $userId = $model->user_id;
-                        $animalId = $model->id;
-                        $basePath = Yii::getAlias('@storagePath') . "/users/{$userId}/animals/{$animalId}";
-                        $baseUrl = Yii::getAlias('@storageUrl') . "/users/{$userId}/animals/{$animalId}";
-                        \yii\helpers\FileHelper::createDirectory($basePath);
+                        $filename = uniqid() . '.' . $file->extension;
+                        $relative = 'uploads/animals/' . $animalId . '/' . $filename;
+                        $absolute = Yii::getAlias('@webroot') . '/' . $relative;
 
-                        // 7b. Guardar o ficheiro no disco
-                        $fileName = Yii::$app->security->generateRandomString() . '.' . $file->extension;
-                        $path = $basePath . '/' . $fileName;
-                        if (!$file->saveAs($path)) {
+                        // Guardar ficheiro físico
+                        if (!$file->saveAs($absolute)) {
                             throw new \Exception('Falha ao guardar o ficheiro no disco.');
                         }
 
+                        // Guardar na BD (tabela file)
+                        $image = new File();
+                        $image->animal_id = $animalId;
+                        $image->user_id = $model->user_id;
+                        $image->type_id = 1; // tipo animal
+                        $image->path = '/' . $relative;
+                        $image->created_at = date('Y-m-d H:i:s');
 
-                        // 7c. Guardar o registo na tabela 'file'
-                        $fileModel = new File();
-                        $fileModel->user_id = $userId;
-                        $fileModel->animal_id = $animalId;
-                        $fileModel->type_id = 1;
-                        $fileModel->path = $baseUrl . '/' . $fileName; // O URL público
-
-                        if (!$fileModel->save()) {
-                            throw new \Exception('Falha ao guardar o caminho do ficheiro na BD.');
+                        if (!$image->save(false)) {
+                            throw new \Exception('Falha ao guardar o caminho na BD.');
                         }
-
                     }
-
-
 
                     // 8. (Opcional) Criar o Listing (Anúncio)
                     $listingModel->animal_id = $model->id;
@@ -187,9 +193,164 @@ class ListingsController extends Controller
 
 
 
-    public function actionMyListings() {
+    public function actionMyListings()
+    {
+        $userId = Yii::$app->user->id;
 
-        return $this->render('my-listings');
+        $query = Listing::find()
+            ->where(['!=', 'status', Listing::STATUS_DELETED])
+            ->andWhere(['user_id' => $userId])
+            ->with(['animal.files'])
+            ->orderBy(['created_at' => SORT_DESC]);
+
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
+        return $this->render('my-listings', [
+            'provider' => $provider,
+            'listings' => $provider->getModels(),
+            'userId'   => $userId,
+        ]);
     }
+
+    public function actionUserListings($id)
+    {
+        $query = Listing::find()
+            ->where(['user_id' => $id, 'status' => 1]) // apenas ativos
+            ->orderBy(['created_at' => SORT_DESC]);
+
+        $provider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
+        return $this->render('user-listings', [
+            'provider' => $provider,
+            'listings' => $provider->getModels(),
+            'userId'   => $id,
+        ]);
+    }
+
+    public function actionDelete($id)
+    {
+        $listing = Listing::findOne($id);
+
+        if (!$listing) {
+            throw new NotFoundHttpException('Anúncio não encontrado.');
+        }
+
+        // Verificar se pertence ao user
+        if ($listing->user_id != Yii::$app->user->id) {
+            throw new ForbiddenHttpException('Não tem permissão para apagar este anúncio.');
+        }
+
+        // Atualizar estados
+        $animal = $listing->animal;
+
+        if ($animal) {
+            $animal->status = 2; // Deleted
+            $animal->save(false);
+        }
+
+        $listing->status = 2; // Deleted
+        $listing->save(false);
+
+        Yii::$app->session->setFlash('success', 'Anúncio apagado com sucesso.');
+
+        return $this->redirect(['listing/my-listings']);
+    }
+
+    public function actionUpdate($id)
+    {
+        $listingModel = Listing::findOne($id);
+
+        if (!$listingModel) {
+            throw new NotFoundHttpException('Anúncio não encontrado.');
+        }
+
+        // Segurança: só o dono pode editar
+        if ($listingModel->user_id != Yii::$app->user->id) {
+            throw new ForbiddenHttpException('Não tem permissão para editar este anúncio.');
+        }
+
+        // Relacionamento: o Animal associado
+        $model = $listingModel->animal;
+        $model->scenario = 'update';
+
+        // Imagens atuais
+        $existingImages = File::find()
+            ->where(['animal_id' => $model->id])
+            ->all();
+
+        if (Yii::$app->request->isPost) {
+
+            $model->load(Yii::$app->request->post());
+            $listingModel->load(Yii::$app->request->post());
+
+            // Apanhar novas imagens, se houver
+            $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
+
+            // Contar quantas imagens existem antes guardar
+            $existingCount = File::find()
+                ->where(['animal_id' => $model->id])
+                ->count();
+
+            $newCount = count($model->imageFiles);
+
+            // ❌ Se não houver imagens existentes E não houve upload novo
+            if ($existingCount == 0 && $newCount == 0) {
+                Yii::$app->session->setFlash('error', 'O anúncio deve ter pelo menos 1 fotografia.');
+                return $this->redirect(['update', 'id' => $id]);
+            }
+
+            // Guardar modelos
+            if ($model->save() && $listingModel->save()) {
+
+                // Se houver novas imagens → guardamos
+                if ($newCount > 0) {
+
+                    $userId = $model->user_id;
+                    $animalId = $model->id;
+
+                    $basePath = Yii::getAlias('@storagePath') . "/users/{$userId}/animals/{$animalId}";
+                    $baseUrl = Yii::getAlias('@storageUrl') . "/users/{$userId}/animals/{$animalId}";
+
+                    \yii\helpers\FileHelper::createDirectory($basePath);
+
+                    foreach ($model->imageFiles as $file) {
+
+                        $fileName = Yii::$app->security->generateRandomString() . '.' . $file->extension;
+                        $path = $basePath . '/' . $fileName;
+
+                        $file->saveAs($path);
+
+                        $fileModel = new File();
+                        $fileModel->user_id = $userId;
+                        $fileModel->animal_id = $animalId;
+                        $fileModel->type_id = 1;
+                        $fileModel->path = $baseUrl . '/' . $fileName;
+                        $fileModel->save(false);
+                    }
+                }
+
+                Yii::$app->session->setFlash('success', 'Anúncio atualizado com sucesso!');
+                return $this->redirect(['detail', 'id' => $model->id]);
+            }
+        }
+
+        return $this->render('create-listing', [
+            'model' => $model,
+            'listingModel' => $listingModel,
+            'existingImages' => $existingImages
+        ]);
+    }
+
+
 
 }
