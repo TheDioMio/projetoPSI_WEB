@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use common\models\Comment;
+use frontend\models\ListingSearch;
 use yii;
 use common\models\Animal;
 use common\models\File;
@@ -20,7 +21,7 @@ class ListingsController extends Controller
     public function actionAnimal()
     {
 
-        $query = Listing::find()->where(['status' => 1]);
+        /*$query = Listing::find()->where(['status' => 1]);
 
         $provider = new ActiveDataProvider([
             'query' => $query,
@@ -37,6 +38,14 @@ class ListingsController extends Controller
         return $this->render('animal', [
             'provider' => $provider,
             'listings' => $provider->getModels(),
+        ]);*/
+
+        $searchModel = new ListingSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+        return $this->render('animal', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+
         ]);
     }
 

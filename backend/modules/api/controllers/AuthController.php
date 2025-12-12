@@ -78,7 +78,7 @@ class AuthController extends Controller
         }
 
         //ir buscar o token a bd
-        $token =
+      //  $token =
 
         //
 //        // gerar token simples

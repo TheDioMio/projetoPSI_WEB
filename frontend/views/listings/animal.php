@@ -51,7 +51,7 @@ $posterUrl = Yii::getAlias('@web/video/' . $escolhaAleatoria['posterFile']);
         <!-- Blog list Start -->
         <div class="col-lg-8">
 
-            <?php foreach ($listings as $listing): ?>
+            <?php foreach ($dataProvider->getModels() as $listing): ?>
                 <?php
                 // Para ser mais fácil, vamos buscar o animal que está "dentro" do anúncio
                 $animal = $listing->animal;
@@ -120,7 +120,7 @@ $posterUrl = Yii::getAlias('@web/video/' . $escolhaAleatoria['posterFile']);
                 <nav aria-label="Page navigation">
 
                     <?= \yii\widgets\LinkPager::widget([
-                        'pagination' => $provider->pagination,
+                        'pagination' => $dataProvider->getPagination(),
 
                         // Classes gerais
                         'options' => [
@@ -144,8 +144,10 @@ $posterUrl = Yii::getAlias('@web/video/' . $escolhaAleatoria['posterFile']);
             <div class="mb-5">
                 <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Pesquisa</h3>
                 <div class="input-group">
-                    <input type="text" class="form-control p-3" placeholder="Pesquisa">
-                    <button class="btn btn-primary px-4"><i class="bi bi-search"></i></button>
+                    <form method="get" action="<?= Url::to(['listings/animal']) ?>">
+                    <input type="text" class="form-control p-3" name="ListingSearch[q]" placeholder="Pesquisa">
+                    <input type="submit" class="btn btn-primary px-4"><i class="bi bi-search"></i>
+                    </form>
                 </div>
             </div>
             <!-- Search Form End -->
