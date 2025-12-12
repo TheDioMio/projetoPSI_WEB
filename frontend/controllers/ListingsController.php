@@ -42,6 +42,10 @@ class ListingsController extends Controller
 
         $searchModel = new ListingSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider->pagination->pageSize = 10;
+        $dataProvider->sort->defaultOrder = [
+            'created_at' => SORT_DESC,
+        ];
         return $this->render('animal', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

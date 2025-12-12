@@ -2,6 +2,13 @@
 
 <?php
 
+use common\models\AnimalAge;
+use common\models\AnimalSize;
+use common\models\AnimalType;
+use common\models\Breed;
+use common\models\Vaccination;
+use yii\bootstrap5\ActiveForm;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\helpers\StringHelper;
@@ -9,9 +16,9 @@ use yii\helpers\StringHelper;
 /** @var yii\web\View $this */
 
 $this->title = 'Animais';
-?>
 
-<?php
+
+
     $videoOptions = [
     ['videoFile' => 'banner1.mp4', 'posterFile' => 'banner1.png'],
     ];
@@ -21,6 +28,38 @@ $escolhaAleatoria = $videoOptions[array_rand($videoOptions)];
 
 $videoUrl = Yii::getAlias('@web/video/' . $escolhaAleatoria['videoFile']);
 $posterUrl = Yii::getAlias('@web/video/' . $escolhaAleatoria['posterFile']);
+
+
+
+$tiposDeAnimal = ArrayHelper::map(
+    AnimalType::find()->orderBy(['description' => SORT_ASC])->all(),
+    'id',
+    'description'
+);
+
+$racas = ArrayHelper::map(
+    Breed::find()->orderBy(['description' => SORT_ASC])->all(),
+    'id',
+    'description'
+);
+
+$idades = ArrayHelper::map(
+    AnimalAge::find()->orderBy(['description' => SORT_ASC])->all(),
+    'id',
+    'description'
+);
+
+$portes = ArrayHelper::map(
+    AnimalSize::find()->orderBy(['id' => SORT_ASC])->all(),
+    'id',
+    'description'
+);
+
+$vacinas = ArrayHelper::map(
+    Vaccination::find()->orderBy(['id' => SORT_ASC])->all(),
+    'id',
+    'description'
+);
 
 ?>
 
@@ -142,28 +181,91 @@ $posterUrl = Yii::getAlias('@web/video/' . $escolhaAleatoria['posterFile']);
         <div class="col-lg-4">
             <!-- Search Form Start -->
             <div class="mb-5">
-                <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Pesquisa</h3>
-                <div class="input-group">
-                    <form method="get" action="<?= Url::to(['listings/animal']) ?>">
-                    <input type="text" class="form-control p-3" name="ListingSearch[q]" placeholder="Pesquisa">
-                    <input type="submit" class="btn btn-primary px-4"><i class="bi bi-search"></i>
-                    </form>
-                </div>
+                <form method="get" action="<?= Url::to(['listings/animal']) ?>">
+                    <div class="input-group">
+                        <input type="text" class="form-control p-3" name="ListingSearch[q]" placeholder="Pesquisa">
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
             </div>
             <!-- Search Form End -->
 
-            <!-- Category Start -->
+            <!-- Filters Start -->
             <div class="mb-5">
                 <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Filtros</h3>
-                <div class="d-flex flex-column justify-content-start">
-                    <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Especie</a>
-                    <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Raça</a>
-                    <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Web Development</a>
-                    <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Keyword Research</a>
-                    <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Email Marketing</a>
+
+                <?php
+                // Inicia o ActiveForm, associando-o ao searchModel
+                // Método GET e a ação aponta para a mesma página
+                $form = ActiveForm::begin([
+                    'method' => 'get',
+                    'action' => ['listings/animal'],
+                    'options' => ['class' => 'd-flex flex-column justify-content-start'],
+                    'enableClientValidation' => false,
+                ]);
+                ?>
+
+                <div class="mb-3">
+                    <label class="h5 text-primary mb-1 ps-2">Tipo de Animal</label>
+                    <?= $form->field($searchModel, 'animal_type_id')->dropDownList( // 💡 Note: Usa $searchModel
+                        $tiposDeAnimal,
+                        [
+                            'prompt' => '— Qualquer Tipo —',
+                            'class' => 'form-select h5 bg-light py-2 px-3',
+                            'onchange' => 'this.form.submit()' // Submete automaticamente
+                        ]
+                    )->label(false) ?>
+                </div>
+
+                <div class="mb-3">
+                    <label class="h5 text-primary mb-1 ps-2">Raça</label>
+                    <?= $form->field($searchModel, 'breed_id')->dropDownList( // 💡 Note: Usa $searchModel e breed_id
+                        $racas,
+                        [
+                            'prompt' => '— Qualquer Raça —',
+                            'class' => 'form-select h5 bg-light py-2 px-3',
+                            'onchange' => 'this.form.submit()' // Submete automaticamente
+                        ]
+                    )->label(false) ?>
+                </div>
+
+                <div class="mb-3">
+                    <label class="h5 text-primary mb-1 ps-2">Idade</label>
+                    <?= $form->field($searchModel, 'animal_age_id')->dropDownList( // 💡 Note: Usa $searchModel e animal_age_id
+                        $idades,
+                        [
+                            'prompt' => '— Qualquer Idade —',
+                            'class' => 'form-select h5 bg-light py-2 px-3',
+                            'onchange' => 'this.form.submit()'
+                        ]
+                    )->label(false) ?>
+                </div>
+
+                <div class="mb-3">
+                    <label class="h5 text-primary mb-1 ps-2">Porte</label>
+                    <?= $form->field($searchModel, 'animal_size_id')->dropDownList( // 💡 Note: Usa $searchModel e animal_size_id
+                        $portes,
+                        [
+                            'prompt' => '— Qualquer Porte —',
+                            'class' => 'form-select h5 bg-light py-2 px-3',
+                            'onchange' => 'this.form.submit()'
+                        ]
+                    )->label(false) ?>
+                </div>
+
+                <?php ActiveForm::end(); ?>
+
+                <div class="mb-3 pt-2">
+                    <?= Html::a(
+                        '<i class="bi bi-x-circle me-2"></i> Limpar Filtros',
+                        ['listings/animal'], // URL base sem parâmetros
+                        ['class' => 'h6 text-danger']
+                    ) ?>
                 </div>
             </div>
-            <!-- Category End -->
+            <!-- Filters End -->
 
             <!-- Recent Post Start -->
             <div class="mb-5">
