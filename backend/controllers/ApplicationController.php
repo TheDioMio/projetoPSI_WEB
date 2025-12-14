@@ -73,8 +73,6 @@ class ApplicationController extends Controller
             ->where(['type' => Application::TYPE_ADOPTION])
             ->andWhere(['application.status' => 0]);
 
-
-
         $pendingAdoptionApplications = new ActiveDataProvider([
             'query' => $queryAdoption,
             'sort' => [
@@ -139,17 +137,146 @@ class ApplicationController extends Controller
         $statusData = $this->getStatusInfo($model->status);
 
         // 2. Processar os dados do JSON
-        $jsonAttributes = $this->getFormattedJsonData($model->data);
+        $jsonAttributes = $this->getFormattedJsonDataAdoption($model->data);
 
         return $this->render('view', [
             'model' => $model,
-            'statusLabel' => $statusData['label'], // Passamos o texto
-            'statusClass' => $statusData['class'], // Passamos a classe CSS
+            'statusLabel' => $statusData['label'], // Passamos o texto (EX. Pendente)
+            'statusClass' => $statusData['class'], // Passamos o CSS (EX. Se é pendente, badge-warning)
             'jsonAttributes' => $jsonAttributes,   // Passamos o array pronto para o DetailView
         ]);
     }
 
-    private function getStatusInfo($status)
+    public function actionViewUserPro($id) {
+        $model = $this->findModel($id);
+        // 1. Processar o Status
+        $statusData = $this->getStatusInfo($model->status);
+
+        // 2. Processar os dados do JSON
+        $jsonAttributes = $this->getFormattedJsonDataUserPro($model->data);
+
+        return $this->render('view-user-pro', [
+            'model' => $model,
+            'statusLabel' => $statusData['label'], // Passamos o texto (EX. Pendente)
+            'statusClass' => $statusData['class'], // Passamos o CSS (EX. Se é pendente, badge-warning)
+            'jsonAttributes' => $jsonAttributes,   // Passamos o array pronto para o DetailView
+        ]);
+    }
+
+    private function getFormattedJsonDataUserPro($data) {
+        $attributes = [];
+
+        $labelsMap = [
+            'bio' => 'Biografia',
+            'nif' => 'NIF',
+            'area_id' => 'Área Principal',
+            'website' => 'Website ou Redes Sociais',
+            'availability' => 'Disponibilidade Habitual',
+            'experience_level' => 'Experiência na Área',
+            'professional_name' => 'Nome do Profissional ou Empresa',
+        ];
+
+        if (is_array($data) && !empty($data)) {
+            foreach ($data as $key => $value) {
+
+                $cleanKey = strtolower($key);
+
+                // Define o Rótulo
+                $label = $key;
+                foreach ($labelsMap as $mapKey => $mapLabel) {
+                    if (strtolower($mapKey) == $cleanKey) {
+                        $label = $mapLabel;
+                        break;
+                    }
+                }
+
+                // Define o Valor
+                $displayValue = $value;
+
+                switch ($cleanKey) {
+                    case 'area_id':
+                        switch ($value) {
+                            case 1:
+                                $displayValue = 'Clínica Veterinária';
+                                break;
+                            case 2:
+                                $displayValue = 'Canil / Abrigo';
+                                break;
+                            case 3:
+                                $displayValue = 'Outro';
+                                break;
+                            default:
+                                $displayValue = 'Desconhecido';
+                        }
+                        break;
+
+                    case 'experience_level':
+                        switch ($value) {
+                            case 1:
+                                $displayValue = 'Menos de 1 ano';
+                                break;
+                            case 2:
+                                $displayValue = 'Entre 1 a 3 anos';
+                                break;
+                            case 3:
+                                $displayValue = 'Entre 3 a 5 anos';
+                                break;
+                            case 4:
+                                $displayValue = 'Mais de 5 anos';
+                                break;
+                            default:
+                                $displayValue = 'Desconhecido';
+                        }
+                        break;
+                    case 'availability':
+                        switch ($value) {
+                            case 1:
+                                $displayValue = 'Tempo Inteiro (Comercial)';
+                                break;
+                            case 2:
+                                $displayValue = 'Part-time';
+                                break;
+                            case 3:
+                                $displayValue = 'Apenas Fins de Semana';
+                                break;
+                            case 4:
+                                $displayValue = 'Apenas por Marcação';
+                                break;
+                            default:
+                                $displayValue = 'Desconhecido';
+                        }
+                        break;
+                    case 'website':
+                        if ($value == null) {
+                            $displayValue = 'Desconhecido';
+                        } else {
+                            $displayValue = Html::encode($value);
+                        }
+                        break;
+                    // --- DEFAULT ---
+                    default:
+                        $displayValue = Html::encode($value);
+                }
+
+                $attributes[] = [
+                    'label' => $label,
+                    'format' => 'raw',
+                    'value' => $displayValue,
+                    'contentOptions' => ['class' => 'text-dark font-weight-bold'],
+                    'captionOptions' => ['width' => '35%', 'class' => 'text-muted'],
+                ];
+            }
+        } else {
+            $attributes[] = [
+                'label' => 'Dados',
+                'value' => 'Não existem dados adicionais preenchidos.',
+                'contentOptions' => ['class' => 'text-muted font-italic'],
+            ];
+        }
+        return $attributes;
+    }
+
+    public function getStatusInfo($status)
     {
         switch ($status) {
             case 0: return ['label' => 'Pendente', 'class' => 'badge-warning'];
@@ -159,7 +286,7 @@ class ApplicationController extends Controller
         }
     }
 
-    private function getFormattedJsonData($data)
+    private function getFormattedJsonDataAdoption($data)
     {
         $attributes = [];
 
@@ -313,13 +440,6 @@ class ApplicationController extends Controller
             $model->status = 0;
         }
         return $this->redirect(['index']);
-    }
-
-    public function actionViewUserPro($id)
-    {
-        return $this->render('view-user-pro', [
-            'model' => $this->findModel($id),
-        ]);
     }
 
     public function actionCreate()

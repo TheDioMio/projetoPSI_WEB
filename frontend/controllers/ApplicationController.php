@@ -81,7 +81,7 @@ class ApplicationController extends Controller
         //2.º Criar o modelo dinâmico para o formulário, isto deixa-nos validar e ter muito mais controlo sobre o que vai para a 'data'.
         $formModel = new DynamicModel([
             'professional_name', 'nif', 'area_id', 'experience_level',
-            'website', 'availability', 'bio', 'certificates'
+            'website', 'availability', 'bio'
         ]);
 
         //3.º Definir regras de validação para o formulário

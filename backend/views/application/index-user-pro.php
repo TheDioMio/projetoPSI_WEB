@@ -33,6 +33,32 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'candidate_name',
                     ],
                     [
+                        'attribute' => 'description',
+                        'label' => 'Empresa',
+                    ],
+                    [
+                        'attribute' => 'created_at',
+                        'format' => ['date', 'php:d/m/Y H:i'],
+                        'label' => 'Submetido em',
+                    ],
+                    [
+                        'attribute' => 'status',
+                        'label' => 'Estado',
+                        'format' => 'raw',
+                        'filter' => [0 => 'Pendente', 1 => 'Aprovado', 2 => 'Recusado'],
+                        'value' => function ($model) {
+                            // 1. Pedimos ao Controller a informação deste status específico
+                            // O 'Yii::$app->controller' refere-se ao ApplicationController que está a correr
+                            $info = Yii::$app->controller->getStatusInfo($model->status);
+
+                            // 2. Usamos os dados que vieram do Controller
+                            return Html::tag('span', $info['label'], [
+                                'class' => "badge {$info['class']} px-2"
+                            ]);
+                        },
+                        'contentOptions' => ['class' => 'text-center align-middle'],
+                    ],
+                    [
                         'class' => ActionColumn::className(),
                         'template' => '{view} {delete}',
                         'buttons' => [

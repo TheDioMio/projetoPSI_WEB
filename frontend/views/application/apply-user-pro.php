@@ -23,10 +23,10 @@ $anosExperiencia = [
 ];
 
 $disponibilidade = [
-    'full_time' => 'Tempo Inteiro (Comercial)',
-    'part_time' => 'Part-time',
-    'weekends'  => 'Apenas Fins de Semana',
-    'appointment' => 'Apenas por Marcação',
+    1 => 'Tempo Inteiro (Comercial)',
+    2 => 'Part-time',
+    3 => 'Apenas Fins de Semana',
+    4 => 'Apenas por Marcação',
 ];
 ?>
 

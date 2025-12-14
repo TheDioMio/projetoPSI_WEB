@@ -14,7 +14,6 @@ YiiAsset::register($this);
 ?>
 
 <div class="application-view">
-
     <div class="mb-3 text-right">
         <?= Html::a('<i class="fas fa-arrow-left"></i> Voltar', ['index'], ['class' => 'btn btn-outline-secondary']) ?>
         <?= Html::a('<i class="fas fa-edit"></i> Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -28,7 +27,6 @@ YiiAsset::register($this);
     </div>
 
     <div class="row">
-
         <div class="col-md-4">
             <div class="card card-primary card-outline shadow-sm">
                 <div class="card-header">
@@ -41,7 +39,10 @@ YiiAsset::register($this);
                         </span>
                     </div>
 
-                    <h3 class="profile-username text-center"><?= Html::encode($model->user->username ?? 'Desconhecido') ?></h3>
+                    <h3 class="profile-username text-center">
+                        <?= Html::a($model->user->username ?? 'Desconhecido',
+                            ['user/view', 'id' => $model->user_id],
+                            ['target'=> '_blank'])?></h3>
                     <p class="text-muted text-center">Candidato</p>
 
                     <ul class="list-group list-group-unbordered mb-3">
@@ -54,17 +55,7 @@ YiiAsset::register($this);
                         <li class="list-group-item">
                             <b>Status</b>
                             <span class="float-right">
-                                <?php
-                                // Lógica para o badge do Status
-                                $statusLabel = '';
-                                $statusClass = '';
-                                switch ($model->status) {
-                                    case 0: $statusLabel = 'Pendente'; $statusClass = 'badge-warning'; break;
-                                    case 1: $statusLabel = 'Aprovado'; $statusClass = 'badge-success'; break;
-                                    case 2: $statusLabel = 'Recusado'; $statusClass = 'badge-danger'; break;
-                                    default: $statusLabel = 'Desconhecido'; $statusClass = 'badge-secondary';
-                                }
-                                echo Html::tag('span', $statusLabel, ['class' => "badge {$statusClass}"]);
+                                <?=Html::tag('span', $statusLabel, ['class' => "badge {$statusClass}"]);
                                 ?>
                             </span>
                         </li>
@@ -84,8 +75,8 @@ YiiAsset::register($this);
                     <?php else: ?>
 
                         <?= DetailView::widget([
-                            'model' => $model, // O modelo é o mesmo...
-                            'attributes' => $jsonAttributes, // ...mas os atributos são o array que criámos no topo!
+                            'model' => $model,
+                            'attributes' => $jsonAttributes,
                             'options' => ['class' => 'table table-hover mb-0'],
                         ]) ?>
 
@@ -93,6 +84,5 @@ YiiAsset::register($this);
                 </div>
             </div>
         </div>
-
     </div>
 </div>

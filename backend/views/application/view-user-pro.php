@@ -1,4 +1,6 @@
 <?php
+
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\web\YiiAsset;
 use yii\widgets\DetailView;
@@ -11,68 +13,94 @@ $this->params['breadcrumbs'][] = ['label' => 'Applications', 'url' => ['index']]
 $this->params['breadcrumbs'][] = $this->title;
 YiiAsset::register($this);
 ?>
-<div class="application-view">
-    <div class="card card-outline card-primary shadow-sm">
-        <div class="card-header">
-            <div class="card-tools float-right">
-                <?= Html::a('<i class="fas fa-arrow-left"></i> Voltar à Lista', ['index-user-pro'], ['class' => 'btn btn-default btn-sm']) ?>
+<div class="application-view-user-pro">
+        <div class="mb-3 text-right">
+                <?= Html::a('<i class="fas fa-arrow-left"></i> Voltar à Lista', ['index-user-pro'],
+                    ['class' => 'btn btn-default']) ?>
                 <?= Html::a('Negar', ['deny-application', 'id' => $model->id], [
-                    'class' => 'btn btn-danger btn-sm',
+                    'class' => 'btn btn-danger',
                     'data' => [
                         'confirm' => 'Tem a certeza que deseja negar esta candidatura?',
                         'method' => 'post',
                     ],
                 ]) ?>
                 <?= Html::a('Aceitar', ['accept-application', 'id' => $model->id], [
-                    'class' => 'btn btn-success btn-sm',
+                    'class' => 'btn btn-success',
                     'data' => [
                         'confirm' => 'Tem a certeza que deseja aceitar esta candidatura?',
                         'method' => 'post',
                     ],
                 ]) ?>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card card-primary card-outline shadow-sm">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-id-card"></i> Resumo</h3>
+                    </div>
+                    <div class="card-body box-profile">
+                        <div class="text-center mb-3">
+                        <span class="img-circle elevation-2 d-inline-flex align-items-center justify-content-center bg-light" style="width: 80px; height: 80px; font-size: 2rem;">
+                            <i class="fas fa-user text-secondary"></i>
+                        </span>
+                        </div>
+
+                        <h3 class="profile-username text-center">
+                            <?= Html::a($model->user->username ?? 'Desconhecido',
+                                ['user/view', 'id' => $model->user_id],
+                                ['target'=> '_blank'])?></h3>
+                        <p class="text-muted text-center">Candidato</p>
+
+                        <ul class="list-group list-group-unbordered mb-3">
+                            <li class="list-group-item">
+                                <b>ID da Candidatura</b> <a class="float-right">#<?= $model->id ?></a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Data de Submissão</b> <a class="float-right"><?= Yii::$app->formatter->asDate($model->created_at, 'long') ?></a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Status</b>
+                                <span class="float-right">
+                                <?=Html::tag('span', $statusLabel, ['class' => "badge {$statusClass}"]);
+                                ?>
+                            </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="card card-info card-outline shadow-sm">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-list-alt"></i> Respostas do Formulário</h3>
+                    </div>
+                    <div class="card-body p-0">
+                        <?php if (empty($jsonAttributes)): ?>
+                            <div class="p-4 text-center text-muted">Sem dados para apresentar.</div>
+                        <?php else: ?>
+
+                            <?= DetailView::widget([
+                                'model' => $model,
+                                'options' => ['class' => 'table table-hover mb-0'],
+                                'attributes' => ArrayHelper::merge(
+                                    [
+                                        [
+                                            'attribute' => 'description',
+                                            'label' => 'Empresa',
+                                            'captionOptions' => ['class' => 'text-muted'],
+                                            'contentOptions' => ['class' => 'font-weight-bold'],
+                                        ],
+                                    ],
+                                    $jsonAttributes
+                                ),
+                            ]) ?>
+
+                        <?php endif; ?>
+                    </div>
+                </div>
             </div>
         </div>
-        <?= DetailView::widget([
-            'model' => $model,
-            'attributes' => [
-                'id',
-                'status', //formatar isto para mostrar "Pendente", em vez de 0
-                'description',
-                [
-                    'attribute' => 'data',
-                    'label' => 'Detalhes da Candidatura',
-                    'format' => 'html',
-                    'value' => function ($model) {
-                        $data = $model->data;
-                        //1.º -> Se não for array (estiver vazio ou null), retorna mensagem
-                        if (!is_array($data)) {
-                            return '<span class="text-muted">(Sem dados adicionais)</span>';
-                        }
-                        //2.º -> Cria uma tabela simples para mostrar os dados
-                        $html = '<table class="table table-sm table-bordered" style="background: transparent;">';
-
-                        //3.º -> Faz um foreach para todos os modelos na data, e dá display 1 por 1
-                        foreach ($data as $key => $value) {
-                            // Formata a chave (ex: "professional_name" -> "Professional Name")
-                            $label = ucwords(str_replace('_', ' ', $key));
-
-                            $displayValue = htmlspecialchars((string)$value);
-
-                            $html .= "<tr><th style='width: 30%;'>{$label}</th><td>{$displayValue}</td></tr>";
-                        }
-                        $html .= '</table>';
-                        return $html;
-                    },
-                ],
-                'created_at:datetime',
-                [
-                    'label' => 'Candidato',
-                    'attribute' => 'user_id',
-                    'value' => function($model) {
-                        return $model->user->username ?? 'Desconhecido';
-                    }
-                ],
-            ],
-        ]) ?>
-    </div>
 </div>
