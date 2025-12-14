@@ -1,0 +1,51 @@
+----------------------------------------------------------------
+			TESTES
+----------------------------------------------------------------
+ 
+no "before" são inseridos dados na BD para testar,
+no fim esses dados são apagados
+ 
+site: https://codeception.com/quickstart
+ 
+usar "composer require "codeception/codeception" --dev"
+ 
+ 
+	UNITÁRIO
+	"php vendor/bin/codecept generate:test unit Example"
+ 
+ 
+no root do projeto, em CMD, inserir:	
+php vendor/bin/codecept generate:test unit Calculator -c frontend
+ 
+ 
+preencher o test no directorio criado
+ 
+garantir o modelo correcto!
+	"use frontend\models\Calculator;"
+ 
+ 
+para correr o teste:
+php vendor/bin/codecept run unit CalculatorTest -c frontend
+ 
+ 
+	TESTAR BDs
+ 
+https://codeception.com/docs/UnitTests#Testing-Database
+https://codeception.com/docs/modules/Db
+ 
+	tests>unit.suite
+	        - Db:
+            dsn: 'mysql:host=localhost;dbname=ficha6'
+            user: 'root'
+            password: ''
+ 
+ 
+	configurar o common > config > test-local com a DB de teste
+ 
+ 
+correr na CMD:
+php vendor/bin/codecept generate:test unit Pessoa -c frontend
+php vendor/bin/codecept run unit PessoaTest -c frontend
+ 
+(instalar se necessário: 
+	composer require codeception/module-db --dev)

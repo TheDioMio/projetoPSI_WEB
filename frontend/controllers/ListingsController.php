@@ -8,10 +8,14 @@ use yii;
 use common\models\Animal;
 use common\models\File;
 use common\models\Listing;
+use common\models\AnimalType;
+use common\models\Breed;
+
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
+use yii\helpers\ArrayHelper;
 
 
 class ListingsController extends Controller
@@ -88,18 +92,37 @@ class ListingsController extends Controller
 
     public function actionCreateListing()
     {
-        // 1. CRIAMOS O MODELO VAZIO
+        // falta criar a permissão e validar
+        // if (!Yii::$app->user->can('createListing')) {
+        //     throw new ForbiddenHttpException();
+        // }
+
         $model = new Animal();
         $listingModel = new Listing();
         $address = Yii::$app->user->identity->address;
 
         $model->scenario = 'create';
+        // tipos de animal e raças
+        $animalTypes = ArrayHelper::map(
+            AnimalType::find()->orderBy('description')->all(),
+            'id',
+            'description'
+        );
+
+        $breedsByType = [];
+        $breeds = Breed::find()->orderBy('description')->all();
+
+        foreach ($breeds as $breed) {
+            $breedsByType[$breed->animal_type_id][$breed->id] = $breed->description;
+        }
+
         if ($this->request->isPost) {
 
             // 2. Carregar os dados do formulário (name, age, etc.)
             $model->load(Yii::$app->request->post());
             $listingModel->load(Yii::$app->request->post());
             $model->user_id = Yii::$app->user->id;
+
 
             // 3. Apanhar as instâncias dos ficheiros
             $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
@@ -155,9 +178,16 @@ class ListingsController extends Controller
                     // 8. (Opcional) Criar o Listing (Anúncio)
                     $listingModel->animal_id = $model->id;
                     $listingModel->user_id = Yii::$app->user->id;
-                    $listingModel->status = 1; // 0 = Pendente de Aprovação
+
+
                     if (!$listingModel->save()) {
                         throw new \Exception('Falha ao criar o anúncio (listing).');
+                    }
+
+                    $model->status = $listingModel->status;
+                    $model->statusDate = date('Y-m-d');
+                    if (!$model->save(false)) {
+                        throw new \Exception('Falha ao sincronizar estado do animal.');
                     }
 
                     // 9. Se tudo correu bem, 'cometer' a transação
@@ -172,7 +202,7 @@ class ListingsController extends Controller
                 }
             } else {
                 // Erro de validação (ex: nome em branco ou foto em falta)
-                // Yii::$app->session->setFlash('error', 'Por favor, corrija os erros no formulário.');
+                 Yii::$app->session->setFlash('error', 'Por favor, corrija os erros no formulário.');
             }
         }
 
@@ -182,7 +212,10 @@ class ListingsController extends Controller
             'model' => $model,
             'listingModel' => $listingModel,
             'userAddress' => $address,
-        ]);
+            'statusOptions' => $this->getStatusOptionsForCurrentUser(),
+            'animalTypes' => $animalTypes,
+            'breedsByType' => $breedsByType,
+            ]);
     }
 
 
@@ -287,14 +320,36 @@ class ListingsController extends Controller
             throw new NotFoundHttpException('Anúncio não encontrado.');
         }
 
-        // Segurança: só o dono pode editar
+        // só o dono pode editar
         if ($listingModel->user_id != Yii::$app->user->id) {
             throw new ForbiddenHttpException('Não tem permissão para editar este anúncio.');
         }
 
-        // Relacionamento: o Animal associado
+        if (!Yii::$app->user->can('updateAnimalStatus')) {
+            throw new ForbiddenHttpException('Não tem permissão para editar o estado do anúncio.');
+        }
+
+
         $model = $listingModel->animal;
         $model->scenario = 'update';
+
+        //tipos de animal e raças
+
+        $animalTypes = ArrayHelper::map(
+            AnimalType::find()->orderBy('description')->all(),
+            'id',
+            'description'
+        );
+
+        $breedsByType = [];
+        $breeds = Breed::find()->orderBy('description')->all();
+
+        foreach ($breeds as $breed) {
+            $breedsByType[$breed->animal_type_id][$breed->id] = $breed->description;
+        }
+
+
+
 
         // Imagens atuais
         $existingImages = File::find()
@@ -306,6 +361,15 @@ class ListingsController extends Controller
             $model->load(Yii::$app->request->post());
             $listingModel->load(Yii::$app->request->post());
 
+
+            $allowedStatuses = array_keys($this->getStatusOptionsForCurrentUser());
+            if (!in_array($listingModel->status, $allowedStatuses)) {
+                throw new \yii\web\ForbiddenHttpException('Estado inválido.');
+            }
+
+            $model->status = $listingModel->status;
+            $model->statusDate = date('Y-m-d');
+
             // Apanhar novas imagens, se houver
             $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
 
@@ -316,7 +380,7 @@ class ListingsController extends Controller
 
             $newCount = count($model->imageFiles);
 
-            // ❌ Se não houver imagens existentes E não houve upload novo
+            //Se não houver imagens existentes E não houve upload novo
             if ($existingCount == 0 && $newCount == 0) {
                 Yii::$app->session->setFlash('error', 'O anúncio deve ter pelo menos 1 fotografia.');
                 return $this->redirect(['update', 'id' => $id]);
@@ -360,10 +424,23 @@ class ListingsController extends Controller
         return $this->render('create-listing', [
             'model' => $model,
             'listingModel' => $listingModel,
-            'existingImages' => $existingImages
+            'existingImages' => $existingImages,
+            'statusOptions' => $this->getStatusOptionsForCurrentUser(),
+            'animalTypes' => $animalTypes,
+            'breedsByType' => $breedsByType,
         ]);
     }
 
+
+    private function getStatusOptionsForCurrentUser()
+    {
+        $auth = Yii::$app->authManager;
+        $roles = $auth->getRolesByUser(Yii::$app->user->id);
+
+        return isset($roles['UserPro'])
+            ? Listing::getAllowedStatusesForUserPro()
+            : Listing::getAllowedStatusesForUser();
+    }
 
 
 }

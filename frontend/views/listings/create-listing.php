@@ -16,17 +16,6 @@ use yii\helpers\Url;
 /** @var common\models\Listing $listingModel */ // O $model é um 'Linsting' anuncio vazio, vindo do Controller
 
 // --- Dropdowns vindos da BD ---
-$tiposDeAnimal = ArrayHelper::map(
-    AnimalType::find()->orderBy(['description' => SORT_ASC])->all(),
-    'id',
-    'description'
-);
-
-$racas = ArrayHelper::map(
-    Breed::find()->orderBy(['description' => SORT_ASC])->all(),
-    'id',
-    'description'
-);
 
 $idades = ArrayHelper::map(
     AnimalAge::find()->orderBy(['description' => SORT_ASC])->all(),
@@ -78,10 +67,7 @@ $this->params['breadcrumbs'][] = $this->title; // Adiciona ao "breadcrumb"
                 <?= $form->field($model, 'description')->textarea(['rows' => 8])->label('História e Comportamento')
                     ->hint('Descreva o animal. É calmo? Gosta de crianças? Tem necessidades especiais?') ?>
 
-                <?= $form->field($listingModel, 'description')->textarea([
-                    'rows' => 6,
-                ])->label('Descrição do Anúncio')
-                    ->hint('Texto apelativo para o anúncio. Ex: Este animal procura novo lar...'); ?>
+
 
                 <hr class="my-4">
 <!---->
@@ -105,7 +91,7 @@ $this->params['breadcrumbs'][] = $this->title; // Adiciona ao "breadcrumb"
 
                     <div class="col-md-6">
                         <?= $form->field($model, 'animal_type_id')->dropDownList(
-                            $tiposDeAnimal,
+                            $animalTypes,
                             [
                                 'prompt' => 'Selecione o Tipo...',
                                 'id' => 'animal-type'
@@ -164,6 +150,25 @@ $this->params['breadcrumbs'][] = $this->title; // Adiciona ao "breadcrumb"
 
                 <hr class="my-4">
 
+<!--                ------------------------------------------------Dados do anuncio ----------------------------------------------------->
+                <?= $form->field($listingModel, 'description')->textarea([
+                    'rows' => 6,
+                ])->label('Descrição do Anúncio')
+                    ->hint('Texto apelativo para o anúncio. Ex: Este animal procura novo lar...'); ?>
+
+                <hr class="my-4">
+
+                <?= $form->field($listingModel, 'status')->dropDownList(
+                    $statusOptions,
+                )->label('Estado do Anúncio') ?>
+
+
+                <hr class="my-4">
+
+
+
+
+<!--                ---------------------------------------------quando em edição exibe as fotos actuais---------------------------------->
                 <?php if (!empty($existingImages)): ?>
 
                     <div class="mb-4">
@@ -191,7 +196,6 @@ $this->params['breadcrumbs'][] = $this->title; // Adiciona ao "breadcrumb"
                                             ]
                                         ) ?>
                                     <?php else: ?>
-                                        <!-- mensagem informativa opcional -->
                                         <small class="text-muted d-block mt-2">
                                             Não pode remover a última foto.
                                         </small>
@@ -205,7 +209,9 @@ $this->params['breadcrumbs'][] = $this->title; // Adiciona ao "breadcrumb"
                 <?php endif; ?>
 
 
-                <hr class="my-4">
+
+
+
 
                 <?= $form->field($model, 'imageFiles[]')->fileInput([ // O nome é 'imageFiles[]'
                     'multiple' => true, // Permite selecionar vários ficheiros
@@ -251,26 +257,44 @@ $this->params['breadcrumbs'][] = $this->title; // Adiciona ao "breadcrumb"
 </div>
 
 <?php
-$url = Url::to(['breed/get-by-type']);
-$js = <<<JS
-$('#animal-type').on('change', function() {
-    var typeId = $(this).val();
-
-    $.getJSON('$url', {id: typeId}, function(data) {
-        var breedSelect = $('#breed');
-        breedSelect.empty();
-        breedSelect.append('<option value="">Selecione a Raça...</option>');
-      
-        $.each(data, function(id, desc) {
-         breedSelect.append('<option value="' + id + '">' + desc + '</option>');
-});
-
-    });
-});
-JS;
-
-$this->registerJs($js);
+$breedsJson = json_encode($breedsByType);
+$selectedBreed = (int)$model->breed_id;
 ?>
+
+<script>
+    const breedsByType = <?= $breedsJson ?>;
+
+    const typeSelect = document.getElementById('animal-type');
+    const breedSelect = document.getElementById('breed');
+
+    function updateBreeds(typeId, selectedBreed = null) {
+        breedSelect.innerHTML = '<option value="">Selecione a Raça...</option>';
+
+        if (!breedsByType[typeId]) return;
+
+        Object.entries(breedsByType[typeId]).forEach(([id, name]) => {
+            const option = document.createElement('option');
+            option.value = id;
+            option.text = name;
+            if (selectedBreed && id == selectedBreed) {
+                option.selected = true;
+            }
+            breedSelect.appendChild(option);
+        });
+    }
+
+    typeSelect.addEventListener('change', function () {
+        updateBreeds(this.value);
+    });
+
+    // preencher automaticamente no UPDATE
+    document.addEventListener('DOMContentLoaded', function () {
+        if (typeSelect.value) {
+            updateBreeds(typeSelect.value, <?= $selectedBreed ?>);
+        }
+    });
+</script>
+
 
 
 

@@ -44,28 +44,48 @@ class Animal extends ActiveRecord
     {
         return 'animal';
     }
+//
+//    const STATUS_INACTIVE = 0;
+//    const STATUS_ACTIVE   = 1;
+//    const STATUS_DELETED  = 2;
+//    const STATUS_DEAD     = 3;
+//    const STATUS_ADOPTED  = 4;
 
-    const STATUS_INACTIVE = 0;
-    const STATUS_ACTIVE   = 1;
-    const STATUS_DELETED  = 2;
-    const STATUS_DEAD     = 3;
-    const STATUS_ADOPTED  = 4;
+//    public static function getStatusLabels()
+//    {
+//        return [
+//            self::STATUS_INACTIVE => 'Inativo, não publicar anúncio.',
+//            self::STATUS_ACTIVE   => 'Ativo, publicar anúncio.',
+//            self::STATUS_DELETED  => 'Apagado',
+//            self::STATUS_DEAD     => 'Falecido',
+//            self::STATUS_ADOPTED  => 'Adotado',
+//        ];
+//    }
 
-    public static function getStatusLabels()
-    {
-        return [
-            self::STATUS_INACTIVE => 'Inativo',
-            self::STATUS_ACTIVE   => 'Ativo',
-            self::STATUS_DELETED  => 'Apagado',
-            self::STATUS_DEAD     => 'Falecido',
-            self::STATUS_ADOPTED  => 'Adotado',
-        ];
-    }
+//    public function getStatusLabel()
+//    {
+//        return self::getStatusLabels()[$this->status] ?? 'Desconhecido';
+//    }
 
-    public function getStatusLabel()
-    {
-        return self::getStatusLabels()[$this->status] ?? 'Desconhecido';
-    }
+//    public static function getAllowedStatusesForUser()
+//    {
+//        return [
+//            self::STATUS_INACTIVE => 'Inativo, não publicar anúncio.',
+//            self::STATUS_ACTIVE   => 'Ativo, publicar anúncio.',
+//            self::STATUS_ADOPTED  => 'Adotado',
+//        ];
+//    }
+//
+//    public static function getAllowedStatusesForUserPro()
+//    {
+//        return [
+//            self::STATUS_INACTIVE => 'Inativo, não publicar anúncio.',
+//            self::STATUS_ACTIVE   => 'Ativo, publicar anúncio.',
+//            self::STATUS_DEAD     => 'Falecido',
+//            self::STATUS_ADOPTED  => 'Adotado',
+//
+//        ];
+//    }
 
 
     public $imageFiles;
@@ -81,7 +101,7 @@ class Animal extends ActiveRecord
             [['age_id', 'size_id', 'vaccination_id', 'animal_type_id', 'breed_id', 'neutered', 'user_id'], 'integer'],
             [['description'], 'string'],
             [['animal_type_id', 'name', 'age_id', 'size_id', 'user_id', 'breed_id', 'vaccination_id', 'location'], 'required'],
-            [['created_at'], 'safe'],
+            [['created_at', 'statusDate'], 'safe'],
             [['location'], 'string', 'max' => 150],
             [['name'], 'string', 'max' => 50],
             [['age_id'], 'exist', 'skipOnError' => true, 'targetClass' => AnimalAge::class, 'targetAttribute' => ['age_id' => 'id']],
@@ -128,8 +148,8 @@ class Animal extends ActiveRecord
             'size_id' => 'Size ID',
             'vaccination_id' => 'Vaccination ID',
             'description' => 'Description',
-            'animal_type_id' => 'Animal Type ID',
-            'breed_id' => 'Breed ID',
+            'animal_type_id' => 'Tipo de animal',
+            'breed_id' => 'Raça',
             'neutered' => 'Neutered',
             'location' => 'Location',
             'user_id' => 'User ID',
@@ -250,6 +270,22 @@ class Animal extends ActiveRecord
             ],
         ];
     }
+
+    public function beforeSave($insert)
+    {
+        // preencher o campo statusDate no insert ou sempre que o status for alterado
+        if (parent::beforeSave($insert)) {
+
+            if ($insert || $this->isAttributeChanged('status')) {
+                $this->statusDate = date('Y-m-d');
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
 
     public function getPrimaryImage()
     {

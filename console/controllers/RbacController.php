@@ -17,6 +17,10 @@ class RbacController extends Controller
         $createComment->description = 'createComment';
         $auth->add($createComment);
 
+        $updateAnimalStatus = $auth->createPermission('updateAnimalStatus');
+        $updateAnimalStatus->description = 'updateAnimalStatus';
+        $auth->add($updateAnimalStatus);
+
         $loginFrontend = $auth->createPermission('loginFrontend');
         $loginFrontend->description = 'loginFrontend';
         $auth->add($loginFrontend);
@@ -33,12 +37,14 @@ class RbacController extends Controller
         $auth->add($user);
         $auth->addChild($user, $loginFrontend);
         $auth->addChild($user, $createComment);
+        $auth->addChild($user, $updateAnimalStatus);
 
 
         $userPro = $auth->createRole('userPro');
         $auth->add($userPro);
         $auth->addChild($userPro, $loginFrontend);
         $auth->addChild($userPro, $createComment);
+        $auth->addChild($userPro, $updateAnimalStatus);
 
         $admin = $auth->createRole('admin');
         $auth->add($admin);

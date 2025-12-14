@@ -35,8 +35,8 @@ class Listing extends \yii\db\ActiveRecord
     public static function getStatusLabels()
     {
         return [
-            self::STATUS_INACTIVE => 'Inativo',
-            self::STATUS_ACTIVE   => 'Ativo',
+            self::STATUS_INACTIVE => 'Inativo, não publicar anúncio.',
+            self::STATUS_ACTIVE   => 'Ativo, publicar anúncio.',
             self::STATUS_DELETED  => 'Apagado',
             self::STATUS_DEAD     => 'Falecido',
             self::STATUS_ADOPTED  => 'Adotado',
@@ -47,6 +47,30 @@ class Listing extends \yii\db\ActiveRecord
     {
         return self::getStatusLabels()[$this->status] ?? 'Desconhecido';
     }
+
+
+    public static function getAllowedStatusesForUser()
+    {
+        return [
+            self::STATUS_INACTIVE => 'Inativo, não publicar anúncio.',
+            self::STATUS_ACTIVE   => 'Ativo, publicar anúncio.',
+            self::STATUS_ADOPTED  => 'Adotado',
+        ];
+    }
+
+    public static function getAllowedStatusesForUserPro()
+    {
+        return [
+            self::STATUS_INACTIVE => 'Inativo, não publicar anúncio.',
+            self::STATUS_ACTIVE   => 'Ativo, publicar anúncio.',
+            self::STATUS_DEAD     => 'Falecido',
+            self::STATUS_ADOPTED  => 'Adotado',
+
+        ];
+    }
+
+
+
 
     /**
      * {@inheritdoc}

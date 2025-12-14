@@ -62,7 +62,7 @@ $this->title = 'Início';
         <div class="row gx-5">
             <div class="col-lg-5 mb-5 mb-lg-0" style="min-height: 500px;">
                 <div class="position-relative h-100">
-                    <img class="position-absolute w-100 h-100 rounded" src="../img/about.jpg" style="object-fit: cover;">
+                    <img class="position-absolute w-100 h-100 rounded" src="<?= Yii::getAlias('@web') ?>/img/about.jpg" style="object-fit: cover;">
                 </div>
             </div>
             <div class="col-lg-7">
@@ -305,7 +305,7 @@ $this->title = 'Início';
         <div class="owl-carousel team-carousel position-relative pr-4">
             <div class="team-item">
                 <div class="position-relative overflow-hidden">
-                    <img class="img-fluid w-100" src="../img/team-1.jpg" alt="">
+                    <img class="img-fluid w-100" src="<?= Yii::getAlias('@web') ?>/img/team-1.jpg" alt="">
                     <div class="team-overlay">
                         <div class="d-flex align-items-center justify-content-start">
                             <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-twitter"></i></a>
@@ -321,7 +321,7 @@ $this->title = 'Início';
             </div>
             <div class="team-item">
                 <div class="position-relative overflow-hidden">
-                    <img class="img-fluid w-100" src="../img/team-2.jpg" alt="">
+                    <img class="img-fluid w-100" src="<?= Yii::getAlias('@web') ?>/img/team-2.jpg" alt="">
                     <div class="team-overlay">
                         <div class="d-flex align-items-center justify-content-start">
                             <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-twitter"></i></a>
@@ -337,7 +337,7 @@ $this->title = 'Início';
             </div>
             <div class="team-item">
                 <div class="position-relative overflow-hidden">
-                    <img class="img-fluid w-100" src="../img/team-3.jpg" alt="">
+                    <img class="img-fluid w-100" src="<?= Yii::getAlias('@web') ?>/img/team-3.jpg" alt="">
                     <div class="team-overlay">
                         <div class="d-flex align-items-center justify-content-start">
                             <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-twitter"></i></a>
@@ -353,7 +353,7 @@ $this->title = 'Início';
             </div>
             <div class="team-item">
                 <div class="position-relative overflow-hidden">
-                    <img class="img-fluid w-100" src="../img/team-4.jpg" alt="">
+                    <img class="img-fluid w-100" src="<?= Yii::getAlias('@web') ?>/img/team-4.jpg" alt="">
                     <div class="team-overlay">
                         <div class="d-flex align-items-center justify-content-start">
                             <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-twitter"></i></a>
@@ -369,7 +369,7 @@ $this->title = 'Início';
             </div>
             <div class="team-item">
                 <div class="position-relative overflow-hidden">
-                    <img class="img-fluid w-100" src="../img/team-5.jpg" alt="">
+                    <img class="img-fluid w-100" src="<?= Yii::getAlias('@web') ?>/img/team-5.jpg" alt="">
                     <div class="team-overlay">
                         <div class="d-flex align-items-center justify-content-start">
                             <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-twitter"></i></a>
@@ -400,7 +400,7 @@ $this->title = 'Início';
                 <div class="owl-carousel testimonial-carousel bg-white p-5">
                     <div class="testimonial-item text-center">
                         <div class="position-relative mb-4">
-                            <img class="img-fluid mx-auto" src="../img/testimonial-1.jpg" alt="">
+                            <img class="img-fluid mx-auto" src="<?= Yii::getAlias('@web') ?>/img/testimonial-1.jpg" alt="">
                             <div class="position-absolute top-100 start-50 translate-middle d-flex align-items-center justify-content-center bg-white" style="width: 45px; height: 45px;">
                                 <i class="bi bi-chat-square-quote text-primary"></i>
                             </div>
@@ -412,7 +412,7 @@ $this->title = 'Início';
                     </div>
                     <div class="testimonial-item text-center">
                         <div class="position-relative mb-4">
-                            <img class="img-fluid mx-auto" src="../img/testimonial-2.jpg" alt="">
+                            <img class="img-fluid mx-auto" src="<?= Yii::getAlias('@web') ?>/img/testimonial-2.jpg" alt="">
                             <div class="position-absolute top-100 start-50 translate-middle d-flex align-items-center justify-content-center bg-white" style="width: 45px; height: 45px;">
                                 <i class="bi bi-chat-square-quote text-primary"></i>
                             </div>
