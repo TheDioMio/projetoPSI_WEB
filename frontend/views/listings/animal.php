@@ -12,6 +12,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\helpers\StringHelper;
+use yii\widgets\LinkPager;
 
 /** @var yii\web\View $this */
 
@@ -106,6 +107,8 @@ $vacinas = ArrayHelper::map(
                 $imageUrl = isset($primaryImage)
                     ? Yii::getAlias('@web') . '/' . $primaryImage->path
                     : Yii::getAlias('@web/img/placeholder.jpg');
+
+                $detailUrl = Url::to(['/listings/detail', 'id' => $animal->id]);
                 ?>
 
                 <div class="blog-item mb-5">
@@ -115,7 +118,7 @@ $vacinas = ArrayHelper::map(
                         </div>
                         <div class="col-12 col-sm-7 h-100 d-flex flex-column justify-content-center">
                             <div class="p-4">
-                                <div class="d-flex mb-3">
+                                <div class="d-flex mb-3 align-items-center">
                                     <small class="me-3">
                                         <i class="bi bi-bookmarks me-2"></i>
                                         <?= Html::encode($animal->animalType->description) ?>
@@ -124,6 +127,21 @@ $vacinas = ArrayHelper::map(
                                         <i class="bi bi-calendar-date me-2"></i>
                                         <?= Yii::$app->formatter->asDate($listing->created_at, 'long') ?>
                                     </small>
+
+                                    <div class="ms-auto">
+                                        <i class="bi bi-star btn-favourite text-warning"
+                                           style="cursor: pointer; font-size: 1.5rem;"
+
+                                           data-id="<?= $animal->id ?>"
+                                           data-name="<?= Html::encode($animal->name) ?>"
+                                           data-image="<?= $imageUrl ?>"
+                                           data-breed="<?= Html::encode($animal->breed->description ?? 'Raça n/d') ?>"
+                                           data-age="<?= Html::encode($animal->animalAge->description ?? 'Idade n/d') ?>"
+                                           data-link="<?= $detailUrl ?>"
+
+                                           title="Guardar nos favoritos">
+                                        </i>
+                                    </div>
                                 </div>
 
                                 <h5 class="text-uppercase mb-3"><?php echo $animal->name ?></h5>
@@ -137,8 +155,7 @@ $vacinas = ArrayHelper::map(
                                     <?= Html::encode(StringHelper::truncate($animal->description, 100, '...')) ?>
                                 </p>
 
-                                <?php
-                                echo Html::a(
+                                <?=Html::a(
                                     'Detalhes<i class="bi bi-chevron-right"></i>',
                                     ['/listings/detail', 'id' => $animal->id],
                                     ['class' => 'text-primary text-uppercase']
@@ -158,7 +175,7 @@ $vacinas = ArrayHelper::map(
             <?php endforeach; ?> <div class="col-12">
                 <nav aria-label="Page navigation">
 
-                    <?= \yii\widgets\LinkPager::widget([
+                    <?=LinkPager::widget([
                         'pagination' => $dataProvider->getPagination(),
 
                         // Classes gerais
@@ -338,3 +355,58 @@ $vacinas = ArrayHelper::map(
     </div>
 </div>
 <!-- Blog End -->
+
+<?php
+//JAVASCRIPT PARA GUARDAR OS FAVORITOS, TUDO EXPLICADO PASSO A PASSO
+$script = <<< JS
+    //Isto é a chave para aceder ao que está guardado no localstorage, se alguém quiser aceder aos favoritos pelo
+    //localstorage, onde quer que seja, basta aceder ao "myFavourites".
+    const STORAGE_KEY = 'myFavourites';
+
+    //1. Esta função ativa quando o user clicar no botão dos favoritos (a estrela amarela)
+    $('.btn-favourite').on('click', function() {
+        //Liga a variável "star" ao botão EXATO que foi clicado. Há imensas estrelas, assim ele sabe qual dela foi acionada
+        let star = $(this);
+        
+        //Vai buscar a data do animal
+        let animalData = {
+            id: star.data('id'),
+            name: star.data('name'),
+            image: star.data('image'),
+            breed: star.data('breed'),
+            age: star.data('age'),
+            link: star.data('link')
+        };
+
+        //Vai buscar os favoritos guardados, se não existir, cria uma lista vazia, daí o "[]"
+        let favorites = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        
+        //Vai percorrer a lista de favoritos um a um, e vê se o ID do animal é igual a algum que já esteja na lista do LocalStorage
+        let index = favorites.findIndex(item => item.id === animalData.id);
+
+        //Se o animal não existir na lista, devolve -1. Guarda o animal, e muda o ícone da estrela para preencher.
+        if (index === -1) {
+            favorites.push(animalData);
+            star.removeClass('bi-star').addClass('bi-star-fill');
+            //Se o animal já existir, devolve 1. Remove o animal, e muda o ícone da estrela.
+        } else {
+            favorites.splice(index, 1);
+            star.removeClass('bi-star-fill').addClass('bi-star');
+        }
+        
+        //Isto guarda as alterações feitas
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites));
+    });
+
+    // 2. Isto é para manter as estrelas "pintadas" ao recarregar a página:
+    let favorites = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    //Vai buscar todos os favoritos ao LocalStorage
+    $('.btn-favourite').each(function() {
+        let id = $(this).data('id');
+        if (favorites.some(item => item.id === id)) {
+            $(this).removeClass('bi-star').addClass('bi-star-fill');
+        }
+    });
+JS;
+$this->registerJs($script);
+?>

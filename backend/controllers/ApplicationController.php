@@ -61,6 +61,7 @@ class ApplicationController extends Controller
     {
         $searchModel = new ApplicationSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        $queryParams['ApplicationSearch']['type'] = Application::TYPE_ADOPTION;
 
         //Query que vai buscar todas as aplicações que tenham o type_user_pro e que o status seja 0
         $queryUserPro = Application::find()
@@ -86,6 +87,41 @@ class ApplicationController extends Controller
         ]);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'pendingUserProApplications' => $pendingUserProApplications,
+        ]);
+    }
+
+    public function actionIndexUserPro() {
+        $searchModel = new ApplicationSearch();
+        $queryParams = $this->request->queryParams;
+
+        //Isto aqui faz com que o queryParams abranja só as candidaturas com o cenário TYPE_USER_PRO
+        $queryParams['ApplicationSearch']['type'] = Application::TYPE_USER_PRO;
+        $dataProvider = $searchModel->search($queryParams);
+
+        $queryUserPro = Application::find()
+            ->joinWith(['candidate'])
+            ->where(['type' => Application::TYPE_USER_PRO])
+            ->andWhere(['application.status' => 0]);
+
+        $pendingUserProApplications = new ActiveDataProvider([
+            'query' => $queryUserPro,
+            'sort' => [
+                'defaultOrder' => ['created_at' => SORT_DESC],
+                'attributes' => [
+                    'created_at',
+                    'description',
+                    'candidate_name' => [
+                        'asc' => ['user.name' => SORT_ASC],
+                        'desc' => ['user.name' => SORT_DESC],
+                    ],
+                ],
+            ],
+        ]);
+
+        return $this->render('index-user-pro', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'pendingUserProApplications' => $pendingUserProApplications,
