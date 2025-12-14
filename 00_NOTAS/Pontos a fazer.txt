@@ -1,7 +1,9 @@
-- Erros a resolver:
+- Erros a resolver // Coisas a melhorar:
+    Ao submeter uma candidatura no frontend, a description não é passada, nem o type
+    Tudo o que pode ir para o controller, vai para o controller. Ex: No frontend listings/animal usamos
+coisas do tipo $idades = ArrayHelper::map(... O que é desnecessário, pode ir para o controller e depois ser passado
+para a view.
 
-
-Ao submeter uma candidatura no frontend, a description não é passada, nem o type
 
 falta:
 
@@ -9,7 +11,6 @@ API
 MQTT
 
 CRUD visitas
-
 pesquisar e filtrar animais - Mário - Feito
 
 as minhas candidaturas (recebidas e enviadas) - Igor
@@ -17,8 +18,8 @@ cancelar candidatura - Igor
 avaliação de candidaturas - Igor
 
 
-adicionar e remover animais dos favoritos - Diogo
 
+adicionar e remover animais dos favoritos - Diogo
 adicionar data ao estado do animal (fazer no fim) - Diogo
 estatísticas (continuar) - Diogo
 
@@ -34,8 +35,6 @@ denuncias de anuncio (amadurecer adeia)
 
 ponderar:
 perdidos e achados 
-
-
 
 
  --------------------não esquecer o Android --------------------------------

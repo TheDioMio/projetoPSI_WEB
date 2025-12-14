@@ -22,7 +22,7 @@ class SiteController extends Controller
             'access' => [
                 'class' => AccessControl::class,
                 'denyCallback' => function () {
-                    //se tiver acesso ao Backend redireciona para a home do back senão redireciona para para o login
+                    //se tiver acesso ao Backend redireciona para a home do back se não, redireciona para para o login
                     if (Yii::$app->user->can('loginBackend')) {
                         return Yii::$app->response->redirect(['/site/index']);
                     }

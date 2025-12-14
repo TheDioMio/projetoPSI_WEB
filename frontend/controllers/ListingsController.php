@@ -431,6 +431,11 @@ class ListingsController extends Controller
         ]);
     }
 
+    public function actionFavourites()
+    {
+        return $this->render('favourites');
+    }
+
 
     private function getStatusOptionsForCurrentUser()
     {

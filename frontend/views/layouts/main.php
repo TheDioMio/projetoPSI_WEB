@@ -85,6 +85,7 @@ AppAsset::register($this);
                 ['label' => '<i class="fa-solid fa-list-ul me-2"></i> As minhas candidaturas', 'url' => ['/application/my-applications']],
                 ['label' => '<i class="fa-solid fa-list-ul me-2"></i> As minhas Mensagens', 'url' => ['/message/index']],
                 ['label' => '<i class="fa-solid fa-user-edit me-2"> </i>O meu perfil', 'url' => ['/profile/profile']],
+                ['label' => '<i class="fa-solid fa-user-edit me-2"> </i>Favoritos', 'url' => ['/listings/favourites']],
                 '-',
                 ['label' => '<span class="d-flex align-items-center">'
                     . '<i class="fa-solid fa-right-from-bracket me-2"></i>'
