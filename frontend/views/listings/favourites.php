@@ -4,14 +4,32 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 $this->title = 'Meus Favoritos';
+
+$videoUrl = Yii::getAlias('@web/video/banner2.mp4');
+$posterUrl = Yii::getAlias('@web/video/banner2.png');
+
 ?>
 
-    <div class="container py-5">
-        <div class="text-center mb-5">
-            <h1 class="display-4 mb-3"><?=Html::encode('Favoritos')?><i class="bi bi-heart-fill text-danger"></i></h1>
-            <p class="lead text-muted"><?=Html::encode('Aqui estão os animais que guardou.')?></p>
-        </div>
+<?php $this->beginBlock('hero'); ?>
+    <div class="container-fluid p-0 hero-video-banner">
 
+        <video poster="<?= Html::encode($posterUrl) ?>" autoplay loop muted playsinline>
+            <source src="<?= Html::encode($videoUrl) ?>" type="video/mp4">
+            O seu browser não suporta vídeos HTML5.
+        </video>
+
+        <div class="banner-content container text-center">
+            <h1 class="display-3 text-white mb-4">
+                <?=Html::encode('Favoritos')?>
+            </h1>
+            <p class="lead text-white-50">
+                <?=Html::encode('Aqui estão os animais que guardou.')?>
+            </p>
+        </div>
+    </div>
+<?php $this->endBlock(); ?>
+
+    <div class="container">
         <div id="empty-state" class="text-center d-none py-5">
             <div class="mb-4">
                 <i class="bi bi-emoji-frown" style="font-size: 4rem; color: #ccc;"></i>
@@ -65,9 +83,6 @@ $this->title = 'Meus Favoritos';
             </div>
         </div>
     </div>
-
-
-
 
 <?php
 // JAVASCRIPT PARA LER E MOSTRAR OS DADOS, TUDO EXPLICADO PASSO A PASSO

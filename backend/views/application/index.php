@@ -57,10 +57,56 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="card card-outline card-warning shadow-sm">
         <div class="card-header">
-
+            <h3 class="card-title">
+                <i class="fas fa-briefcase mr-1"></i>
+                <?=Html::encode('Candidaturas para Adoção por Aceitar')?>
+            </h3>
+            <div class="card-tools">
+                <span class="badge badge-warning"><?= $pendingAdoptionApplications->getTotalCount() ?> <?=Html::encode('Pendentes')?></span>
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                </button>
+            </div>
         </div>
         <div class="card-body p-0">
-            
+            <?= GridView::widget([
+                'dataProvider' => $pendingAdoptionApplications,
+                'layout' => "{items}\n{pager}",
+                'tableOptions' => ['class' => 'table table-valign-middle table-hover'],
+                'columns' => [
+                    [
+                        'label' => 'Candidato',
+                        'value' => 'candidate.name',
+                        'attribute' => 'candidate_name',
+                    ],
+                    [
+                        'attribute' => 'description',
+                        'label' => 'Empresa',
+                    ],
+                    [
+                        'attribute' => 'created_at',
+                        'format' => ['date', 'php:d/m/Y H:i'],
+                        'label' => 'Submetido em',
+                    ],
+
+                    [
+                        'class' => ActionColumn::className(),
+                        'template' => '{view}',
+                        'contentOptions' => ['class' => 'text-right'],
+                        'buttons' => [
+                            'view' => function ($url, $model) {
+                                $novoUrl = Url::to(['view', 'id' => $model->id]);
+                                return Html::a('<i class="fas fa-eye"></i> Ver', $novoUrl, [
+                                    'class' => 'btn btn-xs btn-primary',
+                                ]);
+                            },
+                        ],
+                        'urlCreator' => function ($action, Application $model) {
+                            return Url::toRoute([$action, 'id' => $model->id]);
+                        }
+                    ],
+                ],
+            ]); ?>
         </div>
     </div>
 </div>

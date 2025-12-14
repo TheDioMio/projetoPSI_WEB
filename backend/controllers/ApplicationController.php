@@ -11,6 +11,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Html;
 
 class ApplicationController extends Controller
 {
@@ -60,19 +61,22 @@ class ApplicationController extends Controller
     public function actionIndex()
     {
         $searchModel = new ApplicationSearch();
+        $queryParams = $this->request->queryParams;
         $dataProvider = $searchModel->search($this->request->queryParams);
+        //Isto aqui faz com que o queryParams abranja só as candidaturas com o cenário TYPE_ADOPTION
         $queryParams['ApplicationSearch']['type'] = Application::TYPE_ADOPTION;
+        $dataProvider = $searchModel->search($queryParams);
 
-        //Query que vai buscar todas as aplicações que tenham o type_user_pro e que o status seja 0
-        $queryUserPro = Application::find()
+        //Query que vai buscar todas as aplicações que tenham o type_adoption e que o status seja 0
+        $queryAdoption = Application::find()
             ->joinWith(['candidate'])
-            ->where(['type' => Application::TYPE_USER_PRO])
+            ->where(['type' => Application::TYPE_ADOPTION])
             ->andWhere(['application.status' => 0]);
 
 
 
-        $pendingUserProApplications = new ActiveDataProvider([
-            'query' => $queryUserPro,
+        $pendingAdoptionApplications = new ActiveDataProvider([
+            'query' => $queryAdoption,
             'sort' => [
                 'defaultOrder' => ['created_at' => SORT_DESC],
                 'attributes' => [
@@ -89,7 +93,7 @@ class ApplicationController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'pendingUserProApplications' => $pendingUserProApplications,
+            'pendingAdoptionApplications' => $pendingAdoptionApplications,
         ]);
     }
 
@@ -130,10 +134,136 @@ class ApplicationController extends Controller
 
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        // 1. Processar o Status
+        $statusData = $this->getStatusInfo($model->status);
+
+        // 2. Processar os dados do JSON
+        $jsonAttributes = $this->getFormattedJsonData($model->data);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'statusLabel' => $statusData['label'], // Passamos o texto
+            'statusClass' => $statusData['class'], // Passamos a classe CSS
+            'jsonAttributes' => $jsonAttributes,   // Passamos o array pronto para o DetailView
         ]);
     }
+
+    private function getStatusInfo($status)
+    {
+        switch ($status) {
+            case 0: return ['label' => 'Pendente', 'class' => 'badge-warning'];
+            case 1: return ['label' => 'Aprovado', 'class' => 'badge-success'];
+            case 2: return ['label' => 'Recusado', 'class' => 'badge-danger'];
+            default: return ['label' => 'Desconhecido', 'class' => 'badge-secondary'];
+        }
+    }
+
+    private function getFormattedJsonData($data)
+    {
+        $attributes = [];
+
+        // Mapa de Traduções
+        $labelsMap = [
+            'age'       => 'Idade',
+            'home'      => 'Tipo de Habitação',
+            'name'      => 'Nome Completo',
+            'bills'     => 'Está ciente dos custos?',
+            'motive'    => 'Sobre Candidato',
+            'contact'   => 'Contacto',
+            'children'  => 'Tem crianças em casa?',
+            'FollowUp'  => 'Aceita acompanhamento pós-adoção?',
+            'TimeAlone' => 'Tempo que o animal ficará sozinho',
+        ];
+
+        if (is_array($data) && !empty($data)) {
+            foreach ($data as $key => $value) {
+
+                $cleanKey = strtolower($key);
+
+                // Define o Rótulo
+                $label = $key;
+                foreach ($labelsMap as $mapKey => $mapLabel) {
+                    if (strtolower($mapKey) == $cleanKey) {
+                        $label = $mapLabel;
+                        break;
+                    }
+                }
+
+                // Define o Valor
+                $displayValue = $value;
+
+                switch ($cleanKey) {
+                    case 'home':
+                        switch ($value) {
+                            case 1:
+                                $displayValue = 'Própria';
+                                break;
+                            case 2:
+                                $displayValue = 'Arrendada (Senhorio autoriza)';
+                                break;
+                            case 3:
+                                $displayValue = 'Arrendada (Senhorio não autoriza)';
+                                break;
+                            default:
+                                $displayValue = 'Desconhecido';
+                        }
+                        break;
+                    case 'bills':
+                    case 'children':
+                    case 'followup':
+                        $displayValue = ($value == 1 || $value == '1')
+                            ? '<span class="badge badge-success">Sim</span>'
+                            : '<span class="badge badge-danger">Não</span>';
+                        break;
+
+                    // --- IDADE ---
+                    case 'age':
+                        $displayValue = $value . ' anos';
+                        break;
+
+                    // --- TEMPO SOZINHO ---
+                    case 'timealone':
+                        switch ($value) {
+                            case 0:
+                                $displayValue = 'Menos de 4 Horas';
+                                break;
+                            case 1:
+                                $displayValue = 'Entre 4 a 8 Horas';
+                                break;
+                            case 2:
+                                $displayValue = 'Mais de 8 Horas';
+                                break;
+                            default:
+                                $displayValue = 'Desconhecido';
+                        }
+                        break;
+
+                    // --- DEFAULT ---
+                    default:
+                        $displayValue = Html::encode($value);
+                }
+
+                $attributes[] = [
+                    'label' => $label,
+                    'format' => 'raw',
+                    'value' => $displayValue,
+                    'contentOptions' => ['class' => 'text-dark font-weight-bold'],
+                    'captionOptions' => ['width' => '35%', 'class' => 'text-muted'],
+                ];
+            }
+        } else {
+            $attributes[] = [
+                'label' => 'Dados',
+                'value' => 'Não existem dados adicionais preenchidos.',
+                'contentOptions' => ['class' => 'text-muted font-italic'],
+            ];
+        }
+
+        return $attributes;
+    }
+
+
 
     public function actionDenyApplication($id) {
         $model = $this->findModel($id);

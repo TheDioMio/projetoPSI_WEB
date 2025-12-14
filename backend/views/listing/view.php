@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\web\YiiAsset;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
@@ -9,7 +10,7 @@ use yii\widgets\DetailView;
 $this->title = 'Detalhes da Listagem #'.$model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Listings', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
+YiiAsset::register($this);
 ?>
 <div class="listing-view">
     <div class="card card-outline card-primary shadow-sm">

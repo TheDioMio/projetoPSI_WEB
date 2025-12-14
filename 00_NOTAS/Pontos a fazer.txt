@@ -19,7 +19,7 @@ avaliação de candidaturas - Igor
 
 
 
-adicionar e remover animais dos favoritos - Diogo
+adicionar e remover animais dos favoritos - Diogo - Feito
 adicionar data ao estado do animal (fazer no fim) - Diogo
 estatísticas (continuar) - Diogo
 

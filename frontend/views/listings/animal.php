@@ -1,5 +1,3 @@
-
-
 <?php
 
 use common\models\AnimalAge;
@@ -18,19 +16,8 @@ use yii\widgets\LinkPager;
 
 $this->title = 'Animais';
 
-
-
-    $videoOptions = [
-    ['videoFile' => 'banner1.mp4', 'posterFile' => 'banner1.png'],
-    ];
-
-
-$escolhaAleatoria = $videoOptions[array_rand($videoOptions)];
-
-$videoUrl = Yii::getAlias('@web/video/' . $escolhaAleatoria['videoFile']);
-$posterUrl = Yii::getAlias('@web/video/' . $escolhaAleatoria['posterFile']);
-
-
+$videoUrl = Yii::getAlias('@web/video/banner1.mp4');
+$posterUrl = Yii::getAlias('@web/video/banner1.png');
 
 $tiposDeAnimal = ArrayHelper::map(
     AnimalType::find()->orderBy(['description' => SORT_ASC])->all(),
@@ -75,9 +62,10 @@ $vacinas = ArrayHelper::map(
 
     <div class="banner-content container text-center">
         <h1 class="display-3 text-white mb-4">
-            Encontre aqui o seu próximo companheiro
+            <?=Html::encode('Encontre aqui o seu próximo companheiro')?>
         </h1>
         <p class="lead text-white-50">
+            <?=Html::encode('Procure cães, gatos e outros animais que precisam de um lar.')?>
             Procure cães, gatos e outros animais que precisam de um lar.
         </p>
     </div>
@@ -211,7 +199,7 @@ $vacinas = ArrayHelper::map(
 
             <!-- Filters Start -->
             <div class="mb-5">
-                <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Filtros</h3>
+                <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4"><?=Html::encode('Filtros')?></h3>
 
                 <?php
                 // Inicia o ActiveForm, associando-o ao searchModel
@@ -225,7 +213,7 @@ $vacinas = ArrayHelper::map(
                 ?>
 
                 <div class="mb-3">
-                    <label class="h5 text-primary mb-1 ps-2">Tipo de Animal</label>
+                    <label class="h5 text-primary mb-1 ps-2"><?=Html::encode('Tipo de Animal')?></label>
                     <?= $form->field($searchModel, 'animal_type_id')->dropDownList( // 💡 Note: Usa $searchModel
                         $tiposDeAnimal,
                         [
@@ -237,7 +225,7 @@ $vacinas = ArrayHelper::map(
                 </div>
 
                 <div class="mb-3">
-                    <label class="h5 text-primary mb-1 ps-2">Raça</label>
+                    <label class="h5 text-primary mb-1 ps-2"><?=Html::encode('Raça')?></label>
                     <?= $form->field($searchModel, 'breed_id')->dropDownList( // 💡 Note: Usa $searchModel e breed_id
                         $racas,
                         [
@@ -249,7 +237,7 @@ $vacinas = ArrayHelper::map(
                 </div>
 
                 <div class="mb-3">
-                    <label class="h5 text-primary mb-1 ps-2">Idade</label>
+                    <label class="h5 text-primary mb-1 ps-2"><?=Html::encode('Idade')?></label>
                     <?= $form->field($searchModel, 'animal_age_id')->dropDownList( // 💡 Note: Usa $searchModel e animal_age_id
                         $idades,
                         [
@@ -261,7 +249,7 @@ $vacinas = ArrayHelper::map(
                 </div>
 
                 <div class="mb-3">
-                    <label class="h5 text-primary mb-1 ps-2">Porte</label>
+                    <label class="h5 text-primary mb-1 ps-2"><?=Html::encode('Porte')?></label>
                     <?= $form->field($searchModel, 'animal_size_id')->dropDownList( // 💡 Note: Usa $searchModel e animal_size_id
                         $portes,
                         [

@@ -35,6 +35,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'class' => ActionColumn::className(),
                         'template' => '{view} {delete}',
+                        'buttons' => [
+                            'view' => function ($url, $model) {
+                                $novoUrl = Url::to(['view-user-pro', 'id' => $model->id]);
+                                return Html::a('<i class="fas fa-eye"></i>', $novoUrl);
+                            },
+                        ],
                         'urlCreator' => function ($action, Application $model, $key, $index, $column) {
                             return Url::toRoute([$action, 'id' => $model->id]);
                         }
