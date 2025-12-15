@@ -232,7 +232,7 @@ class ApplicationController extends Controller
         $model->scenario = Application::SCENARIO_ADOPTION;
         $model->animal_id = $animal_id;
         $model->user_id = Yii::$app->user->id;
-        $model->target_user_id = Yii::$app->user->id;
+        $model->target_user_id = $animal->user_id;
         //Status da candidatura= 0 => pending, 1 => denied, 2 => accepted.
         $model->status =0;
         $model->created_at = date('Y-m-d H:i:s');

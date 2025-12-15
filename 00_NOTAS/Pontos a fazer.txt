@@ -13,9 +13,9 @@ MQTT
 CRUD visitas
 pesquisar e filtrar animais - Mário - Feito
 
-as minhas candidaturas (recebidas e enviadas) - Igor
-cancelar candidatura - Igor
-avaliação de candidaturas - Igor
+as minhas candidaturas (recebidas e enviadas) - Igor feito
+cancelar candidatura - Igor feito
+avaliação de candidaturas - Igor feito
 
 
 

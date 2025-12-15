@@ -224,7 +224,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                     ]
                                 ) ?>
 
-                            <?php elseif ($box === 'outbox' && $model->status !== Application::STATUS_CANCELLED): ?>
+                            <?php elseif ($box === 'outbox' && $model->status === Application::STATUS_IN_REVIEW): ?>
 
                                 <?= Html::a(
                                     '<i class="bi bi-slash-circle"></i> Cancelar candidatura',
