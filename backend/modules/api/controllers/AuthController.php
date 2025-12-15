@@ -64,7 +64,6 @@ class AuthController extends Controller
         //colocar a devolver a mensagem correta 200 ok
         if (!$user ){
             return [
-                'status' => 404,
                 'success' => false,
                 'message' => 'User not found',
             ];

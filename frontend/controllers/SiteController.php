@@ -119,7 +119,7 @@ class SiteController extends Controller
 
         // --- FIM DA ALTERAÇÃO ---
 
-        // 3. Enviar os dados para a view 'index.php'
+        // 3. Enviar os dados para a view 'inbox.php'
         return $this->render('index', [
             'recentListings' => $recentListings,
             'paraAdocaoCount' => $paraAdocaoCount,

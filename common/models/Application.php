@@ -25,9 +25,66 @@ use yii\db\JsonExpression;
  */
 class Application extends ActiveRecord
 {
+
+    public static function homeOptions(): array
+    {
+        return [
+            1 => 'Própria',
+            2 => 'Arrendada (Senhorio autoriza animais)',
+            3 => 'Arrendada (Senhorio não autoriza animais)',
+        ];
+    }
+
+    public function getHomeLabel(): string
+    {
+        return self::homeOptions()[$this->data['home'] ?? null] ?? '—';
+    }
+
+    public static function timeAloneOptions(): array
+    {
+        return [
+            0 => 'Menos de 4 Horas',
+            1 => 'Entre 4 a 8 Horas',
+            2 => 'Mais de 8 Horas',
+        ];
+    }
+
+    public function getTimeAloneLabel(): string
+    {
+        return self::timeAloneOptions()[$this->data['timeAlone'] ?? null] ?? '—';
+    }
+
+    public static function yesNoOptions(): array
+    {
+        return [
+            1 => 'Sim',
+            0 => 'Não',
+        ];
+    }
+
+    public function getYesNoLabel($value): string
+    {
+        return self::yesNoOptions()[$value] ?? '—';
+    }
+
+
+
     //Isto aqui é para os diferentes cenários de cada candidatura
     const SCENARIO_ADOPTION = 'adoption';
     const SCENARIO_USER_PRO = 'user_pro';
+
+
+    // Estados principais
+    const STATUS_SENT        = 0; // enviada (nunca aberta)
+    const STATUS_IN_REVIEW   = 1; // aberta por quem recebe
+    const STATUS_APPROVED    = 2;
+    const STATUS_REJECTED    = 3;
+    const STATUS_CANCELLED   = 4;
+
+
+    const READ_NO  = 0;
+    const READ_YES = 1;
+
 
 
     //Tipos de candidatura (isto vai para a coluna 'type' dentro da nossa tabela "Application")
@@ -38,6 +95,148 @@ class Application extends ActiveRecord
     {
         return 'application';
     }
+
+    public static function getStatusLabels(): array
+    {
+        return [
+            self::STATUS_SENT      => 'Pendente',
+            self::STATUS_IN_REVIEW => 'Em análise',
+            self::STATUS_APPROVED  => 'Aprovada',
+            self::STATUS_REJECTED  => 'Reprovada',
+            self::STATUS_CANCELLED => 'Cancelada',
+        ];
+    }
+
+    public function getStatusLabel(): string
+    {
+        return self::getStatusLabels()[$this->status] ?? '—';
+    }
+
+    // estados que aplicamos a consoante onde estamos
+    public static function getAllowedTransitions(): array
+    {
+        return [
+            self::STATUS_SENT => [
+                self::STATUS_IN_REVIEW,   // quando quem recebe abre
+                self::STATUS_CANCELLED,   // quando o candidato cancela
+            ],
+            self::STATUS_IN_REVIEW => [
+                self::STATUS_APPROVED,
+                self::STATUS_REJECTED,
+            ],
+            // NÃO têm transições
+            self::STATUS_APPROVED  => [],
+            self::STATUS_REJECTED  => [],
+            self::STATUS_CANCELLED => [],
+        ];
+    }
+
+
+    //aqui alteramos o estado
+    public function canChangeStatusTo(int $newStatus): bool
+    {
+        $allowed = self::getAllowedTransitions()[$this->status] ?? [];
+        return in_array($newStatus, $allowed, true);
+    }
+
+
+    // quando criamos um novo registo iniciamos os estados no default
+    public function init()
+    {
+        parent::init();
+
+        if ($this->isNewRecord && $this->created_at === null) {
+            $this->created_at = date('Y-m-d');
+            $this->isRead = self::READ_NO;
+        }
+    }
+
+
+    // utilizamos para marcar uma candidatura com lida e mudar o estado para "em análise"
+    public function markAsRead(): bool
+    {
+        if ($this->isRead == self::READ_YES) {
+            return true;
+        }
+
+        $this->isRead = self::READ_YES;
+
+        if ($this->status === self::STATUS_SENT) {
+            $this->status = self::STATUS_IN_REVIEW;
+        }
+
+        return $this->save(false);
+    }
+
+    // funcao chamada para aprovar uma candidatura
+    public function approve(): bool
+    {
+        if (!$this->canChangeStatusTo(self::STATUS_APPROVED)) {
+            return false;
+        }
+
+        $this->status = self::STATUS_APPROVED;
+        $this->statusDate = date('Y-m-d');
+
+        if (!$this->save(false)) {
+            return false;
+        }
+
+        $this->sendStatusMessage(
+            'Candidatura aprovada',
+            "A sua candidatura para o animal {$this->animal->name} foi aprovada.\nEntraremos em contacto consigo em breve."
+        );
+
+        return true;
+    }
+
+    // funcao chamada para rejeitar uma cndidatura
+    public function reject(): bool
+    {
+        if (!$this->canChangeStatusTo(self::STATUS_REJECTED)) {
+            return false;
+        }
+
+        $this->status = self::STATUS_REJECTED;
+        $this->statusDate = date('Y-m-d');
+
+        if (!$this->save(false)) {
+            return false;
+        }
+
+        $this->sendStatusMessage(
+            'Candidatura rejeitada',
+            "Lamentamos informar que a sua candidatura para o animal {$this->animal->name} não foi aprovada."
+        );
+
+        return true;
+
+    }
+
+    //funcao chamada para cancelar uma candidatura
+    public function cancel(): bool
+    {
+        if (!$this->canChangeStatusTo(self::STATUS_CANCELLED)) {
+            return false;
+        }
+
+        $this->status = self::STATUS_CANCELLED;
+        return $this->save(false);
+    }
+
+    protected function sendStatusMessage($subject, $text)
+    {
+        $message = new Message();
+        $message->sender_user_id = Yii::$app->user->id; // quem aprova/rejeita
+        $message->receiver_user_id = $this->user_id;    // candidato
+        $message->subject = $subject;
+        $message->text = $text;
+        $message->created_at = date('Y-m-d H:i:s');
+        $message->isRead = 0;
+
+        $message->save(false);
+    }
+
 
     //ISTO É IMPORTANTE PARA OS CENÁRIOS FUNCIONAREM!
     public function scenarios()
@@ -61,11 +260,12 @@ class Application extends ActiveRecord
             //animal_id só é obrigatório no cenário de ADOÇÃO (ou default)
             [['animal_id'], 'required', 'on' => [self::SCENARIO_DEFAULT, self::SCENARIO_ADOPTION]],
 
-            [['created_at', 'data'], 'safe'],
+            [['created_at', 'data', 'statusDate'], 'safe'],
             [['description'], 'string', 'max' => 255],
             [['animal_id'], 'exist', 'skipOnError' => true, 'targetClass' => Animal::class, 'targetAttribute' => ['animal_id' => 'id']],
             [['target_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['target_user_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+            [['isRead'], 'default', 'value' => 0],
         ];
     }
 
@@ -84,6 +284,8 @@ class Application extends ActiveRecord
             'created_at' => 'Created At',
             'target_user_id' => 'Target User ID',
             'data' => 'Data',
+            'statusDate' => 'Data do estado',
+            'isRead' => 'isRead',
         ];
     }
 
@@ -132,6 +334,11 @@ class Application extends ActiveRecord
 
         // Deixa o driver tratar do JSON
         $this->data = new JsonExpression($data);
+
+        if ($this->isAttributeChanged('status')) {
+            $this->statusDate = date('Y-m-d');
+        }
+
 
         return parent::beforeSave($insert);
     }

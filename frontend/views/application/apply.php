@@ -1,27 +1,12 @@
 <?php
+
+use common\models\Application;
 use yii\helpers\Html;
 //use yii\widgets\ActiveForm;
 use yii\bootstrap5\ActiveForm;
 
 $this->title = 'Candidatura';
 
-// Opçoes para dropdown
-$home = [
-    1 => 'Própria',
-    2 => 'Arrendada (Senhorio autoriza animais)',
-    3 => 'Arrendada (Senhorio não autoriza animais)',
-];
-
-$timeAlone = [
-    0 => 'Menos de 4 Horas',
-    1 => 'Entre 4 a 8 Horas',
-    2 => 'Mais de 8 Horas',
-];
-
-$yesNo = [
-    1 => 'Sim',
-    0 => 'Não',
-];
 //$posterUrl = Yii::getAlias('@web/img/adopt_me.jpg');
 ?>
 
@@ -66,15 +51,15 @@ $yesNo = [
                 <h4 class="mt-4 mb-3"><?=Html::encode('Habitação')?></h4>
 
                 <?= $form->field($model, 'data[home]')
-                    ->dropDownList($home, ['prompt' => 'Selecione o tipo de habitação...'])
+                    ->dropDownList(Application::homeOptions(), ['prompt' => 'Selecione o tipo de habitação...'])
                     ->label('Tipo de Habitação') ?>
 
                 <?= $form->field($model, 'data[timeAlone]')
-                    ->dropDownList($timeAlone, ['prompt' => 'Selecione a sua resposta...'])
+                    ->dropDownList(Application::timeAloneOptions(), ['prompt' => 'Selecione a sua resposta...'])
                     ->label('Quantas horas o animal vai passar sozinho?') ?>
 
                 <?= $form->field($model, 'data[children]')
-                    ->radioList($yesNo, [
+                    ->radioList(Application::yesNoOptions(), [
                         'item' => function($i,$label,$name,$checked,$value){
                             $id = $name.$i;
                             return '<input type="radio" class="btn-check" name="'.$name.'" id="'.$id.'" value="'.$value.'" '.($checked?'checked':'').'>
@@ -87,7 +72,7 @@ $yesNo = [
                 <h4 class="mt-4 mb-3"><?=Html::encode('Custos de um animal')?></h4>
 
                 <?= $form->field($model, 'data[bills]')
-                    ->radioList($yesNo, [
+                    ->radioList(Application::yesNoOptions(), [
                         'item' => function($i,$label,$name,$checked,$value){
                             $id = $name.$i;
                             return '<input type="radio" class="btn-check" name="'.$name.'" id="'.$id.'" value="'.$value.'" '.($checked?'checked':'').'>
@@ -101,7 +86,7 @@ $yesNo = [
                 <h4 class="mt-4 mb-3"><?=Html::encode('Acompanhamento')?></h4>
 
                 <?= $form->field($model, 'data[followUp]')
-                    ->radioList($yesNo, [
+                    ->radioList(Application::yesNoOptions(), [
                         'item' => function($i,$label,$name,$checked,$value){
                             $id = $name.$i;
                             return '<input type="radio" class="btn-check" name="'.$name.'" id="'.$id.'" value="'.$value.'" '.($checked?'checked':'').'>

@@ -26,4 +26,10 @@ class UserController extends ActiveController
 
         return $behaviors;
     }
+
+//    public static function findIdentityByAccessToken($token, $type = null)
+//    {
+//        return static::findOne(['auth_key' => $token, 'status' => self::STATUS_ACTIVE]);
+//    }
+
 }
