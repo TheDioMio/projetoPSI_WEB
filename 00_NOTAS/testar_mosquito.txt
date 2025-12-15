@@ -1,0 +1,10 @@
+1º - Instalar mosquitto (ver ppt's ou ficha )
+
+2º Abrir CMD e subscrever o tópico New_Animal -> mosquitto_sub -t NEW_POSTED_ANIMAL -v
+
+3º criar um novo anuncio e verificar se no terminal aparece o id do animal
+
+
+***** ATENÇÃO ********
+
+Isto é só para testar, depois é necessário refinar codigo
