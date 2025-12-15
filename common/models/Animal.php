@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use backend\mosquitto\MosquittoCatcher;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
@@ -294,5 +295,56 @@ class Animal extends ActiveRecord
             ->where (['type_id' => 1])
             ->orderBy(['animal_id' => SORT_ASC]); // Ou outro critério de ordenação/prioridade
     }
+
+
+
+
+    /*******************temporario***************************************/
+
+
+
+    /*
+    public function afterSave($insert, $changedAttributes)
+    {
+        try {
+            if (!$insert) {
+                if (isset($changedAttributes['is_active'])) {
+                    return;
+                }
+            }
+
+            $myObj = new \stdClass();
+
+            $myObj->id = $this->id;
+
+
+            $myJSON = json_encode($myObj);
+
+            if ($insert)
+                MosquittoCatcher::makePublish('NEW_POSTED_ANIMAL', $myJSON);
+
+        } catch (\Exception $e){
+            return;
+        }
+    }
+
+    */
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($insert) {
+            MosquittoCatcher::makePublish(
+                'NEW_POSTED_ANIMAL',
+                json_encode(['id' => $this->id])
+            );
+        }
+    }
+
+
+
+
+
+
+    /*******************temporario***************************************/
 
 }

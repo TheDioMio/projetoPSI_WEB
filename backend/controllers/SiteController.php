@@ -7,6 +7,7 @@ use common\models\Application;
 use common\models\Listing;
 use common\models\LoginForm;
 use common\models\User;
+use MosquittoCatcher;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -185,4 +186,30 @@ class SiteController extends Controller
 
         return $this->goHome();
     }
+
+
+
+
+
+    /******** Temporario ***************************************************/
+
+    public function actionTestarMqtt()
+    {
+        $topico = "teste/yii2";
+        $mensagem = "Olá! Isto foi enviado pelo Yii2 às " . date('H:i:s');
+
+        try {
+            // Se usaste a classe estática original:
+            MosquittoCatcher::makePublish($topico, $mensagem);
+
+            // Se configuraste como componente (Yii::$app->mqtt->publish...), usa esse método.
+
+            return "Mensagem enviada com sucesso para o tópico: " . $topico;
+        } catch (\Exception $e) {
+            return "Erro: " . $e->getMessage();
+        }
+    }
+
+
+    /******** Temporario ***************************************************/
 }

@@ -1,6 +1,12 @@
 <?php
 
+namespace backend\mosquitto;
+
+use backend\mosquitto\phpMQTT;
+
 class MosquittoCatcher
+
+
 {
     public static function makePublish(string $canal, string $msg)
     {
