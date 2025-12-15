@@ -68,25 +68,7 @@ class ApplicationController extends Controller
         $dataProvider = $searchModel->search($queryParams);
 
         //Query que vai buscar todas as aplicações que tenham o type_adoption e que o status seja 0
-        $queryAdoption = Application::find()
-            ->joinWith(['candidate'])
-            ->where(['type' => Application::TYPE_ADOPTION])
-            ->andWhere(['application.status' => 0]);
-
-        $pendingAdoptionApplications = new ActiveDataProvider([
-            'query' => $queryAdoption,
-            'sort' => [
-                'defaultOrder' => ['created_at' => SORT_DESC],
-                'attributes' => [
-                    'created_at',
-                    'description',
-                    'candidate_name' => [
-                        'asc' => ['user.name' => SORT_ASC],
-                        'desc' => ['user.name' => SORT_DESC],
-                    ],
-                ],
-            ],
-        ]);
+        $pendingAdoptionApplications = $searchModel->searchPendingAdoption();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -106,7 +88,7 @@ class ApplicationController extends Controller
         $queryUserPro = Application::find()
             ->joinWith(['candidate'])
             ->where(['type' => Application::TYPE_USER_PRO])
-            ->andWhere(['application.status' => 0]);
+            ->andWhere(['application.status' => [Application::STATUS_SENT, Application::STATUS_IN_REVIEW]]);
 
         $pendingUserProApplications = new ActiveDataProvider([
             'query' => $queryUserPro,
@@ -114,6 +96,7 @@ class ApplicationController extends Controller
                 'defaultOrder' => ['created_at' => SORT_DESC],
                 'attributes' => [
                     'created_at',
+                    'status',
                     'description',
                     'candidate_name' => [
                         'asc' => ['user.name' => SORT_ASC],
@@ -133,12 +116,16 @@ class ApplicationController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
-        // 1. Processar o Status
+
+        //2. Processar o Status
         $statusData = $this->getStatusInfo($model->status);
 
-        // 2. Processar os dados do JSON
+        //3. Processar os dados do JSON
         $jsonAttributes = $this->getFormattedJsonDataAdoption($model->data);
 
+        if (!$model->isRead) {
+            $model->markAsRead(); // Isto faz o save internamente
+        }
         return $this->render('view', [
             'model' => $model,
             'statusLabel' => $statusData['label'], // Passamos o texto (EX. Pendente)
@@ -149,12 +136,16 @@ class ApplicationController extends Controller
 
     public function actionViewUserPro($id) {
         $model = $this->findModel($id);
-        // 1. Processar o Status
+
+        //2. Processar o status para display
         $statusData = $this->getStatusInfo($model->status);
 
-        // 2. Processar os dados do JSON
+        //3. Processar os dados do JSON
         $jsonAttributes = $this->getFormattedJsonDataUserPro($model->data);
 
+        if (!$model->isRead) {
+            $model->markAsRead(); // Isto faz o save internamente
+        }
         return $this->render('view-user-pro', [
             'model' => $model,
             'statusLabel' => $statusData['label'], // Passamos o texto (EX. Pendente)
@@ -276,12 +267,21 @@ class ApplicationController extends Controller
         return $attributes;
     }
 
-    public function getStatusInfo($status)
-    {
+    public function getStatusInfo($status) {
+        $statusApproved = Application::STATUS_APPROVED;
+        $statusRejected = Application::STATUS_REJECTED;
+        $statusPending = Application::STATUS_IN_REVIEW;
+        $statusSent = Application::STATUS_SENT;
+
         switch ($status) {
-            case 0: return ['label' => 'Pendente', 'class' => 'badge-warning'];
-            case 1: return ['label' => 'Aprovado', 'class' => 'badge-success'];
-            case 2: return ['label' => 'Recusado', 'class' => 'badge-danger'];
+            case $statusSent:
+                return ['label' => 'Enviado', 'class' => 'badge-warning'];
+            case $statusPending:
+                return ['label' => 'Pendente', 'class' => 'badge-warning'];
+            case $statusRejected:
+                return ['label' => 'Recusado', 'class' => 'badge-danger'];
+            case $statusApproved:
+                return ['label' => 'Aprovado', 'class' => 'badge-success'];
             default: return ['label' => 'Desconhecido', 'class' => 'badge-secondary'];
         }
     }
@@ -394,20 +394,21 @@ class ApplicationController extends Controller
 
     public function actionDenyApplication($id) {
         $model = $this->findModel($id);
+        //Status da candidatura= 0 => SENT, 1 => in_review, 2 => approved, 3 => rejected, 4 => cancelled.
 
-        //Status da candidatura= 0 => pending, 1 => denied, 2 => accepted.
-        $statusDenied = '1';
-        $model->status = $statusDenied;
+        $model->status = Application::STATUS_REJECTED;
 
         $model->save(false); //tem que estar false, se não explode
 
         //Depois da aplicação ser negada, dar redirect para o index.
-        return $this->redirect(['index']);
+        return $this->redirect(['index-user-pro']);
     }
 
     public function actionAcceptApplication($id) {
         $model = $this->findModel($id);
-        $model->status = 2;
+
+        $model->status = Application::STATUS_APPROVED;
+
         // Aceder ao candidato (User) através da relação
         $candidate = $model->candidate;
 

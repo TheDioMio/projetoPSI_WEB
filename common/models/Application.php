@@ -73,6 +73,8 @@ class Application extends ActiveRecord
     const SCENARIO_ADOPTION = 'adoption';
     const SCENARIO_USER_PRO = 'user_pro';
 
+    //Status da candidatura= 0 => SENT, 1 => in_review, 2 => approved, 3 => rejected, 4 => cancelled.
+
 
     // Estados principais
     const STATUS_SENT        = 0; // enviada (nunca aberta)
@@ -145,10 +147,12 @@ class Application extends ActiveRecord
     {
         parent::init();
 
-        if ($this->isNewRecord && $this->created_at === null) {
-            $this->created_at = date('Y-m-d');
-            $this->isRead = self::READ_NO;
-        }
+
+        //Igor, tive que comentar isto porque se não o ApplicationSearch explodia
+//        if ($this->isNewRecord && $this->created_at === null) {
+//            $this->created_at = date('Y-m-d');
+//            $this->isRead = self::READ_NO;
+//        }
     }
 
 

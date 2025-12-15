@@ -16,7 +16,6 @@ YiiAsset::register($this);
 <div class="application-view">
     <div class="mb-3 text-right">
         <?= Html::a('<i class="fas fa-arrow-left"></i> Voltar', ['index'], ['class' => 'btn btn-outline-secondary']) ?>
-        <?= Html::a('<i class="fas fa-edit"></i> Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('<i class="fas fa-trash"></i> Apagar', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -73,13 +72,11 @@ YiiAsset::register($this);
                     <?php if (empty($jsonAttributes)): ?>
                         <div class="p-4 text-center text-muted">Sem dados para apresentar.</div>
                     <?php else: ?>
-
                         <?= DetailView::widget([
                             'model' => $model,
                             'attributes' => $jsonAttributes,
                             'options' => ['class' => 'table table-hover mb-0'],
                         ]) ?>
-
                     <?php endif; ?>
                 </div>
             </div>

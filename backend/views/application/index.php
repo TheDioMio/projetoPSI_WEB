@@ -9,7 +9,6 @@ use yii\grid\GridView;
 /** @var yii\web\View $this */
 /** @var app\models\ApplicationSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
-
 $this->title = 'Gestão de Candidaturas';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -42,7 +41,33 @@ $this->params['breadcrumbs'][] = $this->title;
                         'value' => 'animal.name',
                         'attribute' => 'animal_name',
                     ],
+                    [
+                        'attribute' => 'created_at',
+                        'format' => ['date', 'php:d/m/Y H:i'],
+                        'label' => 'Submetido em',
+                    ],
+                    [
+                        'attribute' => 'status',
+                        'label' => 'Estado',
+                        'format' => 'raw',
+                        'filter' => [
+                            Application::STATUS_SENT=> 'Enviado',
+                            Application::STATUS_IN_REVIEW => 'Em Análise',
+                            Application::STATUS_APPROVED => 'Aprovado',
+                            Application::STATUS_REJECTED => 'Negado',
+                        ],
+                        'value' => function ($model) {
+                            // 1. Pedimos ao Controller a informação deste status específico
+                            // O 'Yii::$app->controller' refere-se ao ApplicationController que está a correr
+                            $info = Yii::$app->controller->getStatusInfo($model->status);
 
+                            // 2. Usamos os dados que vieram do Controller
+                            return Html::tag('span', $info['label'], [
+                                'class' => "badge {$info['class']} px-2"
+                            ]);
+                        },
+                        'contentOptions' => ['class' => 'text-center align-middle'],
+                    ],
                     [
                         'class' => ActionColumn::className(),
                         'template' => '{view} {delete}',
@@ -80,15 +105,20 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'candidate_name',
                     ],
                     [
-                        'attribute' => 'description',
-                        'label' => 'Empresa',
+                        'label' => 'Dono do Animal',
+                        'value' => 'animalOwner.name',
+                        'attribute' => 'animal_owner_name',
+                    ],
+                    [
+                        'label' => 'Animal',
+                        'value' => 'animal.name',
+                        'attribute' => 'animal_name',
                     ],
                     [
                         'attribute' => 'created_at',
                         'format' => ['date', 'php:d/m/Y H:i'],
                         'label' => 'Submetido em',
                     ],
-
                     [
                         'class' => ActionColumn::className(),
                         'template' => '{view}',
@@ -96,7 +126,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'buttons' => [
                             'view' => function ($url, $model) {
                                 $novoUrl = Url::to(['view', 'id' => $model->id]);
-                                return Html::a('<i class="fas fa-eye"></i> Ver', $novoUrl, [
+                                return Html::a('<i class="fas fa-eye"></i> Analisar', $novoUrl, [
                                     'class' => 'btn btn-xs btn-primary',
                                 ]);
                             },
