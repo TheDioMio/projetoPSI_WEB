@@ -29,8 +29,7 @@ class ApplicationSearch extends Application
     {
         return Model::scenarios();
     }
-    public function search($params, $formName = null)
-    {
+    public function search($params, $formName = null) {
         $query = Application::find();
 
         /*Aqui, como temos POSSIVELMENTE dois campos que vão buscar informação ao user.name, é preciso fazer a
@@ -75,12 +74,12 @@ class ApplicationSearch extends Application
         }
 
         $query->andFilterWhere([
-            'id' => $this->id,
-            'status' => $this->status,
+            'application.id' => $this->id,
+            'application.status' => $this->status,
+            'application.created_at' => $this->created_at,
             'user_id' => $this->user_id,
             'animal_id' => $this->animal_id,
             'type' => $this->type,
-            'created_at' => $this->created_at,
             'target_user_id' => $this->target_user_id,
         ]);
 
@@ -94,5 +93,52 @@ class ApplicationSearch extends Application
         $query->andFilterWhere(['like', 'ownerUser.name', $this->animal_owner_name]);
 
         return $dataProvider;
+    }
+
+    public function searchPendingAdoption()
+    {
+        $query = Application::find();
+
+        $query->joinWith(['candidate' => function($q){
+            $q->from(['candidateUser' => User::tableName()]);
+        }]);
+
+        $query->joinWith(['animalOwner' => function($q) {
+            $q->from(['ownerUser' => User::tableName()]);
+        }]);
+
+        $query->joinWith(['animal']);
+
+        $query->where(['type' => Application::TYPE_ADOPTION]);
+        $query->andWhere(['application.status' => [
+            Application::STATUS_SENT,
+            Application::STATUS_IN_REVIEW
+        ]]);
+
+        return new ActiveDataProvider([
+            'query' => $query,
+            'sort' => [
+                'defaultOrder' => ['created_at' => SORT_DESC],
+                'attributes' => [
+                    'created_at',
+                    'status' => [
+                        'asc' => ['application.status' => SORT_ASC],
+                        'desc' => ['application.status' => SORT_DESC],
+                    ],
+                    'candidate_name' => [
+                        'asc' => ['candidateUser.name' => SORT_ASC],
+                        'desc' => ['candidateUser.name' => SORT_DESC],
+                    ],
+                    'animal_name' => [
+                        'asc' => ['animal.name' => SORT_ASC],
+                        'desc' => ['animal.name' => SORT_DESC],
+                    ],
+                    'animal_owner_name' => [
+                        'asc' => ['ownerUser.name' => SORT_ASC],
+                        'desc' => ['ownerUser.name' => SORT_DESC],
+                    ],
+                ],
+            ],
+        ]);
     }
 }

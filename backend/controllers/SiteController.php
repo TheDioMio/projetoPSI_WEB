@@ -1,6 +1,7 @@
 <?php
 namespace backend\controllers;
 
+use app\models\ApplicationSearch;
 use backend\models\AnimalSearch;
 use common\models\Animal;
 use common\models\Application;
@@ -94,12 +95,9 @@ class SiteController extends Controller
             ->limit(5)
             ->all();
 
-        //Candidaturas Pendentes (Considerei que status = 0 é 'pendente')
-        $candidaturasPendentes = Application::find()
-            ->where(['status' => '0'])
-            ->orderBy(['created_at' => SORT_DESC])
-            ->limit(4)
-            ->all();
+        //Candidaturas Pendentes
+        $searcher = New ApplicationSearch();
+        $candidaturasPendentes = $searcher->searchPendingAdoption()->getModels();
 
         //Hardcoded (1 = Cão, 2 = Gato, 3 = Outros) conforme a tabela animal_type
         $totalCaes = Animal::find()->where(['animal_type_id' => 1])->count();

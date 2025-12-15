@@ -45,7 +45,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'status',
                         'label' => 'Estado',
                         'format' => 'raw',
-                        'filter' => [0 => 'Pendente', 1 => 'Aprovado', 2 => 'Recusado'],
+                        'filter' => [
+                            Application::STATUS_SENT=> 'Enviado',
+                            Application::STATUS_IN_REVIEW => 'Em Análise',
+                            Application::STATUS_APPROVED => 'Aprovado',
+                            Application::STATUS_REJECTED => 'Negado',
+                        ],
                         'value' => function ($model) {
                             // 1. Pedimos ao Controller a informação deste status específico
                             // O 'Yii::$app->controller' refere-se ao ApplicationController que está a correr
@@ -109,7 +114,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         'format' => ['date', 'php:d/m/Y H:i'],
                         'label' => 'Submetido em',
                     ],
-
                     [
                         'class' => ActionColumn::className(),
                         'template' => '{view}', //Isto é só para ver, depois o sysadmin abre a candidatura e dá para aprovar lá dentro
