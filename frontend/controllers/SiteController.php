@@ -37,20 +37,17 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'signup','login'],
+                'except' => ['error', 'index', 'about', 'contact'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
-                    [
-                        'actions' => [''], //aqui colocamos
-                        'allow' => true,
-                        'roles' => ['createComment'],
-                    ],
-                    [
-                        'actions' => ['login'],
+                        'actions' => [
+                            'login',
+                            'signup',
+                            'request-password-reset',
+                            'reset-password',
+                            'verify-email',
+                            'resend-verification-email',
+                        ],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -60,6 +57,12 @@ class SiteController extends Controller
                         'roles' => ['@'],
                     ],
                 ],
+                //falta tratar estas actions
+                //ResendVerificationEmail
+                //RequestPasswordReset
+                //ResetPassword
+                //VerifyEmail
+                //ResendVerificationEmail
             ],
             'verbs' => [
                 'class' => VerbFilter::class,
@@ -115,7 +118,9 @@ class SiteController extends Controller
         // 3. MANTÉM OS ADOTADOS COMO HARD-CODED (como pediu)
         // (Quando a BD estiver pronta, pode mudar isto para:
         //  $adotadosCount = Listing::find()->where(['status' => 2])->count();
-        $adotadosCount = 123; // O seu valor hard-coded
+        $adotadosCount = Listing::find()
+            ->where(['status' => 4])
+            ->count();
 
         // --- FIM DA ALTERAÇÃO ---
 

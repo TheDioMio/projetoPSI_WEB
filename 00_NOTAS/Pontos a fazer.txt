@@ -7,36 +7,27 @@ para a view.
 
 falta:
 
-API / android
-MQTT
-estatísticas do userPro
-CRUD visitas
-Os meus animais (Frontend UserPro) CRUD
+API / android (começado Mário)
+MQTT - começado (Mário)
+Relatorios
+
+tem de ser feito:
+estatísticas do userPro - Diogo
 notas do animal(só é visto pelo userPro)
-
-
-
-pesquisar e filtrar animais - Mário - Feito
-
-as minhas candidaturas (recebidas e enviadas) - Igor feito
-cancelar candidatura - Igor feito
-avaliação de candidaturas - Igor feito
-adicionar data ao estado do animal (fazer no fim) - Igor feito
-
-
-adicionar e remover animais dos favoritos - Diogo - Feito
-estatísticas (continuar) - Diogo
+filtros nos myanimals (com o campo do status) - Mário
+RbacController - Igor
 
 
 
 
+Trabalho futuro: (relatorio ou melhoria)
 pós adoção
 Contrato digital (fazer no fim)
 denuncias de anuncio (amadurecer adeia)
+pessoas de interesse
+CRUD visitas - ponderar não fazer (ou melhoria)
+perdidos e achados
 
 
-ponderar:
-perdidos e achados 
 
 
- --------------------não esquecer o Android --------------------------------

@@ -31,10 +31,11 @@ class SiteController extends Controller
                     return Yii::$app->response->redirect(['/site/login']);
 
                 },
+                'except' => ['error'],
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['login', 'error'],
+                        'actions' => ['login'],
                     ],
                     [
                         'allow' => true,
