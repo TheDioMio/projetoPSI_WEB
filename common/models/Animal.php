@@ -45,48 +45,7 @@ class Animal extends ActiveRecord
     {
         return 'animal';
     }
-//
-//    const STATUS_INACTIVE = 0;
-//    const STATUS_ACTIVE   = 1;
-//    const STATUS_DELETED  = 2;
-//    const STATUS_DEAD     = 3;
-//    const STATUS_ADOPTED  = 4;
 
-//    public static function getStatusLabels()
-//    {
-//        return [
-//            self::STATUS_INACTIVE => 'Inativo, não publicar anúncio.',
-//            self::STATUS_ACTIVE   => 'Ativo, publicar anúncio.',
-//            self::STATUS_DELETED  => 'Apagado',
-//            self::STATUS_DEAD     => 'Falecido',
-//            self::STATUS_ADOPTED  => 'Adotado',
-//        ];
-//    }
-
-//    public function getStatusLabel()
-//    {
-//        return self::getStatusLabels()[$this->status] ?? 'Desconhecido';
-//    }
-
-//    public static function getAllowedStatusesForUser()
-//    {
-//        return [
-//            self::STATUS_INACTIVE => 'Inativo, não publicar anúncio.',
-//            self::STATUS_ACTIVE   => 'Ativo, publicar anúncio.',
-//            self::STATUS_ADOPTED  => 'Adotado',
-//        ];
-//    }
-//
-//    public static function getAllowedStatusesForUserPro()
-//    {
-//        return [
-//            self::STATUS_INACTIVE => 'Inativo, não publicar anúncio.',
-//            self::STATUS_ACTIVE   => 'Ativo, publicar anúncio.',
-//            self::STATUS_DEAD     => 'Falecido',
-//            self::STATUS_ADOPTED  => 'Adotado',
-//
-//        ];
-//    }
 
 
     public $imageFiles;

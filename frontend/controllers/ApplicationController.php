@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use common\models\Application;
 use frontend\models\ApplicationSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -27,6 +28,21 @@ class ApplicationController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'denyCallback' => function () {
+                        if (Yii::$app->user->can('loginFrontend')) {
+                            return Yii::$app->response->redirect(['/site/index']);
+                        }
+                        return Yii::$app->response->redirect(['/site/login']);
+                    },
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['loginFrontend', 'applicationManeger'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -138,8 +154,6 @@ class ApplicationController extends Controller
 
         return $this->redirect(['outbox']);
     }
-
-
 
 
 

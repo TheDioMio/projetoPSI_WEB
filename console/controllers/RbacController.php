@@ -13,6 +13,39 @@ class RbacController extends Controller
         $auth = Yii::$app->authManager;
         $auth->removeAll();
 
+        //--------------------new permission -----------------------------
+
+        //permissão de gestão de candidaturas
+        $applicationManeger = $auth->createPermission('applicationManeger');
+        $applicationManeger->description = 'applicationManeger';
+        $auth->add($applicationManeger);
+
+        //permissão de gestão de mensagens
+        $messageManeger = $auth->createPermission('messageManeger');
+        $messageManeger->description = 'messageManeger';
+        $auth->add($messageManeger);
+
+        $createComment = $auth->createPermission('createComment');
+        $createComment->description = 'createComment';
+        $auth->add($createComment);
+
+        $createComment = $auth->createPermission('createComment');
+        $createComment->description = 'createComment';
+        $auth->add($createComment);
+
+        $createComment = $auth->createPermission('createComment');
+        $createComment->description = 'createComment';
+        $auth->add($createComment);
+
+        $createComment = $auth->createPermission('createComment');
+        $createComment->description = 'createComment';
+        $auth->add($createComment);
+
+
+        //---------------------------------------------------
+
+
+
         $createComment = $auth->createPermission('createComment');
         $createComment->description = 'createComment';
         $auth->add($createComment);

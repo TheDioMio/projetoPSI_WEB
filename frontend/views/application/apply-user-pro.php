@@ -15,12 +15,7 @@ $areasAtuacao = [
     3 => 'Outro',
 ];
 
-$anosExperiencia = [
-    1 => 'Menos de 1 ano',
-    2 => 'Entre 1 a 3 anos',
-    3 => 'Entre 3 a 5 anos',
-    4 => 'Mais de 5 anos',
-];
+
 
 $disponibilidade = [
     1 => 'Tempo Inteiro (Comercial)',
