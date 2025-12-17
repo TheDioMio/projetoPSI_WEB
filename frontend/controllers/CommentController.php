@@ -20,6 +20,7 @@ class CommentController extends \yii\web\Controller
                     Yii::$app->session->setFlash('error', 'Não tem permissões para criar um comentário.');
                     return Yii::$app->response->redirect(['/site/index']);
                 },
+                'except' => ['error'],
                 'rules' => [
                     [
                         'allow' => true,

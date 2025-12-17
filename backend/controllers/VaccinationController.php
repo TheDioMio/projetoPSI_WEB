@@ -30,6 +30,7 @@ class VaccinationController extends Controller
                         }
                         return Yii::$app->response->redirect(['/site/login']);
                     },
+                    'except' => ['error'],
                     'rules' => [
                         [
                             'allow' => true,

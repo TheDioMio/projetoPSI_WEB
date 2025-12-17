@@ -30,6 +30,7 @@ class ApplicationController extends Controller
             [
                 'access' => [
                     'class' => AccessControl::class,
+                    'except' => ['error'],
                     'denyCallback' => function () {
                         if (Yii::$app->user->can('loginFrontend')) {
                             return Yii::$app->response->redirect(['/site/index']);

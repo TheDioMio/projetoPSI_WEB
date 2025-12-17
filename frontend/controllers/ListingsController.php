@@ -12,6 +12,8 @@ use common\models\AnimalType;
 use common\models\Breed;
 
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
@@ -21,6 +23,43 @@ use yii\helpers\ArrayHelper;
 class ListingsController extends Controller
 {
 
+    public function behaviors()
+    {
+        return array_merge(
+            parent::behaviors(),
+            [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'denyCallback' => function () {
+                        if (Yii::$app->user->can('loginFrontend')) {
+                            return Yii::$app->response->redirect(['/site/index']);
+                        }
+                        return Yii::$app->response->redirect(['/site/login']);
+                    },
+                    'except' => ['error', 'animal', 'detail'],
+                    'rules' => [
+                        [
+                            'actions' => ['create-listing', 'upload', 'delete', 'user-listings', 'update'],
+                            'allow' => true,
+                            'roles' => ['loginFrontend', 'listingsManeger'],
+                        ],
+                        [
+                            'actions' => ['favourites', 'my-listings'],
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                    ],
+                ],
+
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
+                    ],
+                ],
+            ]
+        );
+    }
 
     public function actionAnimal()
     {

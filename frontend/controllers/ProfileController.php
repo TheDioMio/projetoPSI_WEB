@@ -4,10 +4,44 @@ namespace frontend\controllers;
 
 use common\models\File;
 use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 
 class ProfileController extends \yii\web\Controller
 {
+
+    public function behaviors()
+    {
+        return array_merge(
+            parent::behaviors(),
+            [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'denyCallback' => function () {
+                        if (Yii::$app->user->can('loginFrontend')) {
+                            return Yii::$app->response->redirect(['/site/index']);
+                        }
+                        return Yii::$app->response->redirect(['/site/login']);
+                    },
+                    'except' => ['error'],
+                    'rules' => [
+                        [
+                            'actions' => ['profile', 'upload-image'],
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                    ],
+                ],
+                'verbs' => [
+                    'class' => VerbFilter::class,
+                    'actions' => [
+                        'delete' => ['POST'],
+                    ],
+                ],
+            ]
+        );
+    }
 
     public function actionProfile()
     {
