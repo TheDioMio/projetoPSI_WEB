@@ -7,28 +7,30 @@ para a view.
 
 falta:
 
-API
+API / android
 MQTT
-
+estatísticas do userPro
 CRUD visitas
+Os meus animais (Frontend UserPro) CRUD
+notas do animal(só é visto pelo userPro)
+
+
+
 pesquisar e filtrar animais - Mário - Feito
 
 as minhas candidaturas (recebidas e enviadas) - Igor feito
 cancelar candidatura - Igor feito
 avaliação de candidaturas - Igor feito
-
+adicionar data ao estado do animal (fazer no fim) - Igor feito
 
 
 adicionar e remover animais dos favoritos - Diogo - Feito
-adicionar data ao estado do animal (fazer no fim) - Diogo
 estatísticas (continuar) - Diogo
 
-Os meus animais (Frontend UserPro) CRUD
 
-notas do animal(só é visto pelo userPro)
+
 
 pós adoção
-estatísticas do userPro 
 Contrato digital (fazer no fim)
 denuncias de anuncio (amadurecer adeia)
 

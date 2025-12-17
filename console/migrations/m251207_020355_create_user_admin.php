@@ -21,7 +21,7 @@ class m251207_020355_create_user_admin extends Migration
         $user->username = 'admin';
         $user->name = 'admin';
         $user->email = 'admin@example.com';
-        $user->setPassword('12345678');
+        $user->setPassword('123456789');
         $user->generateAuthKey();
 
         // IMPORTANTE: permitir definir ID manualmente

@@ -6,6 +6,7 @@ use common\models\Message;
 use common\models\User;
 use common\models\Listing;
 use frontend\models\MessageSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii;
 use yii\web\NotFoundHttpException;
@@ -25,12 +26,17 @@ class MessageController extends Controller
             parent::behaviors(),
             [
                 'access' => [
-                    'class' => \yii\filters\AccessControl::class,
-                    'only' => ['index', 'outbox', 'view', 'create'],
+                    'class' => AccessControl::class,
+                    'denyCallback' => function () {
+                        if (Yii::$app->user->can('loginFrontend')) {
+                            return Yii::$app->response->redirect(['/site/index']);
+                        }
+                        return Yii::$app->response->redirect(['/site/login']);
+                    },
                     'rules' => [
                         [
                             'allow' => true,
-                            'roles' => ['@'],
+                            'roles' => ['loginFrontend', 'messageManeger'],
                         ],
                     ],
                 ],
