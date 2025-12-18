@@ -40,7 +40,7 @@ class ListingsController extends Controller
                     'except' => ['error', 'animal', 'detail'],
                     'rules' => [
                         [
-                            'actions' => ['create-listing', 'upload', 'delete', 'user-listings', 'update'],
+                            'actions' => ['create-listing', 'upload', 'delete', 'user-listings', 'update', 'statistics'],
                             'allow' => true,
                             'roles' => ['loginFrontend', 'listingsManeger'],
                         ],
@@ -105,7 +105,6 @@ class ListingsController extends Controller
                 ->orderBy(['created_at' => SORT_DESC])
                 ->all()
             : [];
-
         $newComment = new Comment();
 
         // 4. O Controller ENVIA o $model para a View
@@ -115,7 +114,6 @@ class ListingsController extends Controller
             'newComment' => $newComment,
         ]);
     }
-
 
     public function actionCreateListing()
     {
@@ -245,7 +243,6 @@ class ListingsController extends Controller
             ]);
     }
 
-
     public function actionUpload()
     {
         $model = new File();
@@ -263,8 +260,6 @@ class ListingsController extends Controller
 
         return $this->render('upload', ['model' => $model]);
     }
-
-
 
     public function actionMyListings()
     {
@@ -383,7 +378,6 @@ class ListingsController extends Controller
             throw new ForbiddenHttpException('Não tem permissão para editar o estado do anúncio.');
         }
 
-
         $model = $listingModel->animal;
         $model->scenario = 'update';
 
@@ -401,9 +395,6 @@ class ListingsController extends Controller
         foreach ($breeds as $breed) {
             $breedsByType[$breed->animal_type_id][$breed->id] = $breed->description;
         }
-
-
-
 
         // Imagens atuais
         $existingImages = File::find()
@@ -488,6 +479,22 @@ class ListingsController extends Controller
     public function actionFavourites()
     {
         return $this->render('favourites');
+    }
+
+    public function actionStatistics(){
+        // 1. Obtém o ID do user logado
+        $userId = Yii::$app->user->id;
+
+        // 2. Instancia o Search Model
+        $searchModel = new ListingSearch();
+
+        // 3. Obtém todos os dados processados
+        $stats = $searchModel->getUserStatistics($userId);
+
+        // 4. Envia para a view
+        return $this->render('statistics', [
+            'stats' => $stats,
+        ]);
     }
 
 

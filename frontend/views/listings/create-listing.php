@@ -157,7 +157,7 @@ $this->params['breadcrumbs'][] = $this->title; // Adiciona ao "breadcrumb"
                     ->hint('Texto apelativo para o anúncio. Ex: Este animal procura novo lar...'); ?>
 
                 <hr class="my-4">
-                <?= $form->field($listingModel->animal, 'observations')->textarea([
+                <?= $form->field($model, 'observations')->textarea([
                     'rows' => 6,
                 ])->label('Observações do Animal')
                     ->hint('Alguma coisa que queira registar. Só você é que consegue ver as observações do animal.'); ?>
