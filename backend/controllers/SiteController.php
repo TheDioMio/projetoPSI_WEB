@@ -124,16 +124,17 @@ class SiteController extends Controller
     }
 
     public function actionStatistics() {
+
+        $user = Yii::$app->user->identity;
+
         /*PARA CARREGAR A IMAGEM DOS ANIMAIS PARA A VIEW*/
-        /* 1. Trocar os links, igual ao animal view, o link das imagens vem do frontend
-        e temos que mudar o link para vir do backend*/
-//        $backendBaseUrl = Yii::$app->request->baseUrl; // /projeto/backend/web
-//        $frontendBaseUrl = str_replace('/backend/web', '/frontend/web', $backendBaseUrl); // /projeto/frontend/web
-//        $avatar = '';
-//        //2. Carregar a foto do user, concatenação para conseguirmos o URL certo
-//        if ($model->profileImage) {
-//            $avatar = $frontendBaseUrl . '/' . ltrim($model->profileImage->path, '/');
-//        }
+        $user = Yii::$app->user->identity;
+        $backendBaseUrl = Yii::$app->request->baseUrl;
+        $frontendBaseUrl = str_replace('/backend/web', '/frontend/web', $backendBaseUrl);
+        $avatar = null;
+        if ($user && $user->profileImage) {
+            $avatar = $frontendBaseUrl . '/' . ltrim($user->profileImage->path, '/');
+        }
 
 
 
@@ -250,7 +251,7 @@ class SiteController extends Controller
             'statsHabitacao' => array_values($statsHabitacao), 'vacData' => $vacData,
             'locLabels' => $locLabels, 'locData' => $locData, 'topVistos' => $topVistos,
             'ageLabels' => $ageLabels, 'ageData' => $ageData, 'breedLabels' => $breedLabels, 'breedData' => $breedData,
-            'neuteredData' => $neuteredData,
+            'neuteredData' => $neuteredData, 'avatar' => $avatar,
             'roleLabels' => $roleLabels, 'roleData' => $roleData,
             'appStatusLabels' => $appStatusLabels, 'appStatusData' => $appStatusData
         ]);

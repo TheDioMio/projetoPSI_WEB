@@ -7,22 +7,6 @@ use yii\bootstrap5\ActiveForm;
 /* @var $model yii\base\DynamicModel */
 
 $this->title = 'Candidatura Profissional';
-
-//  ARRAYS DE DADOS
-$areasAtuacao = [
-    1 => 'Clínica Veterinária',
-    2 => 'Canil / Abrigo',
-    3 => 'Outro',
-];
-
-
-
-$disponibilidade = [
-    1 => 'Tempo Inteiro (Comercial)',
-    2 => 'Part-time',
-    3 => 'Apenas Fins de Semana',
-    4 => 'Apenas por Marcação',
-];
 ?>
 
 <div class="container py-5">

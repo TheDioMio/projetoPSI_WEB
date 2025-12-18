@@ -111,15 +111,11 @@ $this->registerCssFile('@web/css/style.css', [
                 <div class="card-body text-center">
                     <p class="text-muted mb-3"><?=Html::encode('O que deseja fazer?')?></p>
 
-                    <?= Html::a('<i class="fas fa-plus"></i> Animal', ['/animal/create'], [
-                        'class' => 'btn btn-app bg-success shadow-sm btn-quickactions',
-                    ]) ?>
-
                     <?= Html::a('<i class="fas fa-user-plus"></i> User', ['/user/create'], [
                         'class' => 'btn btn-app bg-warning shadow-sm btn-quickactions',
                     ]) ?>
 
-                    <?= Html::a('<i class="fas fa-edit"></i> Listar', ['/listing/create'], [
+                    <?= Html::a('<i class="fas fa-edit"></i> Anúncio', ['/listing/create'], [
                         'class' => 'btn btn-app bg-info shadow-sm btn-quickactions',
                     ]) ?>
                 </div>

@@ -287,8 +287,7 @@ class ApplicationController extends Controller
     }
 
 
-    public function actionApplyUserPro()
-    {
+    public function actionApplyUserPro() {
         //1.º Autenticação
         if (Yii::$app->user->isGuest) {
             Yii::$app->session->setFlash('error', 'Faça login para se candidatar!');
@@ -301,7 +300,7 @@ class ApplicationController extends Controller
             'website', 'availability', 'bio'
         ]);
 
-        $formModel->addRule(['professional_name'], 'string', ['min' => 3, 'max' => 120]) // Regra igual à BD
+        $formModel->addRule(['professional_name'], 'string', ['min' => 3, 'max' => 120])
             ->addRule(['bio', 'availability'], 'string')
             ->addRule(['professional_name', 'nif', 'area_id', 'experience_level', 'bio'], 'required')
             ->addRule(['nif', 'area_id', 'experience_level'], 'integer')
@@ -348,8 +347,9 @@ class ApplicationController extends Controller
         // 5.º Renderizar a View
         return $this->render('apply-user-pro', [
             'model' => $formModel,
+            'areasAtuacao' => Application::getAreasAtuacao(),
+            'anosExperiencia' => Application::getAnosExperiencia(),
+            'disponibilidade' => Application::getDisponibilidade(),
         ]);
     }
-
-
 }

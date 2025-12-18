@@ -87,7 +87,6 @@ class ListingsController extends Controller
 
     public function actionDetail($id)
     {
-
         $model = Animal::findOne($id);
         if ($model === null) {
             throw new NotFoundHttpException('O animal que procura não existe.');

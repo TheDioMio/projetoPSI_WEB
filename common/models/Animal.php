@@ -61,13 +61,14 @@ class Animal extends ActiveRecord
     public function rules()
     {
         return [
-            [['age_id', 'size_id', 'vaccination_id', 'description', 'breed_id', 'location', 'user_id', 'created_at', 'name'], 'default', 'value' => null],
+            [['age_id', 'size_id', 'vaccination_id', 'description', 'breed_id', 'location', 'user_id', 'created_at', 'name', 'observations'], 'default', 'value' => null],
             [['neutered'], 'default', 'value' => 0],
             [['age_id', 'size_id', 'vaccination_id', 'animal_type_id', 'breed_id', 'neutered', 'user_id'], 'integer'],
             [['description'], 'string'],
             [['animal_type_id', 'name', 'age_id', 'size_id', 'user_id', 'breed_id', 'vaccination_id', 'location'], 'required'],
             [['created_at', 'statusDate'], 'safe'],
             [['location'], 'string', 'max' => 150],
+            [['observations'], 'string', 'max' => 120],
             [['name'], 'string', 'max' => 50],
             [['age_id'], 'exist', 'skipOnError' => true, 'targetClass' => AnimalAge::class, 'targetAttribute' => ['age_id' => 'id']],
             [['animal_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => AnimalType::class, 'targetAttribute' => ['animal_type_id' => 'id']],
@@ -119,6 +120,7 @@ class Animal extends ActiveRecord
             'location' => 'Location',
             'user_id' => 'User ID',
             'created_at' => 'Created At',
+            'observations' => 'Observations',
             'name' => 'Name',
         ];
     }
