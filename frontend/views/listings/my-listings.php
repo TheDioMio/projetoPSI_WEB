@@ -1,6 +1,13 @@
 
 <?php
 
+use common\models\AnimalAge;
+use common\models\AnimalSize;
+use common\models\AnimalType;
+use common\models\Breed;
+use common\models\Vaccination;
+use yii\bootstrap5\ActiveForm;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\StringHelper;
 
@@ -9,6 +16,39 @@ use yii\helpers\StringHelper;
 /** @var \app\models\Listing[] $listings */
 
 $this->title = 'Os Meus Anúncios';
+
+
+
+
+$tiposDeAnimal = ArrayHelper::map(
+    AnimalType::find()->orderBy(['description' => SORT_ASC])->all(),
+    'id',
+    'description'
+);
+
+$racas = ArrayHelper::map(
+    Breed::find()->orderBy(['description' => SORT_ASC])->all(),
+    'id',
+    'description'
+);
+
+$idades = ArrayHelper::map(
+    AnimalAge::find()->orderBy(['description' => SORT_ASC])->all(),
+    'id',
+    'description'
+);
+
+$portes = ArrayHelper::map(
+    AnimalSize::find()->orderBy(['id' => SORT_ASC])->all(),
+    'id',
+    'description'
+);
+
+$vacinas = ArrayHelper::map(
+    Vaccination::find()->orderBy(['id' => SORT_ASC])->all(),
+    'id',
+    'description'
+);
 ?>
 <div class="container py-5">
     <h1 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">
@@ -16,6 +56,7 @@ $this->title = 'Os Meus Anúncios';
     </h1>
     <p>Os seus anúncios</p>
 </div>
+
 <div class="container py-5">
     <div class="row g-5">
         <div class="col-lg-8">
@@ -112,7 +153,83 @@ $this->title = 'Os Meus Anúncios';
 
         <!-- SIDEBAR -->
         <div class="col-lg-4">
-            <!-- podes copiar o sidebar do teu ficheiro se quiseres manter -->
+            <!-- Filters Start -->
+
+                <div class="mb-5">
+                    <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4"><?=Html::encode('Filtros')?></h3>
+
+                    <?php
+                    // Inicia o ActiveForm, associando-o ao searchModel
+                    // Método GET e a ação aponta para a mesma página
+                    $form = ActiveForm::begin([
+                        'method' => 'get',
+                        'action' => ['listings/my-listings'],
+                        'options' => ['class' => 'd-flex flex-column justify-content-start'],
+                        'enableClientValidation' => false,
+                    ]);
+                    ?>
+
+                    <div class="mb-3">
+                        <label class="h5 text-primary mb-1 ps-2"><?=Html::encode('Tipo de Animal')?></label>
+                        <?= $form->field($searchModel, 'animal_type_id')->dropDownList( // 💡 Note: Usa $searchModel
+                            $tiposDeAnimal,
+                            [
+                                'prompt' => '— Qualquer Tipo —',
+                                'class' => 'form-select h5 bg-light py-2 px-3',
+                                'onchange' => 'this.form.submit()' // Submete automaticamente
+                            ]
+                        )->label(false) ?>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="h5 text-primary mb-1 ps-2"><?=Html::encode('Raça')?></label>
+                        <?= $form->field($searchModel, 'breed_id')->dropDownList( // 💡 Note: Usa $searchModel e breed_id
+                            $racas,
+                            [
+                                'prompt' => '— Qualquer Raça —',
+                                'class' => 'form-select h5 bg-light py-2 px-3',
+                                'onchange' => 'this.form.submit()' // Submete automaticamente
+                            ]
+                        )->label(false) ?>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="h5 text-primary mb-1 ps-2"><?=Html::encode('Idade')?></label>
+                        <?= $form->field($searchModel, 'animal_age_id')->dropDownList( // 💡 Note: Usa $searchModel e animal_age_id
+                            $idades,
+                            [
+                                'prompt' => '— Qualquer Idade —',
+                                'class' => 'form-select h5 bg-light py-2 px-3',
+                                'onchange' => 'this.form.submit()'
+                            ]
+                        )->label(false) ?>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="h5 text-primary mb-1 ps-2"><?=Html::encode('Porte')?></label>
+                        <?= $form->field($searchModel, 'animal_size_id')->dropDownList( // 💡 Note: Usa $searchModel e animal_size_id
+                            $portes,
+                            [
+                                'prompt' => '— Qualquer Porte —',
+                                'class' => 'form-select h5 bg-light py-2 px-3',
+                                'onchange' => 'this.form.submit()'
+                            ]
+                        )->label(false) ?>
+                    </div>
+
+                    <?php ActiveForm::end(); ?>
+
+                    <div class="mb-3 pt-2">
+                        <?= Html::a(
+                            '<i class="bi bi-x-circle me-2"></i> Limpar Filtros',
+                            ['listings/my-listings'], // URL base sem parâmetros
+                            ['class' => 'h6 text-danger']
+                        ) ?>
+                    </div>
+                </div>
+
+
+            <!-- Filters End -->
         </div>
     </div>
 </div>

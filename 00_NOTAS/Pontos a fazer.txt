@@ -16,6 +16,7 @@ estatísticas do userPro - Diogo
 notas do animal(só é visto pelo userPro)
 filtros nos myanimals (com o campo do status) - Mário
 RbacController - Igor
+Print dos resultados dos testes
 
 
 
@@ -27,6 +28,8 @@ denuncias de anuncio (amadurecer adeia)
 pessoas de interesse
 CRUD visitas - ponderar não fazer (ou melhoria)
 perdidos e achados
+
+
 
 
 

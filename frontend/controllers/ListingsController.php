@@ -65,26 +65,14 @@ class ListingsController extends Controller
     public function actionAnimal()
     {
 
-        /*$query = Listing::find()->where(['status' => 1]);
-
-        $provider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => [
-                'pageSize' => 10,
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'created_at' => SORT_DESC,
-                ]
-            ],
-        ]);
-
-        return $this->render('animal', [
-            'provider' => $provider,
-            'listings' => $provider->getModels(),
-        ]);*/
-
         $searchModel = new ListingSearch();
+
+        if(array_key_exists('ListingSearch',$this->request->queryParams)){
+            if($this->request->queryParams['ListingSearch']['breed_id']){
+                dd('n tem breed');
+            }
+            dd($this->request->queryParams['ListingSearch']);
+        }
         $dataProvider = $searchModel->search($this->request->queryParams);
         $dataProvider->pagination->pageSize = 10;
         $dataProvider->sort->defaultOrder = [
@@ -283,11 +271,37 @@ class ListingsController extends Controller
     {
         $userId = Yii::$app->user->id;
 
+        $searchModel = new ListingSearch();
+        $searchModel->search($this->request->queryParams);
+
         $query = Listing::find()
-            ->where(['!=', 'status', Listing::STATUS_DELETED])
-            ->andWhere(['user_id' => $userId])
+            ->leftJoin('animal', '`listing`.`animal_id` = `animal`.`id`')
             ->with(['animal.files'])
-            ->orderBy(['created_at' => SORT_DESC]);
+            ->where(['!=', 'listing.status', Listing::STATUS_DELETED])
+            ->andWhere(['listing.user_id' => $userId])
+            ->orderBy(['listing.created_at' => SORT_DESC]);
+
+        if(array_key_exists('ListingSearch',$this->request->queryParams)) {
+            $searchParameters = $this->request->queryParams['ListingSearch'];
+
+            if ($searchParameters['animal_type_id']) {
+                $query->andWhere(['animal.animal_type_id' => $searchParameters['animal_type_id']]);
+            }
+
+            if ($searchParameters['breed_id']) {
+                $query->andWhere(['animal.breed_id' => $searchParameters['breed_id']]);
+            }
+
+            if ($searchParameters['animal_age_id']) {
+                $query->andWhere(['animal.age_id' => $searchParameters['animal_age_id']]);
+            }
+
+            if ($searchParameters['animal_size_id']) {
+                $query->andWhere(['animal.size_id' => $searchParameters['animal_size_id']]);
+            }
+
+
+        }
 
         $provider = new ActiveDataProvider([
             'query' => $query,
@@ -300,6 +314,7 @@ class ListingsController extends Controller
             'provider' => $provider,
             'listings' => $provider->getModels(),
             'userId'   => $userId,
+            'searchModel' => $searchModel,
         ]);
     }
 

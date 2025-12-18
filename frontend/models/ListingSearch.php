@@ -49,7 +49,7 @@ class ListingSearch extends Listing
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $formName = null)
+    public function search($params, $formName = null, $userId = null)
     {
 
         $query = Listing::find()
