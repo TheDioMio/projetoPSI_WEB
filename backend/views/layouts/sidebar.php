@@ -47,6 +47,7 @@ $userLogado = $this->params['userLogado']->username;
             echo Menu::widget([
                 'items' => [
                     ['label' => 'Dashboard', 'url' => ['site/index'], 'iconStyle' => 'far'],
+                    ['label' => 'Estatísticas', 'url' => ['site/statistics'], 'iconStyle' => 'far'],
                     ['label' => 'CRUD e Consulta de BD', 'header' => true],
                     [
                         'label' => 'Menu Animais', 'icon'=>'fas fa-bone',

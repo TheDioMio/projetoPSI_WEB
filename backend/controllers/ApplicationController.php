@@ -66,7 +66,14 @@ class ApplicationController extends Controller
         $dataProvider = $searchModel->search($this->request->queryParams);
         //Isto aqui faz com que o queryParams abranja só as candidaturas com o cenário TYPE_ADOPTION
         $queryParams['ApplicationSearch']['type'] = Application::TYPE_ADOPTION;
+
         $dataProvider = $searchModel->search($queryParams);
+        //Isto aqui faz com que o dataProvider (que vai para o primeiro widget), só abranja as rejeitadas e aceites
+        $dataProvider->query->andWhere(['application.status' => [
+            Application::STATUS_APPROVED,
+            Application::STATUS_REJECTED
+        ]]);
+
 
         //Query que vai buscar todas as aplicações que tenham o type_adoption e que o status seja 0
         $pendingAdoptionApplications = $searchModel->searchPendingAdoption();
@@ -85,6 +92,12 @@ class ApplicationController extends Controller
         //Isto aqui faz com que o queryParams abranja só as candidaturas com o cenário TYPE_USER_PRO
         $queryParams['ApplicationSearch']['type'] = Application::TYPE_USER_PRO;
         $dataProvider = $searchModel->search($queryParams);
+
+        //Isto aqui faz com que o dataProvider (que vai para o primeiro widget), só abranja as rejeitadas e aceites
+        $dataProvider->query->andWhere(['application.status' => [
+            Application::STATUS_APPROVED,
+            Application::STATUS_REJECTED
+        ]]);
 
         $queryUserPro = Application::find()
             ->joinWith(['candidate'])
@@ -117,11 +130,24 @@ class ApplicationController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
-
-        //2. Processar o Status
+        //1. Processar o Status
         $statusData = $this->getStatusInfo($model->status);
 
-        //3. Processar os dados do JSON
+        $user= $model->user;
+
+
+        /*PARA CARREGAR A IMAGEM DO USER PARA O VIEW*/
+        /* 1. Trocar os links, igual ao animal view, o link das imagens vem do frontend
+        e temos que mudar o link para vir do backend*/
+        $backendBaseUrl = Yii::$app->request->baseUrl; // /projeto/backend/web
+        $frontendBaseUrl = str_replace('/backend/web', '/frontend/web', $backendBaseUrl); // /projeto/frontend/web
+        $avatar = '';
+        //2. Carregar a foto do user, concatenação para conseguirmos o URL certo
+        if ($user->profileImage) {
+            $avatar = $frontendBaseUrl . '/' . ltrim($user->profileImage->path, '/');
+        }
+
+        //2. Processar os dados do JSON
         $jsonAttributes = $this->getFormattedJsonDataAdoption($model->data);
 
         if (!$model->isRead) {
@@ -129,6 +155,7 @@ class ApplicationController extends Controller
         }
         return $this->render('view', [
             'model' => $model,
+            'avatar' => $avatar,
             'statusLabel' => $statusData['label'], // Passamos o texto (EX. Pendente)
             'statusClass' => $statusData['class'], // Passamos o CSS (EX. Se é pendente, badge-warning)
             'jsonAttributes' => $jsonAttributes,   // Passamos o array pronto para o DetailView
@@ -137,18 +164,32 @@ class ApplicationController extends Controller
 
     public function actionViewUserPro($id) {
         $model = $this->findModel($id);
+        $user = $model->user;
 
-        //2. Processar o status para display
+        /*PARA CARREGAR A IMAGEM DO USER PARA O VIEW*/
+        /*1. Trocar os links, igual ao animal view, o link das imagens vem do frontend
+        e temos que mudar o link para vir do backend*/
+        $backendBaseUrl = Yii::$app->request->baseUrl; // /projeto/backend/web
+        $frontendBaseUrl = str_replace('/backend/web', '/frontend/web', $backendBaseUrl); // /projeto/frontend/web
+        $avatar = '';
+        //2. Carregar a foto do user, concatenação para conseguirmos o URL certo
+        if ($user->profileImage) {
+            $avatar = $frontendBaseUrl . '/' . ltrim($user->profileImage->path, '/');
+        }
+
+
+        //1. Processar o status para display
         $statusData = $this->getStatusInfo($model->status);
 
-        //3. Processar os dados do JSON
+        //2. Processar os dados do JSON
         $jsonAttributes = $this->getFormattedJsonDataUserPro($model->data);
 
         if (!$model->isRead) {
-            $model->markAsRead(); // Isto faz o save internamente
+            $model->markAsRead();
         }
         return $this->render('view-user-pro', [
             'model' => $model,
+            'avatar' => $avatar,
             'statusLabel' => $statusData['label'], // Passamos o texto (EX. Pendente)
             'statusClass' => $statusData['class'], // Passamos o CSS (EX. Se é pendente, badge-warning)
             'jsonAttributes' => $jsonAttributes,   // Passamos o array pronto para o DetailView
@@ -158,14 +199,15 @@ class ApplicationController extends Controller
     private function getFormattedJsonDataUserPro($data) {
         $attributes = [];
 
+        //Para trocar ordem de visualização ou nomes, mexer neste labelMap!
         $labelsMap = [
+            'professional_name' => 'Empresa',
             'bio' => 'Biografia',
             'nif' => 'NIF',
             'area_id' => 'Área Principal',
             'website' => 'Website ou Redes Sociais',
             'availability' => 'Disponibilidade Habitual',
             'experience_level' => 'Experiência na Área',
-            'professional_name' => 'Nome do Profissional ou Empresa',
         ];
 
         if (is_array($data) && !empty($data)) {

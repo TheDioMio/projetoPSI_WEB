@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="card card-outline card-primary shadow-sm">
         <div class="card-header">
             <div class="card-tools float-right">
-                <?= Html::a('<i class="fas fa-plus-circle"></i> Criar Raça', ['create'], ['class' => 'btn btn-success btn-sm']) ?>
+                <?= Html::a('<i class="fas fa-plus-circle"></i> Criar Idade Animal', ['create'], ['class' => 'btn btn-success btn-sm']) ?>
             </div>
         </div>
         <div class="card-body p-0">
@@ -22,7 +22,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'tableOptions' => ['class' => 'table table-hover table-striped table-sm'],
                 'layout' => "{items}\n{summary}\n{pager}",
                 'columns' => [
-                    'id',
                     [
                         'label' => 'Descrição',
                         'attribute' => 'description',

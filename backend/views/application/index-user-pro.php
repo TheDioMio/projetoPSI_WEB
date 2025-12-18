@@ -46,8 +46,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         'label' => 'Estado',
                         'format' => 'raw',
                         'filter' => [
-                            Application::STATUS_SENT=> 'Enviado',
-                            Application::STATUS_IN_REVIEW => 'Em Análise',
                             Application::STATUS_APPROVED => 'Aprovado',
                             Application::STATUS_REJECTED => 'Negado',
                         ],

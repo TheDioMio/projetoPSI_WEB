@@ -46,6 +46,11 @@ class Animal extends ActiveRecord
         return 'animal';
     }
 
+    const STATUS_ADOPTED  = 4;
+    const STATUS_DEAD     = 3;
+    const STATUS_DELETED  = 2;
+    const STATUS_ACTIVE   = 1;
+    const STATUS_INACTIVE = 0;
 
 
     public $imageFiles;
@@ -218,6 +223,10 @@ class Animal extends ActiveRecord
         return $this->hasMany(Visit::class, ['animal_id' => 'id']);
     }
 
+    public function getAge()
+    {
+        return $this->hasOne(AnimalAge::class, ['id' => 'age_id']);
+    }
 
     public function behaviors()
     {
@@ -289,15 +298,17 @@ class Animal extends ActiveRecord
 
     */
 
-    public function afterSave($insert, $changedAttributes)
-    {
-        if ($insert) {
-            MosquittoCatcher::makePublish(
-                'NEW_POSTED_ANIMAL',
-                json_encode(['id' => $this->id])
-            );
-        }
-    }
+
+    //Comentado porque não deixava criar anúncio
+//    public function afterSave($insert, $changedAttributes)
+//    {
+//        if ($insert) {
+//            MosquittoCatcher::makePublish(
+//                'NEW_POSTED_ANIMAL',
+//                json_encode(['id' => $this->id])
+//            );
+//        }
+//    }
 
 
 

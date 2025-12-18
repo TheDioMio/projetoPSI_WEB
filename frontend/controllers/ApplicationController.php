@@ -230,8 +230,7 @@ class ApplicationController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    public function actionApply($animal_id)
-    {
+    public function actionApply($animal_id) {
         //Tem de estar autenticado para candidatar
         if (Yii::$app->user->isGuest) {
             Yii::$app->session->setFlash('error', 'Faça login para se candidatar!');
@@ -290,63 +289,65 @@ class ApplicationController extends Controller
 
     public function actionApplyUserPro()
     {
-        //1.º Autenticação:
+        //1.º Autenticação
         if (Yii::$app->user->isGuest) {
             Yii::$app->session->setFlash('error', 'Faça login para se candidatar!');
             return $this->redirect(['site/login']);
         }
 
-        //2.º Criar o modelo dinâmico para o formulário, isto deixa-nos validar e ter muito mais controlo sobre o que vai para a 'data'.
+        // 2.º e 3.º Criar Modelo e Regras
         $formModel = new DynamicModel([
             'professional_name', 'nif', 'area_id', 'experience_level',
             'website', 'availability', 'bio'
         ]);
 
-        //3.º Definir regras de validação para o formulário
-        $formModel->addRule(['professional_name', 'bio', 'availability'], 'string')
+        $formModel->addRule(['professional_name'], 'string', ['min' => 3, 'max' => 120]) // Regra igual à BD
+            ->addRule(['bio', 'availability'], 'string')
             ->addRule(['professional_name', 'nif', 'area_id', 'experience_level', 'bio'], 'required')
             ->addRule(['nif', 'area_id', 'experience_level'], 'integer')
             ->addRule(['website'], 'url', ['defaultScheme' => 'http']);
 
-
         //4.º Processar o POST
-        if ($formModel->load(Yii::$app->request->post())) {
-            //Validação se o formulário é válido
-            if ($formModel->validate()) {
-                //A. Preparar os dados para guardar na nossa BD.
-                $application = new Application();
 
-                $application->scenario = Application::SCENARIO_USER_PRO; //NUNCA ESQUECER DE DECLARAR QUAL É O CENÁRIO!!!!!
+        // Primeiro: Tenta carregar os dados do POST para o modelo
+        if ($formModel->load(Yii::$app->request->post())) {
+
+            // Segundo: Se carregou, tenta validar
+            if ($formModel->validate()) {
+
+                // A. Preparar a application
+                $application = new Application();
+                $application->scenario = Application::SCENARIO_USER_PRO;
                 $application->user_id = Yii::$app->user->id;
-                $application->type = Application::TYPE_USER_PRO; //Declara logo que a candidatura é de tipo 2 (userPro), ISTO ESTÁ TUDO DEFINIDO EM CIMA, CONSTANTES!
-                $application->status = Application::STATUS_SENT; //Está pendente, ainda não foi vista sequer.
+                $application->type = Application::TYPE_USER_PRO;
+                $application->status = Application::STATUS_SENT;
                 $application->created_at = date('Y-m-d H:i:s');
 
-                $application->animal_id = 16; //FORÇA A ENVIAR UM ANIMAL_ID, já que na Application é obrigatório um animal_id. Só para testes.
-
-                //Professional name é o mesmo que o nosso 'name', esqueci-me que tínhamos essa coluna na BD, mas está a funcionar por isso, por agora, não se mexe
-                $application->description = $formModel->professional_name;
-
-                //Empacotar tudo no JSON para a 'data'
+                // B. Tratar Dados
                 $dataToSave = $formModel->getAttributes();
                 $application->data = $dataToSave;
 
-                //B. Guardar
+                if (isset($dataToSave['professional_name'])) {
+                    $application->description = $dataToSave['professional_name'];
+                }
+
+                // C. Guardar
                 if ($application->save()) {
-                    //Isto é tipo o Toast de Android
-                    Yii::$app->session->setFlash('success', 'Candidatura submetida com sucesso! Vamos analisar os seus dados.');
+                    Yii::$app->session->setFlash('success', 'Candidatura submetida com sucesso!');
                     return $this->redirect(['site/index']);
                 } else {
-                    Yii::$app->session->setFlash('error', 'Erro ao guardar a candidatura na base de dados.');
+                    Yii::error(['apply_user_pro_save_errors' => $application->errors], __METHOD__);
+                    Yii::$app->session->setFlash('error', 'Erro interno. Contacte o suporte.');
                 }
+
             } else {
+                // A VALIDAÇÃO FALHOU:
                 Yii::$app->session->setFlash('error', 'Corrija, por favor, os erros no formulário.');
             }
         }
-
-        //5.º Renderizar a View
+        // 5.º Renderizar a View
         return $this->render('apply-user-pro', [
-            'model' => $formModel,  // Enviamos o DynamicModel para a view desenhar os campos
+            'model' => $formModel,
         ]);
     }
 
