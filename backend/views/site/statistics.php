@@ -18,13 +18,13 @@ $this->registerJsFile(
 
     <div class="container-fluid">
         <h5 class="mb-2 text-dark font-weight-bold">
-            <i class="fas fa-chart-line text-primary mr-2"></i> Performance da Plataforma
+            <i class="fas fa-chart-line text-primary mr-2"></i><?=Html::encode('Performance da Plataforma')?>
         </h5>
         <div class="row">
             <div class="col-md-8">
                 <div class="card card-primary card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">Crescimento (Últimos 6 Meses)</h3>
+                        <h3 class="card-title"><?=Html::encode('Crescimento (Últimos 6 Meses)')?></h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                 <i class="fas fa-minus"></i>
@@ -41,7 +41,7 @@ $this->registerJsFile(
             <div class="col-md-4">
                 <div class="card card-maroon card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">Status de Candidaturas</h3>
+                        <h3 class="card-title"><?=Html::encode('Status de Candidaturas')?></h3>
                     </div>
                     <div class="card-body">
                         <canvas id="appStatusChart" style="min-height: 300px; height: 300px; max-height: 300px; max-width: 100%;"></canvas>
@@ -51,14 +51,14 @@ $this->registerJsFile(
         </div>
 
         <h5 class="mb-2 mt-3 text-dark font-weight-bold">
-            <i class="fas fa-notes-medical text-danger mr-2"></i> Inventário e Saúde Animal
+            <i class="fas fa-notes-medical text-danger mr-2"></i><?=Html::encode('Inventário e Saúde Animal')?>
         </h5>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="card card-navy card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">Top Raças</h3>
+                        <h3 class="card-title"><?=Html::encode('Top Raças')?></h3>
                     </div>
                     <div class="card-body">
                         <canvas id="breedChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
@@ -68,7 +68,7 @@ $this->registerJsFile(
             <div class="col-md-3">
                 <div class="card card-purple card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">Faixas Etárias</h3>
+                        <h3 class="card-title"><?=Html::encode('Faixas Etárias')?></h3>
                     </div>
                     <div class="card-body">
                         <canvas id="ageChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
@@ -78,7 +78,7 @@ $this->registerJsFile(
             <div class="col-md-3">
                 <div class="card card-olive card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">Esterilização</h3>
+                        <h3 class="card-title"><?=Html::encode('Esterilização')?></h3>
                     </div>
                     <div class="card-body">
                         <canvas id="neuteredChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
@@ -91,7 +91,7 @@ $this->registerJsFile(
             <div class="col-md-6">
                 <div class="card card-success card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">Plano de Vacinação</h3>
+                        <h3 class="card-title"><?=Html::encode('Plano de Vacinação')?></h3>
                     </div>
                     <div class="card-body">
                         <canvas id="vacChart" style="min-height: 200px; height: 200px; max-height: 200px; max-width: 100%;"></canvas>
@@ -100,63 +100,103 @@ $this->registerJsFile(
             </div>
             <div class="col-md-6">
                 <div class="card card-warning card-outline">
-                    <div class="card-header">
-                        <h3 class="card-title"><i class="fas fa-fire mr-1"></i> Animais Mais Populares</h3>
+                    <div class="card-header border-0">
+                        <h3 class="card-title font-weight-bold text-dark">
+                            <i class="fas fa-fire text-danger mr-2"></i><?=Html::encode('Animais Mais Populares')?>
+                        </h3>
                     </div>
+
                     <div class="card-body p-0">
-                        <ul class="products-list product-list-in-card pl-2 pr-2">
+                        <ul class="products-list product-list-in-card pl-3 pr-3">
                             <?php if (!empty($topVistos)): ?>
-                                <?php foreach ($topVistos as $listing):
-                                    if(!$listing->animal) continue;
+                                <?php
+                                // Prepara o URL base para as imagens (Lógica Frontend)
+                                $backendBaseUrl = Yii::$app->request->baseUrl;
+                                $frontendBaseUrl = str_replace('/backend/web', '/frontend/web', $backendBaseUrl);
+
+                                foreach ($topVistos as $listing):
+                                    if (!$listing->animal) continue;
+
+                                    // 1. Tentar arranjar a imagem do animal
+                                    $animalPhoto = null;
+                                    if (!empty($listing->animal->files)) {
+                                        // Pega a primeira imagem encontrada
+                                        $animalPhoto = $frontendBaseUrl . '/' . ltrim($listing->animal->files[0]->path, '/');
+                                    }
+
+                                    // 2. Definir ícone caso não tenha foto (Baseado no ID do tipo)
+                                    // 1=Cão, 2=Gato, Outros=Paw
+                                    $icon = match($listing->animal->animal_type_id) {
+                                        1 => 'fa-dog',
+                                        2 => 'fa-cat',
+                                        default => 'fa-paw'
+                                    };
                                     ?>
-                                    <li class="item">
-                                        <div class="product-img">
-                                            <div class="float-left p-2 bg-light rounded border text-center"
-                                                 style="width: 50px;">
-                                                <?php if ($avatar == null): ?>
-                                                    <span class="fa-stack fa-4x">
-                                                        <i class="fas fa-circle fa-stack-2x text-light"></i>
-                                                        <i class="fas fa-user fa-stack-1x text-secondary"></i>
-                                                    </span>
-                                                <?php else: ?>
-                                                    <img src="<?= $avatar ?>"
-                                                         class="img-circle elevation-2 user-image"
-                                                         alt="User Image"
-                                                    >
-                                                <?php endif; ?>
-                                            </div>
+                                    <li class="item d-flex align-items-center py-3">
+                                        <div class="product-img mr-3">
+                                            <?php if ($animalPhoto): ?>
+                                                <img src="<?= $animalPhoto ?>"
+                                                     alt="<?= Html::encode($listing->animal->name) ?>"
+                                                     class="img-size-50 rounded shadow-sm"
+                                                     style="width: 60px; height: 60px; object-fit: cover; border: 2px solid #f4f6f9;">
+                                            <?php else: ?>
+                                                <div class="d-flex align-items-center justify-content-center bg-light rounded shadow-sm"
+                                                     style="width: 60px; height: 60px; border: 2px solid #f4f6f9;">
+                                                    <i class="fas <?= $icon ?> fa-2x text-secondary opacity-50"></i>
+                                                </div>
+                                            <?php endif; ?>
                                         </div>
-                                        <div class="product-info">
+
+                                        <div class="product-info flex-grow-1">
                                             <a href="<?= Url::to(['/animal/view', 'id' => $listing->animal->id]) ?>"
-                                               class="product-title">
+                                               class="product-title text-dark font-weight-bold"
+                                               style="font-size: 1.1rem;">
                                                 <?= Html::encode($listing->animal->name) ?>
-                                                <span class="badge badge-warning float-right"><?= $listing->views ?> views</span>
+
+                                                <span class="badge badge-light float-right text-muted border">
+                                <i class="far fa-eye mr-1"></i> <?= $listing->views ?>
+                            </span>
                                             </a>
-                                            <span class="product-description">
-                                            <?= Html::encode($listing->animal->animalType->description ?? '-') ?>
-                                            <small class="text-muted">• <?= Html::encode($listing->animal->location) ?></small>
-                                        </span>
+
+                                            <span class="product-description text-muted mt-1">
+                            <span class="badge badge-info text-white mr-1" style="font-weight: normal;">
+                                <?= Html::encode($listing->animal->animalType->description ?? '?') ?>
+                            </span>
+
+                            <?= Html::encode($listing->animal->breed->description ?? '') ?>
+
+                            <small class="float-right mt-1">
+                                <i class="fas fa-map-marker-alt text-danger mr-1"></i>
+                                <?= Html::encode($listing->animal->location) ?>
+                            </small>
+                        </span>
                                         </div>
                                     </li>
                                 <?php endforeach; ?>
                             <?php else: ?>
-                                <li class="item text-center p-3 text-muted">Ainda sem visualizações.</li>
+                                <li class="item text-center p-4 text-muted">
+                                    <i class="far fa-sad-tear fa-2x mb-2 d-block"></i>
+                                    <?=Html::encode('Ainda não existem visualizações registadas.')?>
+                                </li>
                             <?php endif; ?>
                         </ul>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="<?= Url::to(['/listing/index']) ?>" class="uppercase"><?=Html::encode('Ver todos os anúncios')?></a>
                     </div>
                 </div>
             </div>
         </div>
 
         <h5 class="mb-2 mt-3 text-dark font-weight-bold">
-            <i class="fas fa-globe-europe text-info mr-2"></i> Perfil Social e Geográfico
+            <i class="fas fa-globe-europe text-info mr-2"></i> <?=Html::encode('Perfil Social e Geográfico')?>
         </h5>
 
         <div class="row">
             <div class="col-md-4">
                 <div class="card card-info card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">Top Localizações</h3>
+                        <h3 class="card-title"><?=Html::encode('Top Localizações')?></h3>
                     </div>
                     <div class="card-body">
                         <canvas id="locChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
@@ -166,7 +206,7 @@ $this->registerJsFile(
             <div class="col-md-4">
                 <div class="card card-danger card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">Habitação dos Candidatos</h3>
+                        <h3 class="card-title"><?=Html::encode('Habitação dos Candidatos')?></h3>
                     </div>
                     <div class="card-body">
                         <canvas id="homeChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
@@ -176,7 +216,7 @@ $this->registerJsFile(
             <div class="col-md-4">
                 <div class="card card-lightblue card-outline">
                     <div class="card-header">
-                        <h3 class="card-title">Tipos de Utilizador</h3>
+                        <h3 class="card-title"><?=Html::encode('Tipos de Utilizador')?></h3>
                     </div>
                     <div class="card-body">
                         <canvas id="roleChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>

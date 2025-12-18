@@ -45,6 +45,8 @@ class UserSearch extends User
         $query = User::find();
 
         // add conditions that should always apply here
+        $query->andWhere(['!=', User::tableName() . '.status', User::STATUS_DELETED]);
+
 
         $query->joinWith(['role']);
         $dataProvider = new ActiveDataProvider([

@@ -359,4 +359,31 @@ class Application extends ActiveRecord
         parent::afterFind();
     }
 
+    public static function getAreasAtuacao()
+    {
+        return [
+            1 => 'Clínica Veterinária',
+            2 => 'Canil / Abrigo',
+            3 => 'Outro',
+        ];
+    }
+
+    public static function getAnosExperiencia()
+    {
+        return [
+            1 => 'Menos de 1 ano',
+            2 => '1 a 3 anos',
+            3 => '3 a 5 anos',
+            4 => 'Mais de 5 anos'
+        ];
+    }
+
+    public static function getDisponibilidade() {
+        return [
+            1 => 'Tempo Inteiro (Comercial)',
+            2 => 'Part-time',
+            3 => 'Apenas Fins de Semana',
+            4 => 'Apenas por Marcação',
+        ];
+    }
 }

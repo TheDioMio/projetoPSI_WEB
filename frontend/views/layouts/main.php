@@ -80,12 +80,13 @@ AppAsset::register($this);
     }else {
         $menuItems[] = ['label' => '<i class="fa-solid fa-user-circle me-2"></i>' . Html::encode(Yii::$app->user->identity->username),
             'items' => [
+                ['label' => '<i class="fa-solid fa-user-gear me-2"> </i>Meu Perfil', 'url' => ['/profile/profile']],
                 ['label' => '<i class="fa-solid fa-paw"></i> Novo Anúncio', 'url' => ['/listings/create-listing']],
-                ['label' => '<i class="fa-solid fa-list-ul me-2"></i> Os Meus Anúncios', 'url' => ['/listings/my-listings']],
-                ['label' => '<i class="fa-solid fa-list-ul me-2"></i> As minhas candidaturas', 'url' => ['/application/inbox']],
-                ['label' => '<i class="fa-solid fa-list-ul me-2"></i> As minhas Mensagens', 'url' => ['/message/index']],
-                ['label' => '<i class="fa-solid fa-user-edit me-2"> </i>O meu perfil', 'url' => ['/profile/profile']],
-                ['label' => '<i class="fa-solid fa-star me-2"> </i>Favoritos', 'url' => ['/listings/favourites']],
+                ['label' => '<i class="fa-solid fa-clipboard-list me-2"></i>Meus Anúncios', 'url' => ['/listings/my-listings']],
+                ['label' => '<i class="fa-solid fa-file-signature me-2"></i>Minhas Candidaturas', 'url' => ['/application/inbox']],
+                ['label' => '<i class="fa-solid fa-envelope me-2"></i>Minhas Mensagens', 'url' => ['/message/index']],
+
+                ['label' => '<i class="fa-solid fa-heart me-2"> </i>Favoritos', 'url' => ['/listings/favourites']],
                 '-',
                 ['label' => '<span class="d-flex align-items-center">'
                     . '<i class="fa-solid fa-right-from-bracket me-2"></i>'

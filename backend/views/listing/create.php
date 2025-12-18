@@ -21,11 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="card-body">
 
             <?= $this->render('_form', [
-                // Passar os modelos
                 'listingModel' => $listingModel,
                 'animalModel' => $animalModel,
-
-                // Passar os dados para as dropdowns
                 'users' => $users,
                 'animalTypes' => $animalTypes,
                 'breedsByType' => $breedsByType,
