@@ -28,7 +28,6 @@ YiiAsset::register($this);
             <?= DetailView::widget([
                 'model' => $model,
                 'attributes' => [
-                    'id',
                     [
                         'label' => 'Descrição',
                         'attribute' => 'description',

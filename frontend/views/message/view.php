@@ -80,7 +80,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             <!-- Botão Responder -->
                             <?= Html::a('<i class="bi bi-reply-fill me-2"></i>Responder',
-                                ['/message/create', 'from' => 'inbox', 'user_id' => $model->sender_user_id,  'listing_id'=>0],
+                                ['/message/create', 'from' => 'inbox', 'user_id' => $model->sender_user_id],
                                 [
                                     'class' => 'btn btn-primary',
                                 ]
@@ -90,7 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             <!-- Botão Nova Mensagem -->
                             <?= Html::a('<i class="bi bi-pencil-square me-2"></i>Nova Mensagem',
-                                ['create', 'from' => 'outbox', 'user_id' => $model->receiver_user_id,  'listing_id'=>0],
+                                ['create', 'from' => 'outbox', 'user_id' => $model->receiver_user_id],
                                 [
                                     'class' => 'btn btn-primary',
                                 ]

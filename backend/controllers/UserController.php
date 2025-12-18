@@ -29,6 +29,7 @@ class UserController extends Controller
                         }
                         return Yii::$app->response->redirect(['/site/login']);
                     },
+                    'except' => ['error'],
                     'rules' => [
                         [
                             'allow' => true,
@@ -171,7 +172,10 @@ class UserController extends Controller
 
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        $model->status = User::STATUS_DELETED;
+        $model->save(false);
 
         return $this->redirect(['index']);
     }

@@ -3,12 +3,12 @@ namespace backend\controllers;
 
 use app\models\ApplicationSearch;
 use backend\models\AnimalSearch;
+use backend\mosquitto\MosquittoCatcher;
 use common\models\Animal;
 use common\models\Application;
 use common\models\Listing;
 use common\models\LoginForm;
 use common\models\User;
-use MosquittoCatcher;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -31,10 +31,11 @@ class SiteController extends Controller
                     return Yii::$app->response->redirect(['/site/login']);
 
                 },
+                'except' => ['error'],
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['login', 'error'],
+                        'actions' => ['login'],
                     ],
                     [
                         'allow' => true,
@@ -83,8 +84,7 @@ class SiteController extends Controller
         return true;
     }
 
-    public function actionIndex()
-    {
+    public function actionIndex() {
         $animais = Animal::find()->all();
         $utilizadores = User::find()->all();
         $listagens = Listing::find()->all();
@@ -123,25 +123,139 @@ class SiteController extends Controller
         ]);
     }
 
-//    public function actionLogin()
-//    {
-//        if (!Yii::$app->user->isGuest) {
-//            return $this->goHome();
+    public function actionStatistics() {
+        /*PARA CARREGAR A IMAGEM DOS ANIMAIS PARA A VIEW*/
+        /* 1. Trocar os links, igual ao animal view, o link das imagens vem do frontend
+        e temos que mudar o link para vir do backend*/
+//        $backendBaseUrl = Yii::$app->request->baseUrl; // /projeto/backend/web
+//        $frontendBaseUrl = str_replace('/backend/web', '/frontend/web', $backendBaseUrl); // /projeto/frontend/web
+//        $avatar = '';
+//        //2. Carregar a foto do user, concatenação para conseguirmos o URL certo
+//        if ($model->profileImage) {
+//            $avatar = $frontendBaseUrl . '/' . ltrim($model->profileImage->path, '/');
 //        }
-//
-//        $this->layout = 'blank';
-//
-//        $model = new LoginForm();
-//        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-//            return $this->goBack();
-//        }
-//
-//        $model->password = '';
-//
-//        return $this->render('login', [
-//            'model' => $model,
-//        ]);
-//    }
+
+
+
+        // =========================================================
+        // 1. KPIS GERAIS
+        // =========================================================
+        $totalUsers   = (int)User::find()->count();
+        $totalAnimals = (int)Animal::find()->count();
+        $totalApps    = (int)Application::find()->count();
+
+        // =========================================================
+        // 2. EVOLUÇÃO MENSAL
+        // =========================================================
+        $sixMonthsAgo = date('Y-m-01', strtotime('-5 months'));
+        $appsPorMes = Application::find()->select(["DATE_FORMAT(created_at, '%Y-%m') as month", "COUNT(*) as total"])
+            ->where(['>=', 'created_at', $sixMonthsAgo])->groupBy('month')->orderBy('month ASC')->asArray()->all();
+        $animaisPorMes = Animal::find()->select(["DATE_FORMAT(created_at, '%Y-%m') as month", "COUNT(*) as total"])
+            ->where(['>=', 'created_at', $sixMonthsAgo])->groupBy('month')->orderBy('month ASC')->asArray()->all();
+
+        $trendLabels = []; $trendDataApps = []; $trendDataAnimals = [];
+        for ($i = 5; $i >= 0; $i--) {
+            $m = date('Y-m', strtotime("-$i months"));
+            $trendLabels[] = date('M Y', strtotime("-$i months"));
+
+            $fApp = array_filter($appsPorMes, fn($r) => $r['month'] == $m);
+            $trendDataApps[] = !empty($fApp) ? (int)array_values($fApp)[0]['total'] : 0;
+
+            $fAni = array_filter($animaisPorMes, fn($r) => $r['month'] == $m);
+            $trendDataAnimals[] = !empty($fAni) ? (int)array_values($fAni)[0]['total'] : 0;
+        }
+
+        // =========================================================
+        // 3. PERFIL HABITAÇÃO (JSON)
+        // =========================================================
+        $candidaturasAdocao = Application::find()->where(['type' => Application::TYPE_ADOPTION])->all();
+        $statsHabitacao = ['Própria' => 0, 'Arrendada (Permite)' => 0, 'Arrendada (Não Permite)' => 0];
+        foreach ($candidaturasAdocao as $app) {
+            $data = is_string($app->data) ? json_decode($app->data, true) : $app->data;
+            if (isset($data['home'])) {
+                switch ((int)$data['home']) {
+                    case 1: $statsHabitacao['Própria']++; break;
+                    case 2: $statsHabitacao['Arrendada (Permite)']++; break;
+                    case 3: $statsHabitacao['Arrendada (Não Permite)']++; break;
+                }
+            }
+        }
+
+        // =========================================================
+        // 4. SAÚDE, LOCALIZAÇÃO E VACINAÇÃO
+        // =========================================================
+        $vacStats = Animal::find()->select(['vaccination_id', 'COUNT(*) as total'])->groupBy('vaccination_id')->asArray()->all();
+        $vacData = [0, 0, 0];
+        foreach ($vacStats as $s) { if ($s['vaccination_id'] >= 1 && $s['vaccination_id'] <= 3) $vacData[$s['vaccination_id'] - 1] = (int)$s['total']; }
+
+        $topLocais = Animal::find()->select(['location', 'COUNT(*) as total'])
+            ->where(['IS NOT', 'location', null])->andWhere(['!=', 'location', ''])->groupBy('location')
+            ->orderBy(['total' => SORT_DESC])->limit(5)->asArray()->all();
+        $locLabels = array_column($topLocais, 'location');
+        $locData   = array_column($topLocais, 'total');
+
+        $topVistos = Listing::find()->with(['animal', 'animal.animalType'])->orderBy(['views' => SORT_DESC])->limit(5)->all();
+
+        // =========================================================
+        // 5. DEMOGRAFIA ETÁRIA & RAÇAS
+        // =========================================================
+        $ageStats = Animal::find()->alias('a')->select(['age.description', 'COUNT(a.id) as total'])
+            ->joinWith('age age')->groupBy('a.age_id')->asArray()->all();
+        $ageLabels = array_column($ageStats, 'description');
+        $ageData = array_column($ageStats, 'total');
+
+        $breedStats = Animal::find()->alias('a')->select(['b.description', 'COUNT(a.id) as total'])
+            ->joinWith('breed b')->groupBy('a.breed_id')->orderBy(['total' => SORT_DESC])->limit(8)->asArray()->all();
+        $breedLabels = array_column($breedStats, 'description');
+        $breedData = array_column($breedStats, 'total');
+
+
+        // =========================================================
+        // 6. NOVAS ESTATÍSTICAS (ESTERILIZAÇÃO, USERS, STATUS APP)
+        // =========================================================
+
+        // A. Esterilização (0=Não, 1=Sim)
+        $neuteredStats = Animal::find()->select(['neutered', 'COUNT(*) as total'])->groupBy('neutered')->asArray()->all();
+        $neuteredData = [0, 0]; // [Não, Sim]
+        foreach ($neuteredStats as $n) {
+            if ($n['neutered'] == 0) $neuteredData[0] = (int)$n['total'];
+            if ($n['neutered'] == 1) $neuteredData[1] = (int)$n['total'];
+        }
+
+        // B. Tipos de Utilizador (Roles)
+        $roleStats = User::find()->alias('u')->select(['r.description', 'COUNT(u.id) as total'])
+            ->joinWith('role r')->groupBy('u.role_id')->asArray()->all();
+        $roleLabels = array_column($roleStats, 'description');
+        $roleData = array_column($roleStats, 'total');
+
+        // C. Status de Candidaturas
+        $sent = Application::STATUS_SENT;
+        $inReview = Application::STATUS_IN_REVIEW;
+        $approved = Application::STATUS_APPROVED;
+        $rejected = Application::STATUS_REJECTED;
+
+        $appStatusStats = Application::find()->select(['status', 'COUNT(*) as total'])->groupBy('status')->orderBy('status')->asArray()->all();
+        $statusLabelsMap = [$sent => 'Enviado', $inReview => 'Em Análise', $approved => 'Aprovado', $rejected => 'Rejeitado'];
+        $appStatusLabels = [];
+        $appStatusData = [];
+
+        foreach ($appStatusStats as $s) {
+            $appStatusLabels[] = $statusLabelsMap[$s['status']] ?? 'Outro';
+            $appStatusData[] = (int)$s['total'];
+        }
+
+        return $this->render('statistics', [
+            'totalUsers' => $totalUsers, 'totalAnimals' => $totalAnimals, 'totalApps' => $totalApps,
+            'trendLabels' => $trendLabels, 'trendDataApps' => $trendDataApps, 'trendDataAnimals' => $trendDataAnimals,
+            'statsHabitacao' => array_values($statsHabitacao), 'vacData' => $vacData,
+            'locLabels' => $locLabels, 'locData' => $locData, 'topVistos' => $topVistos,
+            'ageLabels' => $ageLabels, 'ageData' => $ageData, 'breedLabels' => $breedLabels, 'breedData' => $breedData,
+            'neuteredData' => $neuteredData,
+            'roleLabels' => $roleLabels, 'roleData' => $roleData,
+            'appStatusLabels' => $appStatusLabels, 'appStatusData' => $appStatusData
+        ]);
+    }
+
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
@@ -191,22 +305,18 @@ class SiteController extends Controller
 
     /******** Temporario ***************************************************/
 
-    public function actionTestarMqtt()
-    {
-        $topico = "teste/yii2";
-        $mensagem = "Olá! Isto foi enviado pelo Yii2 às " . date('H:i:s');
-
-        try {
-            // Se usaste a classe estática original:
-            MosquittoCatcher::makePublish($topico, $mensagem);
-
-            // Se configuraste como componente (Yii::$app->mqtt->publish...), usa esse método.
-
-            return "Mensagem enviada com sucesso para o tópico: " . $topico;
-        } catch (\Exception $e) {
-            return "Erro: " . $e->getMessage();
-        }
-    }
+//    public function actionTestarMqtt()
+//    {
+//        $topico = "teste/yii2";
+//        $mensagem = "Olá! Isto foi enviado pelo Yii2 às " . date('H:i:s');
+//
+//        try {
+//            MosquittoCatcher::makePublish($topico, $mensagem);
+//            return "Mensagem enviada com sucesso para o tópico: " . $topico;
+//        } catch (\Exception $e) {
+//            return "Erro: " . $e->getMessage();
+//        }
+//    }
 
 
     /******** Temporario ***************************************************/

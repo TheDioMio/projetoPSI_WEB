@@ -35,6 +35,7 @@ class AnimalController extends Controller
                         }
                         return Yii::$app->response->redirect(['/site/login']);
                     },
+                    'except' => ['error'],
                     'rules' => [
                         [
                             'allow' => true,
@@ -176,7 +177,17 @@ class AnimalController extends Controller
 
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        if ($model->listing) {
+            $model->listing->status = Listing::STATUS_DELETED;
+            $model->listing->save(false);
+        }
+
+        $model->status = Animal::STATUS_DELETED;
+        $model->save(false);
+
+        Yii::$app->session->setFlash('success', 'Anúncio e animal apagados com sucesso.');
         return $this->redirect(['index']);
     }
 

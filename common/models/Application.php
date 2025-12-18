@@ -265,7 +265,7 @@ class Application extends ActiveRecord
             [['animal_id'], 'required', 'on' => [self::SCENARIO_DEFAULT, self::SCENARIO_ADOPTION]],
 
             [['created_at', 'data', 'statusDate'], 'safe'],
-            [['description'], 'string', 'max' => 255],
+            [['description'], 'string', 'min' => 3, 'max' => 120, 'tooShort' => 'O nome é demasiado curto!'],
             [['animal_id'], 'exist', 'skipOnError' => true, 'targetClass' => Animal::class, 'targetAttribute' => ['animal_id' => 'id']],
             [['target_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['target_user_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],

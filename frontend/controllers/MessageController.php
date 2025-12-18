@@ -33,10 +33,11 @@ class MessageController extends Controller
                         }
                         return Yii::$app->response->redirect(['/site/login']);
                     },
+                    'except' => ['error'],
                     'rules' => [
                         [
                             'allow' => true,
-                            'roles' => ['loginFrontend', 'messageManeger'],
+                            'roles' => ['loginFrontend', 'message-maneger'],
                         ],
                     ],
                 ],
@@ -114,7 +115,7 @@ class MessageController extends Controller
      */
     //user_id é quem vai receber a mensagem
 
-    public function actionCreate($user_id, $from, $listing_id)
+    public function actionCreate($user_id, $from, $listing_id = null)
     {
         $receiver = User::findOne($user_id);
         if ($receiver === null) {
@@ -139,7 +140,7 @@ class MessageController extends Controller
                 if ($model->save()) {
                     Yii::$app->session->setFlash('success', 'Mensagem enviada com sucesso!');
 
-                    if ($from === "listing") {
+                    if ($from === "listing" && $listing_id !== null) {
                         $listing = Listing::findOne($listing_id);
                         return $this->redirect(['/listings/detail', 'id' => $listing->animal_id]);
                     } elseif ($from === "inbox") {
