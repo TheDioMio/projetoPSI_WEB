@@ -198,7 +198,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
                             <?php if ($box === 'inbox' && $model->status === Application::STATUS_IN_REVIEW): ?>
-                                <?php if($model->user_id != $model->user->id):?>
+                                <?php if(Yii::$app->user->id == $model->target_user_id):?>
                                     <?= Html::a(
                                         '<i class="bi bi-check-circle"></i> Aprovar',
                                         ['application/approve', 'id' => $model->id],
@@ -218,18 +218,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                             'class' => 'btn btn-danger',
                                             'data' => [
                                                 'confirm' => 'Tem a certeza que quer reprovar esta candidatura?',
-                                                'method' => 'post',
-                                            ],
-                                        ]
-                                    ) ?>
-                                <?php elseif($model->user_id == $model->user->id): ?>
-                                    <?= Html::a(
-                                        '<i class="bi bi-slash-circle"></i> Cancelar candidatura',
-                                        ['application/cancel', 'id' => $model->id],
-                                        [
-                                            'class' => 'btn btn-warning',
-                                            'data' => [
-                                                'confirm' => 'Tem a certeza que quer cancelar esta candidatura?',
                                                 'method' => 'post',
                                             ],
                                         ]

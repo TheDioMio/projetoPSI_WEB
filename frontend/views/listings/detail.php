@@ -1,6 +1,8 @@
 <?php
 
+use common\models\User;
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
 
@@ -170,7 +172,7 @@ $i = 0;
 
             <?php if (Yii::$app->user->can('createComment')): ?>
             <div class="bg-light rounded p-5">
-                <?php $form = \yii\widgets\ActiveForm::begin([
+                <?php $form = ActiveForm::begin([
                     'action' => ['/comment/create', 'listing_id' => $model->listing->id],
                 ]);?>
 
@@ -188,7 +190,7 @@ $i = 0;
                     <button class="btn btn-primary w-100 py-3" type="submit">Enviar</button>
                 </div>
 
-                <?php \yii\widgets\ActiveForm::end(); ?>
+                <?php ActiveForm::end(); ?>
 
             </div>
             <?php endif; ?>
@@ -273,7 +275,7 @@ $i = 0;
                     ) ?>
                     <?php
                     // Verifica se o user está logado E se é o dono deste animal
-                    if (!Yii::$app->user->isGuest && Yii::$app->user->id == $model->user_id):
+                    if (Yii::$app->user->id == $model->user_id && $model->user_id == User::ROLE_USERPRO ):
                         ?>
                         <div class="mb-5">
                             <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4 mt-4">

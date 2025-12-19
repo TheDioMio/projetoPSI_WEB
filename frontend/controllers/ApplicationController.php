@@ -3,11 +3,13 @@
 namespace frontend\controllers;
 
 use common\models\Application;
+use common\models\User;
 use frontend\models\ApplicationSearch;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use frontend\models\UserproForm;
 
 use common\models\Animal;
 use Yii;
@@ -239,14 +241,14 @@ class ApplicationController extends Controller
 
         $animal = Animal::findOne($animal_id);
         if ($animal === null) {
-            throw new NotFoundHttpException('Animal não encontrado.');
+            return new NotFoundHttpException('Animal não encontrado.');
         }
 
         $model = new Application();
         $model->scenario = Application::SCENARIO_ADOPTION;
         $model->animal_id = $animal_id;
         $model->user_id = Yii::$app->user->id;
-        $model->target_user_id = Yii::$app->user->id;
+        $model->target_user_id = $animal->user_id;
 
         $model->status = Application::STATUS_SENT;
         $model->created_at = date('Y-m-d H:i:s');
@@ -288,65 +290,31 @@ class ApplicationController extends Controller
 
 
     public function actionApplyUserPro() {
-        //1.º Autenticação
+        // 1. Verificação de Segurança
         if (Yii::$app->user->isGuest) {
             Yii::$app->session->setFlash('error', 'Faça login para se candidatar!');
             return $this->redirect(['site/login']);
         }
 
-        // 2.º e 3.º Criar Modelo e Regras
-        $formModel = new DynamicModel([
-            'professional_name', 'nif', 'area_id', 'experience_level',
-            'website', 'availability', 'bio'
-        ]);
+        // 2. Instanciar o modelo do formulário
+        $model = new UserproForm();
 
-        $formModel->addRule(['professional_name'], 'string', ['min' => 3, 'max' => 120])
-            ->addRule(['bio', 'availability'], 'string')
-            ->addRule(['professional_name', 'nif', 'area_id', 'experience_level', 'bio'], 'required')
-            ->addRule(['nif', 'area_id', 'experience_level'], 'integer')
-            ->addRule(['website'], 'url', ['defaultScheme' => 'http']);
+        // 3. Carrega-se os dados para o modelo
+        if ($model->load(Yii::$app->request->post())) {
 
-        //4.º Processar o POST
-
-        // Primeiro: Tenta carregar os dados do POST para o modelo
-        if ($formModel->load(Yii::$app->request->post())) {
-
-            // Segundo: Se carregou, tenta validar
-            if ($formModel->validate()) {
-
-                // A. Preparar a application
-                $application = new Application();
-                $application->scenario = Application::SCENARIO_USER_PRO;
-                $application->user_id = Yii::$app->user->id;
-                $application->type = Application::TYPE_USER_PRO;
-                $application->status = Application::STATUS_SENT;
-                $application->created_at = date('Y-m-d H:i:s');
-
-                // B. Tratar Dados
-                $dataToSave = $formModel->getAttributes();
-                $application->data = $dataToSave;
-
-                if (isset($dataToSave['professional_name'])) {
-                    $application->description = $dataToSave['professional_name'];
-                }
-
-                // C. Guardar
-                if ($application->save()) {
-                    Yii::$app->session->setFlash('success', 'Candidatura submetida com sucesso!');
-                    return $this->redirect(['site/index']);
-                } else {
-                    Yii::error(['apply_user_pro_save_errors' => $application->errors], __METHOD__);
-                    Yii::$app->session->setFlash('error', 'Erro interno. Contacte o suporte.');
-                }
-
+            // 4. Tentamos guardar (a validação acontece lá dentro do submitApplication)
+            if ($model->submitApplication()) {
+                Yii::$app->session->setFlash('success', 'Candidatura submetida com sucesso!');
+                return $this->redirect(['site/index']);
             } else {
-                // A VALIDAÇÃO FALHOU:
-                Yii::$app->session->setFlash('error', 'Corrija, por favor, os erros no formulário.');
+                Yii::$app->session->setFlash('error', 'Por favor, corrija os erros no formulário.');
             }
         }
-        // 5.º Renderizar a View
+
+        // 5. Renderizar a View
         return $this->render('apply-user-pro', [
-            'model' => $formModel,
+            'model' => $model,
+            // Passamos as listas estáticas que vêm do Model Application
             'areasAtuacao' => Application::getAreasAtuacao(),
             'anosExperiencia' => Application::getAnosExperiencia(),
             'disponibilidade' => Application::getDisponibilidade(),

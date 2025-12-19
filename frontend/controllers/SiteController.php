@@ -154,7 +154,6 @@ class SiteController extends Controller
                 Yii::$app->session->setFlash('error', 'You are not allowed to access the frontend.');
                 return $this->redirect(['site/login']);
             }
-//            return $this->goBack();
         }
 
         $model->password = '';
@@ -229,8 +228,6 @@ class SiteController extends Controller
         return $this->render('signup', [
             'model' => $model,
         ]);
-
-
     }
 
 

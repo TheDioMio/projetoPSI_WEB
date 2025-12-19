@@ -92,13 +92,12 @@ $this->title = 'Candidatura Profissional';
 
                 <hr class="my-4">
 
-                <div class="form-check mb-4">
-                    <input class="form-check-input" type="checkbox" id="termsCheck" required>
-                    <label class="form-check-label small text-muted" for="termsCheck">
-                        <?=Html::encode('Declaro que todas as informações prestadas são verdadeiras e aceito a ')?>
-                        <?=Html::a('Política de Privacidade', ['#'])?> <?=Html::encode(' e os ')?>
-                        <?=Html::a('Termos para Parceiros', ['#'])?>
-                    </label>
+                <div class="mb-4">
+                    <?= $form->field($model, 'terms')->checkbox([
+                        'label' => 'Declaro que todas as informações prestadas são verdadeiras e aceito a ' .
+                            Html::a('Política de Privacidade', ['#']) . ' e os ' .
+                            Html::a('Termos para Parceiros', ['#'])
+                    ]) ?>
                 </div>
 
                 <div class="form-group d-grid gap-2">

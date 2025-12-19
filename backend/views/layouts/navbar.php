@@ -43,6 +43,10 @@ use yii\helpers\Url;
         </li>
 
         <li class="nav-item d-none d-sm-inline-block">
+            <a href="<?=Url::to(['/listing/index']) ?>" class="nav-link"><?=Html::encode('Listagens')?></a>
+        </li>
+
+        <li class="nav-item d-none d-sm-inline-block">
             <a href="<?=Url::to(['/user/index']) ?>" class="nav-link"><?=Html::encode('Utilizadores')?></a>
         </li>
     </ul>

@@ -1,12 +1,20 @@
 <?php
 
 use hail812\adminlte\widgets\Menu;
+use hail812\adminlte3\assets\AdminLteAsset;
 use yii\bootstrap5\Html;
 use yii\helpers\Url;
 $this->registerCssFile('@web/css/style.css', [
-    'depends' => [\hail812\adminlte3\assets\AdminLteAsset::class],
+    'depends' => [AdminLteAsset::class],
 ]);
-$userLogado = $this->params['userLogado']->username;
+$userLogado = Yii::$app->user->identity;
+$backendBaseUrl = Yii::$app->request->baseUrl; // /projeto/backend/web
+$frontendBaseUrl = str_replace('/backend/web', '/frontend/web', $backendBaseUrl); // /projeto/frontend/web
+$avatar = '';
+//2. Carregar a foto do user, concatenação para conseguirmos o URL certo
+if ($userLogado->profileImage) {
+    $avatar = $frontendBaseUrl . '/' . ltrim($userLogado->profileImage->path, '/');
+}
 ?>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -21,11 +29,21 @@ $userLogado = $this->params['userLogado']->username;
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-            <div class="image">
-                <img src="<?=$assetDir?>/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+            <div class="image d-flex justify-content-center align-items-center">
+                <?php if ($avatar == null): ?>
+                    <span class="fa-stack" style="font-size: 15px;">
+                <i class="fas fa-circle fa-stack-2x text-white-50"></i>
+                <i class="fas fa-user fa-stack-1x text-dark"></i>
+            </span>
+                <?php else: ?>
+                    <img src="<?= $avatar ?>"
+                         class="img-circle elevation-2"
+                         alt="User Image"
+                         style="width: 30px; height: 30px; object-fit: cover;">
+                <?php endif; ?>
             </div>
             <div class="info">
-                <a href="#" class="d-block"><?=$userLogado?><a/>
+                <a href="#" class="d-block"><?=$userLogado->username?><a/>
             </div>
         </div>
 
@@ -46,8 +64,8 @@ $userLogado = $this->params['userLogado']->username;
             <?php
             echo Menu::widget([
                 'items' => [
-                    ['label' => 'Dashboard', 'url' => ['site/index'], 'iconStyle' => 'far'],
-                    ['label' => 'Estatísticas', 'url' => ['site/statistics'], 'iconStyle' => 'far'],
+                    ['label' => 'Dashboard', 'url' => ['site/index'], 'icon' => 'tachometer-alt', 'iconStyle' => 'fas'],
+                    ['label' => 'Estatísticas', 'url' => ['site/statistics'], 'icon' => 'chart-bar', 'iconStyle' => 'far'],
                     ['label' => 'CRUD e Consulta de BD', 'header' => true],
                     [
                         'label' => 'Menu Animais', 'icon'=>'fas fa-bone',
@@ -74,7 +92,6 @@ $userLogado = $this->params['userLogado']->username;
                             ['label' => 'Comentários', 'url' => ['comment/index'], 'iconStyle' => 'far'],
                         ]
                     ],
-                    ['label' => 'Candidaturas', 'header' => true],
 //                    ['label' => 'Yii2 PROVIDED', 'header' => true],
 //                    ['label' => 'Login', 'url' => ['site/login'], 'icon' => 'sign-in-alt', 'visible' => Yii::$app->user->isGuest],
 //                    ['label' => 'Gii',  'icon' => 'file-code', 'url' => ['/gii'], 'target' => '_blank'],

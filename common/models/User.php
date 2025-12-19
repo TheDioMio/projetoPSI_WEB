@@ -46,6 +46,10 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
 
+    const ROLE_USER = 3;
+    const ROLE_USERPRO = 2;
+    const ROLE_ADMINISTRATOR = 1;
+
     public $password;
 
     public $imageFile;
