@@ -1,5 +1,6 @@
 <?php
 
+use common\models\User;
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm; // Usamos o ActiveForm do Bootstrap 5
 use yii\helpers\ArrayHelper;
@@ -41,6 +42,8 @@ $vacinas = ArrayHelper::map(
      $this->title = 'Criar Novo Anúncio';
  }
 
+$user = User::findIdentity(Yii::$app->user->id);
+
 $this->params['breadcrumbs'][] = $this->title; // Adiciona ao "breadcrumb"
 ?>
 
@@ -51,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title; // Adiciona ao "breadcrumb"
             <div class="mb-5">
                 <h1 class="text-uppercase border-start border-5 border-primary ps-3 mb-4"><?= Html::encode($this->title) ?></h1>
 
-                <p>Este é o formulário para encontrar um novo lar para o seu animal. Preencha todos os detalhes e partilhe fotografias.</p>
+                <p><?='Este é o formulário para encontrar um novo lar para o seu animal. Preencha todos os detalhes e partilhe fotografias.'?></p>
             </div>
 
             <div class="bg-light rounded p-4 p-sm-5">
@@ -67,25 +70,7 @@ $this->params['breadcrumbs'][] = $this->title; // Adiciona ao "breadcrumb"
                 <?= $form->field($model, 'description')->textarea(['rows' => 8])->label('História e Comportamento')
                     ->hint('Descreva o animal. É calmo? Gosta de crianças? Tem necessidades especiais?') ?>
 
-
-
                 <hr class="my-4">
-<!---->
-<!--                <div class="row g-3">-->
-<!--                    <div class="col-md-6">-->
-<!--                        --><?php //= $form->field($model, 'animal_type_id')->dropDownList(
-//                            $tiposDeAnimal,
-//                            ['prompt' => 'Selecione o Tipo...']
-//                        )->label('Tipo de Animal') ?>
-<!--                    </div>-->
-<!---->
-<!--                    <div class="col-md-6">-->
-<!--                        --><?php //= $form->field($model, 'breed_id')->dropDownList(
-//                            $racas,
-//                            ['prompt' => 'Selecione a Raça...']
-//                        )->label('Raça') ?>
-<!--                    </div>-->
-<!--                </div>-->
 
                 <div class="row g-3">
 
@@ -157,7 +142,15 @@ $this->params['breadcrumbs'][] = $this->title; // Adiciona ao "breadcrumb"
                     ->hint('Texto apelativo para o anúncio. Ex: Este animal procura novo lar...'); ?>
 
                 <hr class="my-4">
-
+                <?php
+                    // Verifica se o user está logado e se é o dono deste animal
+                    if ($user->role_id == User::ROLE_USERPRO ):
+                 $form->field($model, 'observations')->textarea([
+                    'rows' => 6,
+                ])->label('Observações do Animal')
+                    ->hint('Alguma coisa que queira registar. Só você é que consegue ver as observações do animal.'); ?>
+                <hr class="my-4">
+                <?php endif;?>
                 <?= $form->field($listingModel, 'status')->dropDownList(
                     $statusOptions,
                 )->label('Estado do Anúncio') ?>

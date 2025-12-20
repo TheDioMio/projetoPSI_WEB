@@ -1,10 +1,3 @@
-- Erros a resolver // Coisas a melhorar:
-    Ao submeter uma candidatura no frontend, a description não é passada, nem o type
-    Tudo o que pode ir para o controller, vai para o controller. Ex: No frontend listings/animal usamos
-coisas do tipo $idades = ArrayHelper::map(... O que é desnecessário, pode ir para o controller e depois ser passado
-para a view.
-
-
 falta:
 
 API / android (começado Mário)
@@ -13,9 +6,10 @@ Relatorios
 
 tem de ser feito:
 estatísticas do userPro - Diogo
-notas do animal(só é visto pelo userPro)
+notas do animal(só é visto pelo userPro) - Diogo - FEITO
 filtros nos myanimals (com o campo do status) - Mário
 RbacController - Igor
+Print dos resultados dos testes
 
 
 
@@ -27,6 +21,8 @@ denuncias de anuncio (amadurecer adeia)
 pessoas de interesse
 CRUD visitas - ponderar não fazer (ou melhoria)
 perdidos e achados
+
+
 
 
 

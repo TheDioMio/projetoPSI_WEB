@@ -15,6 +15,7 @@ use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 use yii\helpers\ArrayHelper;
@@ -39,7 +40,7 @@ class ListingsController extends Controller
                     'except' => ['error', 'animal', 'detail'],
                     'rules' => [
                         [
-                            'actions' => ['create-listing', 'upload', 'delete', 'user-listings', 'update'],
+                            'actions' => ['create-listing', 'upload', 'delete', 'user-listings', 'update', 'statistics'],
                             'allow' => true,
                             'roles' => ['loginFrontend', 'listingsManeger'],
                         ],
@@ -64,26 +65,14 @@ class ListingsController extends Controller
     public function actionAnimal()
     {
 
-        /*$query = Listing::find()->where(['status' => 1]);
-
-        $provider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => [
-                'pageSize' => 10,
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'created_at' => SORT_DESC,
-                ]
-            ],
-        ]);
-
-        return $this->render('animal', [
-            'provider' => $provider,
-            'listings' => $provider->getModels(),
-        ]);*/
-
         $searchModel = new ListingSearch();
+
+        if(array_key_exists('ListingSearch',$this->request->queryParams)){
+            if($this->request->queryParams['ListingSearch']['breed_id']){
+                dd('n tem breed');
+            }
+            dd($this->request->queryParams['ListingSearch']);
+        }
         $dataProvider = $searchModel->search($this->request->queryParams);
         $dataProvider->pagination->pageSize = 10;
         $dataProvider->sort->defaultOrder = [
@@ -98,7 +87,6 @@ class ListingsController extends Controller
 
     public function actionDetail($id)
     {
-
         $model = Animal::findOne($id);
         if ($model === null) {
             throw new NotFoundHttpException('O animal que procura não existe.');
@@ -117,7 +105,6 @@ class ListingsController extends Controller
                 ->orderBy(['created_at' => SORT_DESC])
                 ->all()
             : [];
-
         $newComment = new Comment();
 
         // 4. O Controller ENVIA o $model para a View
@@ -127,7 +114,6 @@ class ListingsController extends Controller
             'newComment' => $newComment,
         ]);
     }
-
 
     public function actionCreateListing()
     {
@@ -257,7 +243,6 @@ class ListingsController extends Controller
             ]);
     }
 
-
     public function actionUpload()
     {
         $model = new File();
@@ -276,17 +261,41 @@ class ListingsController extends Controller
         return $this->render('upload', ['model' => $model]);
     }
 
-
-
     public function actionMyListings()
     {
         $userId = Yii::$app->user->id;
 
+        $searchModel = new ListingSearch();
+        $searchModel->search($this->request->queryParams);
+
         $query = Listing::find()
-            ->where(['!=', 'status', Listing::STATUS_DELETED])
-            ->andWhere(['user_id' => $userId])
+            ->leftJoin('animal', '`listing`.`animal_id` = `animal`.`id`')
             ->with(['animal.files'])
-            ->orderBy(['created_at' => SORT_DESC]);
+            ->where(['!=', 'listing.status', Listing::STATUS_DELETED])
+            ->andWhere(['listing.user_id' => $userId])
+            ->orderBy(['listing.created_at' => SORT_DESC]);
+
+        if(array_key_exists('ListingSearch',$this->request->queryParams)) {
+            $searchParameters = $this->request->queryParams['ListingSearch'];
+
+            if ($searchParameters['animal_type_id']) {
+                $query->andWhere(['animal.animal_type_id' => $searchParameters['animal_type_id']]);
+            }
+
+            if ($searchParameters['breed_id']) {
+                $query->andWhere(['animal.breed_id' => $searchParameters['breed_id']]);
+            }
+
+            if ($searchParameters['animal_age_id']) {
+                $query->andWhere(['animal.age_id' => $searchParameters['animal_age_id']]);
+            }
+
+            if ($searchParameters['animal_size_id']) {
+                $query->andWhere(['animal.size_id' => $searchParameters['animal_size_id']]);
+            }
+
+
+        }
 
         $provider = new ActiveDataProvider([
             'query' => $query,
@@ -299,6 +308,7 @@ class ListingsController extends Controller
             'provider' => $provider,
             'listings' => $provider->getModels(),
             'userId'   => $userId,
+            'searchModel' => $searchModel,
         ]);
     }
 
@@ -368,7 +378,6 @@ class ListingsController extends Controller
             throw new ForbiddenHttpException('Não tem permissão para editar o estado do anúncio.');
         }
 
-
         $model = $listingModel->animal;
         $model->scenario = 'update';
 
@@ -386,9 +395,6 @@ class ListingsController extends Controller
         foreach ($breeds as $breed) {
             $breedsByType[$breed->animal_type_id][$breed->id] = $breed->description;
         }
-
-
-
 
         // Imagens atuais
         $existingImages = File::find()
@@ -473,6 +479,22 @@ class ListingsController extends Controller
     public function actionFavourites()
     {
         return $this->render('favourites');
+    }
+
+    public function actionStatistics(){
+        // 1. Obtém o ID do user logado
+        $userId = Yii::$app->user->id;
+
+        // 2. Instancia o Search Model
+        $searchModel = new ListingSearch();
+
+        // 3. Obtém todos os dados processados
+        $stats = $searchModel->getUserStatistics($userId);
+
+        // 4. Envia para a view
+        return $this->render('statistics', [
+            'stats' => $stats,
+        ]);
     }
 
 

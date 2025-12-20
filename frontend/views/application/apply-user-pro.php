@@ -7,22 +7,6 @@ use yii\bootstrap5\ActiveForm;
 /* @var $model yii\base\DynamicModel */
 
 $this->title = 'Candidatura Profissional';
-
-//  ARRAYS DE DADOS
-$areasAtuacao = [
-    1 => 'Clínica Veterinária',
-    2 => 'Canil / Abrigo',
-    3 => 'Outro',
-];
-
-
-
-$disponibilidade = [
-    1 => 'Tempo Inteiro (Comercial)',
-    2 => 'Part-time',
-    3 => 'Apenas Fins de Semana',
-    4 => 'Apenas por Marcação',
-];
 ?>
 
 <div class="container py-5">
@@ -108,13 +92,12 @@ $disponibilidade = [
 
                 <hr class="my-4">
 
-                <div class="form-check mb-4">
-                    <input class="form-check-input" type="checkbox" id="termsCheck" required>
-                    <label class="form-check-label small text-muted" for="termsCheck">
-                        <?=Html::encode('Declaro que todas as informações prestadas são verdadeiras e aceito a ')?>
-                        <?=Html::a('Política de Privacidade', ['#'])?> <?=Html::encode(' e os ')?>
-                        <?=Html::a('Termos para Parceiros', ['#'])?>
-                    </label>
+                <div class="mb-4">
+                    <?= $form->field($model, 'terms')->checkbox([
+                        'label' => 'Declaro que todas as informações prestadas são verdadeiras e aceito a ' .
+                            Html::a('Política de Privacidade', ['#']) . ' e os ' .
+                            Html::a('Termos para Parceiros', ['#'])
+                    ]) ?>
                 </div>
 
                 <div class="form-group d-grid gap-2">

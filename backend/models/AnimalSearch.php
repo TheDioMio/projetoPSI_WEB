@@ -2,6 +2,7 @@
 namespace backend\models;
 use common\models\AnimalAge;
 use common\models\AnimalType;
+use common\models\User;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\Animal;
@@ -29,8 +30,12 @@ class AnimalSearch extends Animal
     public function search($params, $formName = null)
     {
         $query = Animal::find();
+        //Vai só buscar todas as listagens que NÃO sejam STATUS_DELETED
+        $query->andWhere(['!=', Animal::tableName() . '.status', Animal::STATUS_DELETED]);
+        $query->andWhere(['!=', User::tableName() . '.status', User::STATUS_DELETED]);
+
         $query->joinWith(['animalType', 'animalAge']);
-        // ... (resto do código)
+        $query->joinWith(['user']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -56,6 +61,9 @@ class AnimalSearch extends Animal
             'user_id' => $this->user_id,
             'created_at' => $this->created_at,
         ]);
+
+        //Vai só buscar os animais que NÃO sejam STATUS_DELETED
+        $query = Animal::find()->where(['!=', 'status', Animal::STATUS_DELETED]);
 
         $query->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'location', $this->location])

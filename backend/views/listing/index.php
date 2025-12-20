@@ -27,7 +27,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'tableOptions' => ['class' => 'table table-hover table-striped table-sm'],
                 'layout' => "{items}\n{summary}\n{pager}",
                 'columns' => [
-                    'id',
                     [
                       'label' => 'Animal Listado',
                         'attribute' => 'animal_name',

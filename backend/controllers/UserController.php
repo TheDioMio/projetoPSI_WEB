@@ -108,11 +108,7 @@ class UserController extends Controller
 
             if ($model->save()) {
                 $auth = Yii::$app->authManager;
-                $roleMap = [
-                    1 => 'admin',
-                    2 => 'userPro',
-                    3 => 'user',
-                ];
+                $roleMap = User::getRoleMap();
                 // Verifica se o ID que veio do form (ex. 2) existe no nosso mapa
                 if (isset($roleMap[$model->role_id])) {
                     $roleName = $roleMap[$model->role_id];
@@ -146,12 +142,8 @@ class UserController extends Controller
             if ($model->save()) {
                 $auth = Yii::$app->authManager;
                 $auth->revokeAll($model->id); // Limpa anteriores
+                $roleMap = User::getRoleMap();
 
-                $roleMap = [
-                    1 => 'admin',
-                    2 => 'userPro',
-                    3 => 'user',
-                ];
                 // Verifica se o ID que veio do form (ex. 2) existe no nosso mapa
                 if (isset($roleMap[$model->role_id])) {
                     $roleName = $roleMap[$model->role_id];
@@ -172,7 +164,10 @@ class UserController extends Controller
 
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        $model->status = User::STATUS_DELETED;
+        $model->save(false);
 
         return $this->redirect(['index']);
     }
@@ -189,17 +184,16 @@ class UserController extends Controller
     public function actionUpdateStatus($id){
         $model = $this->findModel($id);
 
-        if ($model->status == 10) {
-            $model->status = 9;
+        if ($model->status == User::STATUS_ACTIVE) {
+            $model->status = User::STATUS_INACTIVE;
             Yii::$app->session->setFlash('warning', 'Utilizador desativado!');
         } else {
-            $model->status = 10;
+            $model->status = User::STATUS_ACTIVE;
             Yii::$app->session->setFlash('success', 'Utilizador ativado!');
         }
 
         $model->save(false); //tem que estar false, se não explode
 
-        //Este redirect é feito um pouco mais "estranho" do que o normal para preservar filtros que estejam aplicados
         return $this->redirect(Yii::$app->request->referrer ?: ['index']);
     }
 }

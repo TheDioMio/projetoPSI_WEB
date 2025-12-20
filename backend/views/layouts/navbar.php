@@ -35,15 +35,19 @@ use yii\helpers\Url;
         </li>
 
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="<?=Url::home()?>" class="nav-link">Home</a>
+            <a href="<?=Url::home()?>" class="nav-link"><?=Html::encode('Home')?></a>
         </li>
 
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="<?=Url::to(['/animal/index']) ?>" class="nav-link">Animais</a>
+            <a href="<?=Url::to(['/animal/index']) ?>" class="nav-link"><?=Html::encode('Animais')?></a>
         </li>
 
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="<?=Url::to(['/user/index']) ?>" class="nav-link">Utilizadores</a>
+            <a href="<?=Url::to(['/listing/index']) ?>" class="nav-link"><?=Html::encode('Listagens')?></a>
+        </li>
+
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="<?=Url::to(['/user/index']) ?>" class="nav-link"><?=Html::encode('Utilizadores')?></a>
         </li>
     </ul>
 
@@ -57,7 +61,7 @@ use yii\helpers\Url;
 
         <li class="nav-item">
             <?= Html::a(
-                '<i class="fas fa-sign-out-alt mr-1"></i> Sair',
+                '<i class="fas fa-sign-out-alt mr-1"></i>Sair',
                 ['/site/logout'],
                 [
                     'data-method' => 'post',

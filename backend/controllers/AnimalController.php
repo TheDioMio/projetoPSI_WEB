@@ -116,39 +116,6 @@ class AnimalController extends Controller
             'carouselItems' => $carouselItems,
         ]);
     }
-
-//    public function actionCreate()
-//    {
-//        $model = new Animal();
-//
-//        $sizes = AnimalSize::find()->select(['id','description'])->indexBy('id')->asArray()->all();
-//        $breeds = Breed::find()->select(['id','description'])->indexBy('id')->asArray()->all();
-//        $animalTypes = AnimalType::find()->select(['id','description'])->indexBy('id')->asArray()->all();
-//        $users = User::find()->select(['id', 'name'])->indexBy('id')->asArray()->all();
-//        $vaccines = Vaccination::find()->select(['id', 'description'])->indexBy('id')->asArray()->all();
-//        $ages = AnimalAge::find()->select(['id', 'description'])->indexBy('id')->asArray()->all();
-//
-//
-//        if ($this->request->isPost) {
-//            if ($model->load($this->request->post()) && $model->save()) {
-//                return $this->redirect(['view', 'id' => $model->id]);
-//            }
-//        } else {
-//            $model->loadDefaultValues();
-//        }
-//
-//
-//        return $this->render('create', [
-//            'model' => $model,
-//            'sizes' => $sizes,
-//            'breeds' => $breeds,
-//            'animalTypes' => $animalTypes,
-//            'users' => $users,
-//            'vaccines' => $vaccines,
-//            'ages' => $ages,
-//        ]);
-//    }
-
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
@@ -177,7 +144,17 @@ class AnimalController extends Controller
 
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        if ($model->listing) {
+            $model->listing->status = Listing::STATUS_DELETED;
+            $model->listing->save(false);
+        }
+
+        $model->status = Animal::STATUS_DELETED;
+        $model->save(false);
+
+        Yii::$app->session->setFlash('success', 'Anúncio e animal apagados com sucesso.');
         return $this->redirect(['index']);
     }
 

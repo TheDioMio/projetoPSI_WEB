@@ -65,8 +65,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                     ],
                                 ]);
                             } else {
-                                return Html::a('Erro: STATUS INVÁLIDO', [
+                                return Html::a('Erro: STATUS INVÁLIDO', '#', [
                                     'class' => 'btn btn-xs btn-red btn-block',
+                                    'onclick' => 'return false',
                                 ]);
                             }
                         },

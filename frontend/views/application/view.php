@@ -197,33 +197,32 @@ $this->params['breadcrumbs'][] = $this->title;
                         ) ?>
 
 
-
                             <?php if ($box === 'inbox' && $model->status === Application::STATUS_IN_REVIEW): ?>
+                                <?php if(Yii::$app->user->id == $model->target_user_id):?>
+                                    <?= Html::a(
+                                        '<i class="bi bi-check-circle"></i> Aprovar',
+                                        ['application/approve', 'id' => $model->id],
+                                        [
+                                            'class' => 'btn btn-success',
+                                            'data' => [
+                                                'confirm' => 'Tem a certeza que quer aprovar esta candidatura?',
+                                                'method' => 'post',
+                                            ],
+                                        ]
+                                    ) ?>
 
-                                <?= Html::a(
-                                    '<i class="bi bi-check-circle"></i> Aprovar',
-                                    ['application/approve', 'id' => $model->id],
-                                    [
-                                        'class' => 'btn btn-success',
-                                        'data' => [
-                                            'confirm' => 'Tem a certeza que quer aprovar esta candidatura?',
-                                            'method' => 'post',
-                                        ],
-                                    ]
-                                ) ?>
-
-                                <?= Html::a(
-                                    '<i class="bi bi-x-circle"></i> Reprovar',
-                                    ['application/reject', 'id' => $model->id],
-                                    [
-                                        'class' => 'btn btn-danger',
-                                        'data' => [
-                                            'confirm' => 'Tem a certeza que quer reprovar esta candidatura?',
-                                            'method' => 'post',
-                                        ],
-                                    ]
-                                ) ?>
-
+                                    <?= Html::a(
+                                        '<i class="bi bi-x-circle"></i> Reprovar',
+                                        ['application/reject', 'id' => $model->id],
+                                        [
+                                            'class' => 'btn btn-danger',
+                                            'data' => [
+                                                'confirm' => 'Tem a certeza que quer reprovar esta candidatura?',
+                                                'method' => 'post',
+                                            ],
+                                        ]
+                                    ) ?>
+                                <?php endif; ?>
                             <?php elseif ($box === 'outbox' && $model->status === Application::STATUS_IN_REVIEW): ?>
 
                                 <?= Html::a(

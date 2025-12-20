@@ -2,6 +2,7 @@
 
 namespace frontend\models;
 
+use common\models\File;
 use Yii;
 use yii\base\Model;
 use common\models\User;
@@ -61,13 +62,20 @@ class SignupForm extends Model
         $user->username = $this->username;
         $user->name = $this->username;
         $user->email = $this->email;
-        $user->role_id=3;
+        $user->role_id= 3;
+
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
 
 //        if ($user->save()) { ALTERNATIVA SEM ENVIAR O EMAIL PARA CONFIRMAR
         if ($user->save()&& $this->sendEmail($user)) {
+            // --- INÍCIO DA LÓGICA DA IMAGEM DEFAULT ---
+            $file = new File();
+            $file->user_id = $user->id;
+            $file->path = 'img/user_default_avatar.jpg';
+            $file->type_id = 2;
+            $file->created_at = date('Y-m-d H:i:s');
 
             $auth = Yii::$app->authManager;
             $role = $auth->getRole('user');

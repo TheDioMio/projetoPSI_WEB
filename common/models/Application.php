@@ -265,7 +265,7 @@ class Application extends ActiveRecord
             [['animal_id'], 'required', 'on' => [self::SCENARIO_DEFAULT, self::SCENARIO_ADOPTION]],
 
             [['created_at', 'data', 'statusDate'], 'safe'],
-            [['description'], 'string', 'max' => 255],
+            [['description'], 'string', 'min' => 3, 'max' => 120, 'tooShort' => 'O nome é demasiado curto!'],
             [['animal_id'], 'exist', 'skipOnError' => true, 'targetClass' => Animal::class, 'targetAttribute' => ['animal_id' => 'id']],
             [['target_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['target_user_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
@@ -359,4 +359,31 @@ class Application extends ActiveRecord
         parent::afterFind();
     }
 
+    public static function getAreasAtuacao()
+    {
+        return [
+            1 => 'Clínica Veterinária',
+            2 => 'Canil / Abrigo',
+            3 => 'Outro',
+        ];
+    }
+
+    public static function getAnosExperiencia()
+    {
+        return [
+            1 => 'Menos de 1 ano',
+            2 => '1 a 3 anos',
+            3 => '3 a 5 anos',
+            4 => 'Mais de 5 anos'
+        ];
+    }
+
+    public static function getDisponibilidade() {
+        return [
+            1 => 'Tempo Inteiro (Comercial)',
+            2 => 'Part-time',
+            3 => 'Apenas Fins de Semana',
+            4 => 'Apenas por Marcação',
+        ];
+    }
 }

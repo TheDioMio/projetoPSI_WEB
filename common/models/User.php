@@ -46,6 +46,10 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
 
+    const ROLE_USER = 3;
+    const ROLE_USERPRO = 2;
+    const ROLE_ADMINISTRATOR = 1;
+
     public $password;
 
     public $imageFile;
@@ -321,15 +325,19 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function getListingsCount(): int
     {
-
         return $this->getListings()->count();
     }
-
-
     public function getApplicationsCount(): int
     {
-
         return $this->getApplications()->count();
+    }
+
+    public static function getRoleMap() {
+        return [
+            1 => 'admin',
+            2 => 'userPro',
+            3 => 'user',
+        ];
     }
 
 }

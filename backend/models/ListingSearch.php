@@ -48,7 +48,10 @@ class ListingSearch extends Listing
     {
         $query = Listing::find();
 
-        // add conditions that should always apply here
+        // add conditions that should always apply here;
+        //Vai só buscar todas as listagens que NÃO sejam STATUS_DELETED
+        $query->andWhere(['!=', Listing::tableName() . '.status', Listing::STATUS_DELETED]);
+        $query->andWhere(['!=', User::tableName() . '.status', User::STATUS_DELETED]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -85,7 +88,6 @@ class ListingSearch extends Listing
             'views' => $this->views,
             'status' => $this->status,
         ]);
-
 
         /*Isto teve que ser mudado porque, caso contrário, dá erro de ambiguity
         (tabela animal também tem um campo de description).

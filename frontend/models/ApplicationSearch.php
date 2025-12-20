@@ -2,6 +2,7 @@
 
 namespace frontend\models;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use common\models\Application;
@@ -78,7 +79,7 @@ class ApplicationSearch extends Application
     public function searchInbox($params)
     {
         $query = Application::find()
-            ->where(['target_user_id' => \Yii::$app->user->id])
+            ->where(['target_user_id' => Yii::$app->user->id])
             ->andWhere(['type' => 1]);
 
         $dataProvider = new ActiveDataProvider([
@@ -108,8 +109,8 @@ class ApplicationSearch extends Application
     public function searchOutbox($params)
     {
         $query = Application::find()
-            ->where(['user_id' => \Yii::$app->user->id])
-            ->andWhere(['type' => 1]);
+            ->where(['user_id' => Yii::$app->user->id])
+            ->andWhere(['type' => Application::TYPE_ADOPTION]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

@@ -1,6 +1,8 @@
 <?php
 
+use common\models\User;
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
 
@@ -13,12 +15,6 @@ $totalImages = count($images);
 $carouselIndicators = '';
 $carouselItems = '';
 $i = 0;
-
-
-
-
-
-
 ?>
 <!-- Blog Start -->
 <div class="container py-5">
@@ -176,7 +172,7 @@ $i = 0;
 
             <?php if (Yii::$app->user->can('createComment')): ?>
             <div class="bg-light rounded p-5">
-                <?php $form = \yii\widgets\ActiveForm::begin([
+                <?php $form = ActiveForm::begin([
                     'action' => ['/comment/create', 'listing_id' => $model->listing->id],
                 ]);?>
 
@@ -194,7 +190,7 @@ $i = 0;
                     <button class="btn btn-primary w-100 py-3" type="submit">Enviar</button>
                 </div>
 
-                <?php \yii\widgets\ActiveForm::end(); ?>
+                <?php ActiveForm::end(); ?>
 
             </div>
             <?php endif; ?>
@@ -277,61 +273,30 @@ $i = 0;
                         ['message/create', 'user_id' => $model->user_id, "from"=>"listing", "listing_id"=>$model->id],
                         ['class' => 'h5 bg-light py-2 px-3 mb-2']
                     ) ?>
-
-                    <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>Agendar Visita <i class="bi bi-calendar-date"></i></a>
-                    <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>????????????</a>
-                    <a class="h5 bg-light py-2 px-3 mb-2" href="#"><i class="bi bi-arrow-right me-2"></i>????????????</a>
+                    <?php
+                    // Verifica se o user está logado E se é o dono deste animal
+                    if (Yii::$app->user->id == $model->user_id && $model->user_id == User::ROLE_USERPRO ):
+                        ?>
+                        <div class="mb-5">
+                            <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4 mt-4">
+                                <?=Html::encode('Observações (Privado)')?>
+                            </h3>
+                            <div class="bg-light p-4 rounded">
+                                <?php if (!empty($model->observations)): ?>
+                                    <p class="mb-0" style="white-space: pre-line;">
+                                        <?= Html::encode($model->observations) ?>
+                                    </p>
+                                <?php else: ?>
+                                    <p class="text-muted mb-0">
+                                        <i><?=Html::encode('Este animal não tem observações!')?></i>
+                                    </p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
             <!-- Category End -->
-
-            <!-- Recent Post Start -->
-            <div class="mb-5">
-                <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Animais Recentes</h3>
-                <div class="d-flex overflow-hidden mb-3">
-                    <img class="img-fluid" src="../img/blog-1.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-                    <a href="" class="h5 d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit
-                    </a>
-                </div>
-                <div class="d-flex overflow-hidden mb-3">
-                    <img class="img-fluid" src="../img/blog-2.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-                    <a href="" class="h5 d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit
-                    </a>
-                </div>
-                <div class="d-flex overflow-hidden mb-3">
-                    <img class="img-fluid" src="../img/blog-3.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-                    <a href="" class="h5 d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit
-                    </a>
-                </div>
-                <div class="d-flex overflow-hidden mb-3">
-                    <img class="img-fluid" src="../img/blog-1.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-                    <a href="" class="h5 d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit
-                    </a>
-                </div>
-            </div>
-            <!-- Recent Post End -->
-
-            <!-- Tags Start -->
-            <div class="mb-5">
-                <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Tag Cloud</h3>
-                <div class="d-flex flex-wrap m-n1">
-                    <a href="" class="btn btn-primary m-1">Design</a>
-                    <a href="" class="btn btn-primary m-1">Development</a>
-                    <a href="" class="btn btn-primary m-1">Marketing</a>
-                    <a href="" class="btn btn-primary m-1">SEO</a>
-                    <a href="" class="btn btn-primary m-1">Writing</a>
-                    <a href="" class="btn btn-primary m-1">Consulting</a>
-                    <a href="" class="btn btn-primary m-1">Design</a>
-                    <a href="" class="btn btn-primary m-1">Development</a>
-                    <a href="" class="btn btn-primary m-1">Marketing</a>
-                    <a href="" class="btn btn-primary m-1">SEO</a>
-                    <a href="" class="btn btn-primary m-1">Writing</a>
-                    <a href="" class="btn btn-primary m-1">Consulting</a>
-                </div>
-            </div>
-            <!-- Tags End -->
-
-
         </div>
         <!-- Sidebar End -->
     </div>

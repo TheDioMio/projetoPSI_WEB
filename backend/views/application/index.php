@@ -14,10 +14,21 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="application-index container-fluid">
     <div class="card card-outline card-primary shadow-sm">
-        <div class="card-header">
-            <?= Html::a('Candidaturas User Pro', ['index-user-pro'], [
-                'class' => 'btn btn-danger btn-sm',])
-            ?>
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="card-title">
+                <i class="fas fa-paw mr-2"></i><?= Html::encode('Gestão de Adoções') ?>
+            </h3>
+
+            <div class="btn-group btn-group-sm">
+                <a href="javascript:void(0);" class="btn btn-primary active" style="cursor: default;">
+                    <i class="fas fa-paw mr-1"></i><?=Html::encode('Adoção')?>
+                </a>
+
+                <?= Html::a('<i class="fas fa-user-tie mr-1"></i> User Pro', ['index-user-pro'], [
+                    'class' => 'btn btn-default',
+                    'title' => 'Mudar para Candidaturas Profissionais'
+                ]) ?>
+            </div>
         </div>
         <div class="card-body p-0">
             <?= GridView::widget([

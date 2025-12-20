@@ -18,7 +18,7 @@ $this->title = 'O Meu Perfil';
                     <div class="mb-3 text-center">
 
                         <?php
-                        // pegar avatar do utilizador
+                        //buscar avatar do utilizador
                         $avatar = Yii::$app->request->baseUrl . '/img/default-avatar.png';
 
                         if ($user->profileImage) {

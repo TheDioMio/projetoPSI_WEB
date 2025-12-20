@@ -28,10 +28,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'layout' => "{items}\n{summary}\n{pager}",
                 'columns' => [
                     [
-                        'label' => 'ID',
-                        'attribute' => 'id',
-                    ],
-                    [
                         'label' => 'Nome',
                         'attribute' => 'name',
                     ],

@@ -46,6 +46,11 @@ class Animal extends ActiveRecord
         return 'animal';
     }
 
+    const STATUS_ADOPTED  = 4;
+    const STATUS_DEAD     = 3;
+    const STATUS_DELETED  = 2;
+    const STATUS_ACTIVE   = 1;
+    const STATUS_INACTIVE = 0;
 
 
     public $imageFiles;
@@ -56,13 +61,14 @@ class Animal extends ActiveRecord
     public function rules()
     {
         return [
-            [['age_id', 'size_id', 'vaccination_id', 'description', 'breed_id', 'location', 'user_id', 'created_at', 'name'], 'default', 'value' => null],
+            [['age_id', 'size_id', 'vaccination_id', 'description', 'breed_id', 'location', 'user_id', 'created_at', 'name', 'observations'], 'default', 'value' => null],
             [['neutered'], 'default', 'value' => 0],
             [['age_id', 'size_id', 'vaccination_id', 'animal_type_id', 'breed_id', 'neutered', 'user_id'], 'integer'],
             [['description'], 'string'],
             [['animal_type_id', 'name', 'age_id', 'size_id', 'user_id', 'breed_id', 'vaccination_id', 'location'], 'required'],
             [['created_at', 'statusDate'], 'safe'],
             [['location'], 'string', 'max' => 150],
+            [['observations'], 'string', 'max' => 120],
             [['name'], 'string', 'max' => 50],
             [['age_id'], 'exist', 'skipOnError' => true, 'targetClass' => AnimalAge::class, 'targetAttribute' => ['age_id' => 'id']],
             [['animal_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => AnimalType::class, 'targetAttribute' => ['animal_type_id' => 'id']],
@@ -114,6 +120,7 @@ class Animal extends ActiveRecord
             'location' => 'Location',
             'user_id' => 'User ID',
             'created_at' => 'Created At',
+            'observations' => 'Observations',
             'name' => 'Name',
         ];
     }
@@ -218,6 +225,10 @@ class Animal extends ActiveRecord
         return $this->hasMany(Visit::class, ['animal_id' => 'id']);
     }
 
+    public function getAge()
+    {
+        return $this->hasOne(AnimalAge::class, ['id' => 'age_id']);
+    }
 
     public function behaviors()
     {
@@ -289,15 +300,17 @@ class Animal extends ActiveRecord
 
     */
 
-    public function afterSave($insert, $changedAttributes)
-    {
-        if ($insert) {
-            MosquittoCatcher::makePublish(
-                'NEW_POSTED_ANIMAL',
-                json_encode(['id' => $this->id])
-            );
-        }
-    }
+
+    //Comentado porque não deixava criar anúncio
+//    public function afterSave($insert, $changedAttributes)
+//    {
+//        if ($insert) {
+//            MosquittoCatcher::makePublish(
+//                'NEW_POSTED_ANIMAL',
+//                json_encode(['id' => $this->id])
+//            );
+//        }
+//    }
 
 
 
