@@ -53,7 +53,12 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                ['class' => 'yii\rest\UrlRule','controller' => 'api/user'],
+                ['class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/user',
+                    'extraPatterns' => [
+                        'GET me' => 'me',
+                    ],
+                ],
                 ['class' => 'yii\rest\UrlRule','controller' => 'api/animal'],
                 //'extraPatterns' => [
                     //'GET animalsComplete' => 'animalsComplete', // contagem é 'actionAnimalsComplete'

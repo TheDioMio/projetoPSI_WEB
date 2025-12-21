@@ -8,6 +8,7 @@ use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
 use yii\rest\ActiveController;
+USE yii;
 
 /**
  * Default controller for the `api` module
@@ -25,6 +26,27 @@ class UserController extends ActiveController
         ];
 
         return $behaviors;
+    }
+
+
+
+    /**
+     * GET /api/users/me
+     */
+    public function actionMe()
+    {
+        //futuramente colocar a devolver mais informação
+        $user = Yii::$app->user->identity;
+
+        return [
+            'success' => true,
+            'id' => $user->id,
+            'username' => $user->username,
+            'name' => $user->name,
+            'email' => $user->email,
+            'address' => $user->address,
+            'avatar' =>$user->profileImage->path,
+        ];
     }
 
 //    public static function findIdentityByAccessToken($token, $type = null)

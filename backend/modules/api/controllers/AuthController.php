@@ -46,51 +46,52 @@ class AuthController extends Controller
         }
 
         return [
-            'token' => $user->auth_key,
-            'user_id' => $user->id,
-            'username' => $user->username,
-        ];
-    }
-
-    public function actionLogin2()
-    {
-        $request = Yii::$app->request;
-        $username = $request->post('username');
-        $password = $request->post('password');
-
-        /** @var User $user */
-        $user = User::findByUsername($username);
-
-        //colocar a devolver a mensagem correta 200 ok
-        if (!$user ){
-            return [
-                'success' => false,
-                'message' => 'User not found',
-            ];
-        }
-
-        if(!$user->validatePassword($password)) {
-            return [
-                'success' => false,
-                'message' => 'Invalid password'
-            ];
-        }
-
-        //ir buscar o token a bd
-      //  $token =
-
-        //
-//        // gerar token simples
-//        $token = base64_encode($user->id . '-' . time());
-//
-//        // gravar token na BD
-//        $user->auth_token = $token;
-//        $user->save(false);
-
-        return [
             'success' => true,
-            'token' => $token
+            'token' => $user->auth_key,
+//            'user_id' => $user->id,
+//            'username' => $user->username,
         ];
     }
+
+//    public function actionLogin2()
+//    {
+//        $request = Yii::$app->request;
+//        $username = $request->post('username');
+//        $password = $request->post('password');
+//
+//        /** @var User $user */
+//        $user = User::findByUsername($username);
+//
+//        //colocar a devolver a mensagem correta 200 ok
+//        if (!$user ){
+//            return [
+//                'success' => false,
+//                'message' => 'User not found',
+//            ];
+//        }
+//
+//        if(!$user->validatePassword($password)) {
+//            return [
+//                'success' => false,
+//                'message' => 'Invalid password'
+//            ];
+//        }
+//
+//        //ir buscar o token a bd
+//      //  $token =
+//
+//        //
+////        // gerar token simples
+////        $token = base64_encode($user->id . '-' . time());
+////
+////        // gravar token na BD
+////        $user->auth_token = $token;
+////        $user->save(false);
+//
+//        return [
+//            'success' => true,
+//            'token' => $token
+//        ];
+//    }
 
 }
