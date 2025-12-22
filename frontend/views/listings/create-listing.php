@@ -142,9 +142,7 @@ $this->params['breadcrumbs'][] = $this->title; // Adiciona ao "breadcrumb"
                     ->hint('Texto apelativo para o anúncio. Ex: Este animal procura novo lar...'); ?>
 
                 <hr class="my-4">
-                <?php
-                    // Verifica se o user está logado e se é o dono deste animal
-                    if ($user->role_id == User::ROLE_USERPRO ):
+                <?php if (Yii::$app->user->can('animalObservations') ):
                  $form->field($model, 'observations')->textarea([
                     'rows' => 6,
                 ])->label('Observações do Animal')
@@ -190,7 +188,7 @@ $this->params['breadcrumbs'][] = $this->title; // Adiciona ao "breadcrumb"
                                         ) ?>
                                     <?php else: ?>
                                         <small class="text-muted d-block mt-2">
-                                            Não pode remover a última foto.
+                                            <?=Html::encode('Não pode remover a última foto.')?>
                                         </small>
                                     <?php endif; ?>
 

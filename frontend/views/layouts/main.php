@@ -65,9 +65,30 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => '<i class="fa-solid fa-house"></i> Início', 'url' => ['/site/index'], 'linkOptions' => ['class' => 'nav-link active']],
-        ['label' => '<i class="fa-solid fa-paw"></i> Animais', 'url' => ['/listings/animal'], 'linkOptions' => ['class' => 'nav-link']],
+        [
+            'label' => '<i class="fa-solid fa-paw"></i> Animais',
+            'items' => [
+                [   'label' => '<i class="fa-solid fa-list me-2"></i>Ver Todos',
+                    'url' => ['/listings/animal']
+                ],
+                [   'label' => '<i class="fa-solid fa-heart me-2"> </i>Favoritos',
+                    'url' => ['/listings/favourites']
+                ],
+                [
+                    'label' => '<i class="fa-solid fa-clipboard-list me-2"></i>Meus Anúncios',
+                    'url' => ['/listings/my-listings'],
+                    'visible' => !Yii::$app->user->isGuest
+                ],
+                [
+                    'label' => '<i class="fa-solid fa-plus me-2"></i>Novo Anúncio',
+                    'url' => ['/listings/create-listing'],
+                    'visible' => Yii::$app->user->can('listingsManeger')
+                ],
+            ],
+        ],
         ['label' => '<i class="fa-solid fa-circle-info"></i> Acerca', 'url' => ['/site/about'], 'linkOptions' => ['class' => 'nav-link']],
-        ['label' => '<i class="fa-solid fa-envelope"></i> Contactos', 'url' => ['/site/contact'], 'linkOptions' => ['class' => 'nav-link',]],
+        ['label' => '<i class="fa-solid fa-envelope"></i> Contactos', 'url' =>
+            ['/site/contact'], 'linkOptions' => ['class' => 'nav-link',]],
 
     ];
     if (Yii::$app->user->isGuest) {
@@ -81,12 +102,13 @@ AppAsset::register($this);
         $menuItems[] = ['label' => '<i class="fa-solid fa-user-circle me-2"></i>' . Html::encode(Yii::$app->user->identity->username),
             'items' => [
                 ['label' => '<i class="fa-solid fa-user-gear me-2"> </i>Meu Perfil', 'url' => ['/profile/profile']],
-                ['label' => '<i class="fa-solid fa-paw"></i> Novo Anúncio', 'url' => ['/listings/create-listing']],
-                ['label' => '<i class="fa-solid fa-clipboard-list me-2"></i>Meus Anúncios', 'url' => ['/listings/my-listings']],
                 ['label' => '<i class="fa-solid fa-file-signature me-2"></i>Minhas Candidaturas', 'url' => ['/application/inbox']],
                 ['label' => '<i class="fa-solid fa-envelope me-2"></i>Minhas Mensagens', 'url' => ['/message/index']],
-                ['label' => '<i class="fa-solid fa-heart me-2"> </i>Favoritos', 'url' => ['/listings/favourites']],
-                ['label' => '<i class="fa-solid fa-envelope me-2"></i>Estatísticas', 'url' => ['/listings/statistics']],
+                [
+                    'label' => '<i class="fa-solid fa-envelope me-2"></i>Estatísticas',
+                    'url' => ['/listings/statistics'],
+                    'visible' => Yii::$app->user->can('statisticsPage'),
+                ],
                 '-',
                 ['label' => '<span class="d-flex align-items-center">'
                     . '<i class="fa-solid fa-right-from-bracket me-2"></i>'
@@ -95,7 +117,6 @@ AppAsset::register($this);
                     . Html::endForm()
                     . '</span>',
                     'encode' => false,
-
                 ],
             ],
             'options' => ['class' => 'nav-item dropdown'],

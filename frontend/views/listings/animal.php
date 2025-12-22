@@ -272,71 +272,27 @@ $vacinas = ArrayHelper::map(
             </div>
             <!-- Filters End -->
 
-            <!-- Recent Post Start -->
-            <div class="mb-5">
-                <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Recent Post</h3>
-                <div class="d-flex overflow-hidden mb-3">
-                    <img class="img-fluid" src="../img/blog-1.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-                    <a href="" class="h5 d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit
-                    </a>
-                </div>
-                <div class="d-flex overflow-hidden mb-3">
-                    <img class="img-fluid" src="../img/blog-2.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-                    <a href="" class="h5 d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit
-                    </a>
-                </div>
-                <div class="d-flex overflow-hidden mb-3">
-                    <img class="img-fluid" src="../img/blog-3.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-                    <a href="" class="h5 d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit
-                    </a>
-                </div>
-                <div class="d-flex overflow-hidden mb-3">
-                    <img class="img-fluid" src="../img/blog-1.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-                    <a href="" class="h5 d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit
-                    </a>
-                </div>
-                <div class="d-flex overflow-hidden mb-3">
-                    <img class="img-fluid" src="../img/blog-2.jpg" style="width: 100px; height: 100px; object-fit: cover;" alt="">
-                    <a href="" class="h5 d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis elit
-                    </a>
-                </div>
-            </div>
-            <!-- Recent Post End -->
-
-            <!-- Image Start -->
-            <div class="mb-5">
-                <img src="../img/blog-1.jpg" alt="" class="img-fluid rounded">
-            </div>
-            <!-- Image End -->
-
-            <!-- Tags Start -->
-            <div class="mb-5">
-                <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Tag Cloud</h3>
-                <div class="d-flex flex-wrap m-n1">
-                    <a href="" class="btn btn-primary m-1">Design</a>
-                    <a href="" class="btn btn-primary m-1">Development</a>
-                    <a href="" class="btn btn-primary m-1">Marketing</a>
-                    <a href="" class="btn btn-primary m-1">SEO</a>
-                    <a href="" class="btn btn-primary m-1">Writing</a>
-                    <a href="" class="btn btn-primary m-1">Consulting</a>
-                    <a href="" class="btn btn-primary m-1">Design</a>
-                    <a href="" class="btn btn-primary m-1">Development</a>
-                    <a href="" class="btn btn-primary m-1">Marketing</a>
-                    <a href="" class="btn btn-primary m-1">SEO</a>
-                    <a href="" class="btn btn-primary m-1">Writing</a>
-                    <a href="" class="btn btn-primary m-1">Consulting</a>
-                </div>
-            </div>
-            <!-- Tags End -->
-
             <!-- Plain Text Start -->
-            <div>
-                <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Plain Text</h3>
-                <div class="bg-light text-center" style="padding: 30px;">
-                    <p>Vero sea et accusam justo dolor accusam lorem consetetur, dolores sit amet sit dolor clita kasd justo, diam accusam no sea ut tempor magna takimata, amet sit et diam dolor ipsum amet diam</p>
-                    <a href="" class="btn btn-primary py-2 px-4">Read More</a>
+            <?php if (Yii::$app->user->can('applyUserPro')):?>
+                <div class="mb-5">
+                    <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4"><?=Html::encode('Seja nosso parceiro!')?></h3>
+                    <img src="../img/blog-1.jpg" alt="" class="img-fluid rounded">
                 </div>
-            </div>
+
+                <div>
+                    <div class="bg-light text-center" style="padding: 30px;">
+                        <p><?=Html::encode('Ajude-nos na missão de arranjar abrigo e garantir a saúde dos nossos
+                        amigos de patas! Clique no botão abaixo e candidate-se a parceiro.')?></p>
+                        <?= Html::a(
+                            'Candidatar-se agora <i class="bi bi-arrow-right"></i>',
+                            ['/application/apply-user-pro'],
+                            [
+                                'class' => 'btn btn-primary text-white fw-bold text-uppercase rounded-pill shadow-sm',
+                            ]
+                        ) ?>
+                    </div>
+                </div>
+            <?php endif;?>
             <!-- Plain Text End -->
         </div>
         <!-- Sidebar End -->

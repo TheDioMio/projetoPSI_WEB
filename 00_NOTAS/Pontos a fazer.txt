@@ -5,8 +5,6 @@ MQTT - começado (Mário)
 Relatorios
 
 tem de ser feito:
-estatísticas do userPro - Diogo
-notas do animal(só é visto pelo userPro) - Diogo - FEITO
 filtros nos myanimals (com o campo do status) - Mário
 RbacController - Igor
 Print dos resultados dos testes
@@ -21,6 +19,8 @@ denuncias de anuncio (amadurecer adeia)
 pessoas de interesse
 CRUD visitas - ponderar não fazer (ou melhoria)
 perdidos e achados
+Concatenar nome das localstorages com o username, para os favoritos serem diferentes de user para user, e não de máquina
+para máquina
 
 
 

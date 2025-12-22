@@ -14,11 +14,15 @@ class RbacController extends Controller
         $auth->removeAll();
 
         //-------------------- PERMISSION -----------------------------
-
         //permissão de gestão de candidaturas no Frontend
         $applicationManeger = $auth->createPermission('applicationManeger');
         $applicationManeger->description = 'applicationManeger';
         $auth->add($applicationManeger);
+
+        //permissão de ver estatísticas no Frontend
+        $statisticsPage = $auth->createPermission('statisticsPage');
+        $statisticsPage->description = 'Aceder à página de estatísticas sobre a conta';
+        $auth->add($statisticsPage);
 
         //permissão de gestão de mensagens no Frontend
         $messageManeger = $auth->createPermission('messageManeger');
@@ -35,8 +39,18 @@ class RbacController extends Controller
         $listingsManeger->description = 'listingsManeger';
         $auth->add($listingsManeger);
 
+        //permissão para adicionar observações nos animais
+        $animalObservations = $auth->createPermission('animalObservations');
+        $animalObservations->description = 'Ver e criar observações nos seus animais';
+        $auth->add($animalObservations);
+
+        //permissão para candidatar-se a userPro
+        $applyUserPro = $auth->createPermission('applyUserPro');
+        $applyUserPro->description = 'Candidatar-se a User Pro';
+        $auth->add($applyUserPro);
+
         $createComment = $auth->createPermission('createComment');
-        $createComment->description = 'createComment';
+        $createComment->description = 'Criar comentários';
         $auth->add($createComment);
 
         $updateAnimalStatus = $auth->createPermission('updateAnimalStatus');
@@ -44,11 +58,11 @@ class RbacController extends Controller
         $auth->add($updateAnimalStatus);
 
         $loginFrontend = $auth->createPermission('loginFrontend');
-        $loginFrontend->description = 'loginFrontend';
+        $loginFrontend->description = 'Acesso ao Frontend (Login)';
         $auth->add($loginFrontend);
 
         $loginBackend = $auth->createPermission('loginBackend');
-        $loginBackend->description = 'loginBackend';
+        $loginBackend->description = 'Acesso ao Backend (Login)';
         $auth->add($loginBackend);
 
         $updatePost = $auth->createPermission('updatePost');
@@ -81,6 +95,8 @@ class RbacController extends Controller
         $auth->addChild($userPro, $fileDelete);
         $auth->addChild($userPro, $applicationManeger);
         $auth->addChild($userPro, $updatePost);
+        $auth->addChild($userPro, $statisticsPage);
+        $auth->addChild($userPro, $animalObservations);
 
         //Definição de Admin e as suas permissões
         $admin = $auth->createRole('admin');

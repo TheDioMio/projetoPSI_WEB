@@ -40,9 +40,14 @@ class ListingsController extends Controller
                     'except' => ['error', 'animal', 'detail'],
                     'rules' => [
                         [
-                            'actions' => ['create-listing', 'upload', 'delete', 'user-listings', 'update', 'statistics'],
+                            'actions' => ['create-listing', 'upload', 'delete', 'user-listings', 'update'],
                             'allow' => true,
                             'roles' => ['loginFrontend', 'listingsManeger'],
+                        ],
+                        [
+                            'actions' => ['statistics'],
+                            'allow' => true,
+                            'roles' => ['statisticsPage'],
                         ],
                         [
                             'actions' => ['favourites', 'my-listings'],
@@ -166,7 +171,7 @@ class ListingsController extends Controller
                     }
 
 
-                    // 7. Guardar os Ficheiros (agora que temos o $model->id)
+                    // 7. Guardar os Ficheiros
                     $animalId = $model->id;
 
                     // Criar pasta: uploads/animals/{id}

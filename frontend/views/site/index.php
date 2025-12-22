@@ -189,25 +189,28 @@ $this->title = 'Início';
                 </div>
             </div>
 
-            <div class="col-lg-4 col-md-12">
-                <div class="service-item bg-primary d-flex flex-column justify-content-center p-4 h-100 rounded shadow-sm">
 
-                    <div class="d-flex align-items-center mb-4">
-                        <i class="fa-solid fa-handshake fa-3x text-white me-3"></i>
-                        <div>
-                            <h5 class="text-uppercase mb-1 text-white"><?=Html::encode('Seja Parceiro')?></h5>
-                            <p class="small mb-0 text-white-50"><?=Html::encode('Junte a sua instituição à nossa rede.')?></p>
+            <?php if (Yii::$app->user->can('applyUserPro')):?>
+                <div class="col-lg-4 col-md-12">
+                    <div class="service-item bg-primary d-flex flex-column justify-content-center p-4 h-100 rounded shadow-sm">
+
+                        <div class="d-flex align-items-center mb-4">
+                            <i class="fa-solid fa-handshake fa-3x text-white me-3"></i>
+                            <div>
+                                <h5 class="text-uppercase mb-1 text-white"><?=Html::encode('Seja Parceiro')?></h5>
+                                <p class="small mb-0 text-white-50"><?=Html::encode('Junte a sua instituição à nossa rede.')?></p>
+                            </div>
                         </div>
+                        <?= Html::a(
+                            'Candidatar-se agora <i class="bi bi-arrow-right"></i>',
+                            ['/application/apply-user-pro'],
+                            [
+                                'class' => 'btn btn-light text-primary fw-bold text-uppercase rounded-pill shadow-sm',
+                            ]
+                        ) ?>
                     </div>
-                    <?= Html::a(
-                        'Candidatar-se agora <i class="bi bi-arrow-right"></i>',
-                        ['/application/apply-user-pro'],
-                        [
-                            'class' => 'btn btn-light text-primary fw-bold text-uppercase rounded-pill shadow-sm',
-                        ]
-                    ) ?>
                 </div>
-            </div>
+            <?php endif;?>
         </div>
 
 

@@ -275,8 +275,7 @@ $i = 0;
                     ) ?>
                     <?php
                     // Verifica se o user está logado E se é o dono deste animal
-                    if (Yii::$app->user->id == $model->user_id && $model->user_id == User::ROLE_USERPRO ):
-                        ?>
+                    if (Yii::$app->user->id == $model->user_id && Yii::$app->user->can('animalObservations') ):?>
                         <div class="mb-5">
                             <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4 mt-4">
                                 <?=Html::encode('Observações (Privado)')?>
