@@ -85,7 +85,10 @@ class Comment extends \yii\db\ActiveRecord
 
     public function getUserImage()
     {
-        return $this->hasOne(File::class, ['user_id' => 'user_id'])
-            ->andOnCondition(['type_id' => 2]); // type 2 = foto de user
+
+        return $this->hasOne(File::class, ['user_id' => 'id'])
+            ->andWhere(['type_id' => 2]);
+
+
     }
 }
