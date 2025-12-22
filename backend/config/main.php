@@ -60,6 +60,7 @@ return [
                     ],
                 ],
                 ['class' => 'yii\rest\UrlRule','controller' => 'api/animal'],
+                ['class' => 'yii\rest\UrlRule', 'controller' => 'api/message', 'pluralize' => true,],
                 //'extraPatterns' => [
                     //'GET animalsComplete' => 'animalsComplete', // contagem é 'actionAnimalsComplete'
                     //'GET nomes' => 'nomes',
