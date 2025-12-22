@@ -9,6 +9,7 @@ use yii\filters\auth\HttpBearerAuth;
 use yii\filters\auth\QueryParamAuth;
 use yii\rest\ActiveController;
 USE yii;
+use yii\web\UnauthorizedHttpException;
 
 /**
  * Default controller for the `api` module
@@ -37,6 +38,16 @@ class UserController extends ActiveController
     {
         //futuramente colocar a devolver mais informação
         $user = Yii::$app->user->identity;
+
+//        if (!$user) {
+//            throw new UnauthorizedHttpException('Invalid credentials.');
+//        }
+
+        // if $user == null ou algo de genero tem de gerar um erro para devolver
+        // se não estiver ativo também não pode deixar receber os dados
+        //etc validações
+        // retornar o statusCode
+
 
         return [
             'success' => true,

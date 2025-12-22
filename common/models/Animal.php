@@ -55,6 +55,14 @@ class Animal extends ActiveRecord
 
     public $imageFiles;
 
+    public function extraFields()
+    {
+        return [
+            'files',
+            'listing',
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -175,6 +183,7 @@ class Animal extends ActiveRecord
         return $this->hasMany(File::class, ['animal_id' => 'id']);
     }
 
+
     /**
      * Gets query for [[Listings]].
      *
@@ -236,7 +245,7 @@ class Animal extends ActiveRecord
             [
                 'class' => TimestampBehavior::class,
                 'createdAtAttribute' => 'created_at',
-                'updatedAtAttribute' => false, // se não tens coluna updated_at
+                'updatedAtAttribute' => false,
                 'value' => new Expression('NOW()'), // usa timestamp do MySQL
             ],
         ];

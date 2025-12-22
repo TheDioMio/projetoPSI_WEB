@@ -48,8 +48,6 @@ class AuthController extends Controller
         return [
             'success' => true,
             'token' => $user->auth_key,
-//            'user_id' => $user->id,
-//            'username' => $user->username,
         ];
     }
 

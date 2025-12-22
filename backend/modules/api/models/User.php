@@ -4,6 +4,15 @@ namespace backend\modules\api\models;
 
 class User extends \common\models\User{
 
+
+    public function extraFields()
+    {
+        return [
+            'profileImage',
+            'user',
+        ];
+    }
+
     /**
      * Override over the fields of the MissingAnimal model
      * @return array|false
@@ -25,4 +34,10 @@ class User extends \common\models\User{
 
         return array_merge($fields, ['address', 'fullName']);
     }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
 }
