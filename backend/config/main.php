@@ -1,4 +1,7 @@
 <?php
+
+use yii\log\FileTarget;
+
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
     require __DIR__ . '/../../common/config/params-local.php',
@@ -40,7 +43,7 @@ return [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
-                    'class' => \yii\log\FileTarget::class,
+                    'class' => FileTarget::class,
                     'levels' => ['error', 'warning'],
                 ],
             ],
@@ -53,7 +56,8 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                ['class' => 'yii\rest\UrlRule',
+                [
+                    'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/user',
                     'extraPatterns' => [
                         'GET me' => 'me',
@@ -61,6 +65,16 @@ return [
                 ],
                 ['class' => 'yii\rest\UrlRule','controller' => 'api/animal'],
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'api/message', 'pluralize' => true,],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/application',
+                    'extraPatterns' => [
+                        //VERBO na URL // actionSent no ApplicationController
+                        'GET sent' => 'sent',
+                        //VERBO na URL // actionReceived no ApplicationController
+                        'GET received' => 'received'
+                    ]
+                ]
                 //'extraPatterns' => [
                     //'GET animalsComplete' => 'animalsComplete', // contagem é 'actionAnimalsComplete'
                     //'GET nomes' => 'nomes',

@@ -5,6 +5,7 @@ namespace backend\modules\api\controllers;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\auth\HttpBearerAuth;
+use yii\web\ForbiddenHttpException;
 
 class MessageController extends \yii\rest\ActiveController
 {
@@ -50,7 +51,7 @@ class MessageController extends \yii\rest\ActiveController
 
             $isMine = ($model->sender_user_id == $userId) || ($model->receiver_user_id == $userId);
             if (!$isMine) {
-                throw new \yii\web\ForbiddenHttpException('Acesso proibido.');
+                throw new ForbiddenHttpException('Acesso proibido.');
             }
         }
     }
