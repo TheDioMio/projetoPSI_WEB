@@ -5,6 +5,7 @@ namespace backend\modules\api\controllers;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\auth\HttpBearerAuth;
+use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 
 class MessageController extends \yii\rest\ActiveController
@@ -20,6 +21,7 @@ class MessageController extends \yii\rest\ActiveController
         ];
         return $behaviors;
     }
+
 
     public function actions()
     {
@@ -40,7 +42,40 @@ class MessageController extends \yii\rest\ActiveController
             ]);
         };
 
+        unset($actions['create']);
+
         return $actions;
+    }
+
+    public function actionCreate()
+    {
+        $modelClass = $this->modelClass;
+        $model = new $modelClass();
+
+        $body = Yii::$app->request->bodyParams;
+
+        $model->receiver_user_id = $body['receiver_user_id'] ?? null;
+        $model->subject = $body['subject'] ?? null;
+        $model->text = $body['text'] ?? null;
+
+        // sender vem SEMPRE do token
+        $model->sender_user_id = Yii::$app->user->id;
+
+        // defaults
+        $model->created_at = date('Y-m-d H:i:s');
+        $model->isRead = 0;
+
+        if (!$model->validate()) {
+            Yii::$app->response->statusCode = 422;
+            return $model->errors;
+        }
+
+        if (!$model->save(false)) {
+            throw new BadRequestHttpException('Erro ao guardar a mensagem.');
+        }
+
+        Yii::$app->response->statusCode = 201;
+        return $model;
     }
 
     public function checkAccess($action, $model = null, $params = [])

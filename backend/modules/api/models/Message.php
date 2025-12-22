@@ -21,6 +21,8 @@ use Yii;
 class Message extends \common\models\Message
 {
 
+
+
     public $modelClass = 'backend\modules\api\models\Message';
 
     public function fields()
@@ -33,9 +35,25 @@ class Message extends \common\models\Message
             'receiver_user_id',
             'created_at',
             'isRead',
+            'sender_username' => function ($model) {
+                return $model->senderUser ? $model->senderUser->username : null;
+            },
+            'receiver_username' => function ($model) {
+                return $model->receiverUser ? $model->receiverUser->username : null;
+            },
         ];
 
         return $fields;
+    }
+
+    public function getSenderUser()
+    {
+        return $this->hasOne(\backend\modules\api\models\User::class, ['id' => 'sender_user_id']);
+    }
+
+    public function getReceiverUser()
+    {
+        return $this->hasOne(\backend\modules\api\models\User::class, ['id' => 'receiver_user_id']);
     }
 
     public function extraFields()
