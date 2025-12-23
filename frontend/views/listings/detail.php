@@ -107,7 +107,9 @@ $i = 0;
                     tabindex="0"></iframe>
 
 <!--            precisa de chave da api da google, mas localizava logo o address do user-->
-            <?php if (!empty($userAddress)) : ?>
+            <?php ?>
+<!--            --><?php //if (!empty($userAddress)) : ?>
+            <?php if ( $model->location) : ?>
                 <iframe
                         width="100%"
                         height="300"
@@ -115,7 +117,7 @@ $i = 0;
                         loading="lazy"
                         allowfullscreen
                         referrerpolicy="no-referrer-when-downgrade"
-                        src="https://www.google.com/maps/embed/v1/place?key=YOUR_GOOGLE_MAPS_API_KEY&q=<?= urlencode($userAddress) ?>">
+                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA1cLsf-5np-zOKC4m6DUJygDOFaKwPpEw&q=<?= urlencode($model->location) ?>">
                 </iframe>
             <?php else: ?>
                 <p>Sem localização definida para o seu perfil.</p>
