@@ -40,12 +40,12 @@ class Application extends \common\models\Application
             'description',
 
             // O user ID retorna o username de quem fez a candidatura
-            'user_id' => function () {
+            'candidate_name' => function () {
                 return $this->user ? $this->user->username : null;
             },
 
             // target user retorna o utilizador que é o destinatário
-            'target_user_id' => function () {
+            'target_user_name' => function () {
                 return $this->targetUser ? $this->targetUser->username : null;
             },
         ];
