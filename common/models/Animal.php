@@ -234,9 +234,11 @@ class Animal extends ActiveRecord
         return $this->hasMany(Visit::class, ['animal_id' => 'id']);
     }
 
+    // esta relação está duplicada a correta é getAnimalAge, assim tive de redirecionar
     public function getAge()
     {
-        return $this->hasOne(AnimalAge::class, ['id' => 'age_id']);
+        return $this->animalAge;
+
     }
 
     public function behaviors()

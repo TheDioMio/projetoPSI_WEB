@@ -54,6 +54,7 @@ class AnimalController extends ActiveController
                 'listing.comments.user.profileImage',
                 'breed',
                 'animalType',
+                'animalAge',
                 'size',
                 'vaccination',
                 'user');

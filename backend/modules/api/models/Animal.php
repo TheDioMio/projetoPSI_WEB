@@ -20,9 +20,10 @@ class Animal extends \common\models\Animal
             'name',
             'description',
             'created_at',
+            'location',
 
             'age' => function () {
-                return $this->age ? $this->age->description : null;
+                return $this->animalAge ? $this->animalAge->description : null;
             },
 
             'size' => function () {
@@ -47,9 +48,11 @@ class Animal extends \common\models\Animal
             'owner_email' => fn() => $this->user?->email,
             'owner_avatar' => fn() => $this->user?->profileImage?->path,
 
+
             // LISTING
 //            'listing_description' => fn() => $this->listing?->description,
 //            'listing_views' => fn() => $this->listing?->views,
+            'files',
         ];
     }
 
