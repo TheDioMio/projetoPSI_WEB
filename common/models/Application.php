@@ -35,9 +35,20 @@ class Application extends ActiveRecord
         ];
     }
 
-    public function getHomeLabel(): string
-    {
-        return self::homeOptions()[$this->data['home'] ?? null] ?? '—';
+    public function getHomeLabel(): string {
+        return self::homeOptions()[$this->data['home'] ?? null] ?? '-';
+    }
+
+    public function getAreaLabel(): string {
+        return self::getAreasAtuacao()[$this->data['area'] ?? null] ?? '-';
+    }
+
+    public function getExperienceLevelLabel(): string{
+        return self::getAnosExperiencia()[$this->data['experience_level'] ?? null] ?? '—';
+    }
+
+    public function getAvailabilityLabel(): string{
+        return self::getDisponibilidade()[$this->data['availability'] ?? null] ?? '-';
     }
 
     public static function timeAloneOptions(): array
