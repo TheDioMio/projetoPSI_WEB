@@ -43,6 +43,7 @@ class MessageController extends \yii\rest\ActiveController
         };
 
         unset($actions['create']);
+        unset($actions['update']);
 
         return $actions;
     }
@@ -75,6 +76,39 @@ class MessageController extends \yii\rest\ActiveController
         }
 
         Yii::$app->response->statusCode = 201;
+        return $model;
+    }
+
+    public function actionUpdate($id)
+    {
+        $modelClass = $this->modelClass;
+        $model = $modelClass::findOne($id);
+
+        if (!$model) {
+            throw new \yii\web\NotFoundHttpException('Mensagem não encontrada.');
+        }
+
+        $this->checkAccess('update', $model);
+
+        $body = Yii::$app->request->bodyParams;
+
+        // só permitir estes campos
+        if (array_key_exists('subject', $body)) {
+            $model->subject = $body['subject'];
+        }
+        if (array_key_exists('text', $body)) {
+            $model->text = $body['text'];
+        }
+
+        if (!$model->validate(['subject', 'text'])) {
+            Yii::$app->response->statusCode = 422;
+            return $model->errors;
+        }
+
+        if (!$model->save(false, ['subject', 'text'])) {
+            throw new \yii\web\ServerErrorHttpException('Erro ao atualizar a mensagem.');
+        }
+
         return $model;
     }
 
