@@ -108,7 +108,6 @@ $i = 0;
 
 <!--            precisa de chave da api da google, mas localizava logo o address do user-->
             <?php ?>
-<!--            --><?php //if (!empty($userAddress)) : ?>
             <?php if ( $model->location) : ?>
                 <iframe
                         width="100%"
