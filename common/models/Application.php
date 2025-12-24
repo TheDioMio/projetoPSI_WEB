@@ -115,7 +115,7 @@ class Application extends ActiveRecord
             self::STATUS_SENT      => 'Pendente',
             self::STATUS_IN_REVIEW => 'Em análise',
             self::STATUS_APPROVED  => 'Aprovada',
-            self::STATUS_REJECTED  => 'Reprovada',
+            self::STATUS_REJECTED  => 'Rejeitada',
             self::STATUS_CANCELLED => 'Cancelada',
         ];
     }

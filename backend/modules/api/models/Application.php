@@ -32,7 +32,7 @@ class Application extends \common\models\Application
         // 1. CAMPOS COMUNS (Vão sempre, seja qual for o tipo)
         $fields = [
             'id',
-            'status',
+            'status' => fn() => $this->getStatusLabel(),
             'type',
             'created_at',
             'statusDate',
