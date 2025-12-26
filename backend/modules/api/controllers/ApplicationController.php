@@ -6,6 +6,8 @@ use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\auth\HttpBearerAuth;
 use yii\rest\ActiveController;
+use yii\web\BadRequestHttpException;
+use yii\web\NotFoundHttpException;
 
 class ApplicationController extends ActiveController {
     public $modelClass = 'backend\modules\api\models\Application';
@@ -43,8 +45,7 @@ class ApplicationController extends ActiveController {
      * Candidaturas RECEBIDAS pelo user (Received)
      * Endpoint: GET /api/applications/received
      */
-    public function actionReceived()
-    {
+    public function actionReceived(){
         $userId = Yii::$app->user->id;
 
         // Procura onde o target_user_id (destinatário) é o user logado
@@ -56,5 +57,28 @@ class ApplicationController extends ActiveController {
             'query' => $query,
             'pagination' => ['pageSize' => 20],
         ]);
+    }
+
+
+    /*
+     * Dar update da candidatura (aprovada/rejeitada)
+     * Endpoint: PUT /api/applications/{id}/status/
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->modelClass::findOne($id);
+
+        if (!$model) {
+            throw new NotFoundHttpException("Candidatura não encontrada");
+        }
+
+        // Carregar os dados (o '' serve para ler o JSON diretamente da raiz)
+        $model->load(Yii::$app->getRequest()->getBodyParams(), '');
+
+        if ($model->save()) {
+            return $model;
+        }
+
+        return $model;
     }
 }

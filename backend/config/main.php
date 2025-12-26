@@ -68,11 +68,12 @@ return [
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/application',
+                    'pluralize' => false,
                     'extraPatterns' => [
                         //VERBO na URL // actionSent no ApplicationController
                         'GET sent' => 'sent',
                         //VERBO na URL // actionReceived no ApplicationController
-                        'GET received' => 'received'
+                        'GET received' => 'received',
                     ]
                 ]
                 //'extraPatterns' => [
