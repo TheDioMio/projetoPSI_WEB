@@ -5,6 +5,7 @@ namespace backend\modules\api\controllers;
 use Yii;
 use yii\filters\auth\HttpBasicAuth;
 use yii\rest\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\UnauthorizedHttpException;
 use common\models\User;
 
@@ -19,10 +20,19 @@ class AuthController extends Controller
             'class' => HttpBasicAuth::class,
             'auth' => function ($username, $password) {
                 $user = User::findByUsername($username);
-                if ($user && $user->status == User::STATUS_ACTIVE && $user->validatePassword($password)) {
-                    return $user;
+                if (!$user || !$user->validatePassword($password)) {
+                    // 401
+                    throw new UnauthorizedHttpException('Invalid credentials.');
                 }
-                return null;
+
+                if ($user->status !== User::STATUS_ACTIVE) {
+                    // 403
+                    throw new ForbiddenHttpException('User inactive.');
+                }
+//                if ($user && $user->status == User::STATUS_ACTIVE && $user->validatePassword($password)) {
+//                    return $user;
+//                }
+                return $user;
             },
         ];
 
@@ -38,59 +48,17 @@ class AuthController extends Controller
 
     public function actionLogin()
     {
+        // o basicAuth já validou tudo
+
         /** @var User|null $user */
         $user = Yii::$app->user->identity;
 
-        if (!$user) {
-            throw new UnauthorizedHttpException('Invalid credentials.');
-        }
-
+        // devolve o code 200 de OK
+        Yii::$app->response->statusCode = 200;
         return [
             'success' => true,
             'token' => $user->auth_key,
             'id' => $user->id,
         ];
     }
-
-//    public function actionLogin2()
-//    {
-//        $request = Yii::$app->request;
-//        $username = $request->post('username');
-//        $password = $request->post('password');
-//
-//        /** @var User $user */
-//        $user = User::findByUsername($username);
-//
-//        //colocar a devolver a mensagem correta 200 ok
-//        if (!$user ){
-//            return [
-//                'success' => false,
-//                'message' => 'User not found',
-//            ];
-//        }
-//
-//        if(!$user->validatePassword($password)) {
-//            return [
-//                'success' => false,
-//                'message' => 'Invalid password'
-//            ];
-//        }
-//
-//        //ir buscar o token a bd
-//      //  $token =
-//
-//        //
-////        // gerar token simples
-////        $token = base64_encode($user->id . '-' . time());
-////
-////        // gravar token na BD
-////        $user->auth_token = $token;
-////        $user->save(false);
-//
-//        return [
-//            'success' => true,
-//            'token' => $token
-//        ];
-//    }
-
 }

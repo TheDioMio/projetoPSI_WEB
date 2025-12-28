@@ -61,6 +61,7 @@ return [
                     'controller' => 'api/user',
                     'extraPatterns' => [
                         'GET me' => 'me',
+                        'PUT me' => 'update-me',
                     ],
                 ],
                 ['class' => 'yii\rest\UrlRule','controller' => 'api/animal'],
@@ -75,7 +76,24 @@ return [
                         //VERBO na URL // actionReceived no ApplicationController
                         'GET received' => 'received',
                     ]
-                ]
+                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['api/file'],
+                    'extraPatterns' => [
+
+                        // ver file por ID
+                        'GET animal/<animal_id:\d+>' => 'view-animal',
+                        // upload múltiplo
+                        'POST animal-photos' => 'create',
+
+                        // avatar
+                        'GET avatar/<user_id:\d+>' => 'view-avatar',
+
+                        // delete imagem
+                        'DELETE <id:\d+>' => 'delete',
+                    ],
+                ],
                 //'extraPatterns' => [
                     //'GET animalsComplete' => 'animalsComplete', // contagem é 'actionAnimalsComplete'
                     //'GET nomes' => 'nomes',

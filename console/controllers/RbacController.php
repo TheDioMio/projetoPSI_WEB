@@ -14,6 +14,11 @@ class RbacController extends Controller
         $auth->removeAll();
 
         //-------------------- PERMISSION -----------------------------
+        $uploadAvatar = $auth->createPermission('uploadAvatar'); //NÃO ESTÁ ATRIBUIDA
+        $uploadAvatar->description = 'uploadAvatar';
+        $auth->add($uploadAvatar);
+
+
         //permissão de gestão de candidaturas no Frontend
         $applicationManeger = $auth->createPermission('applicationManeger');
         $applicationManeger->description = 'applicationManeger';

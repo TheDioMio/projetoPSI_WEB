@@ -59,7 +59,7 @@ class AnimalController extends ActiveController
                 'vaccination',
                 'user');
 
-        // 🔎 filtros opcionais (ex: type, size)
+        // filtros opcionais (ex: type, size)
         $request = \Yii::$app->request;
 
         if ($type = $request->get('type')) {
