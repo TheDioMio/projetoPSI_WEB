@@ -112,6 +112,27 @@ class MessageController extends \yii\rest\ActiveController
         return $model;
     }
 
+    public function actionDelete($id)
+    {
+        $modelClass = $this->modelClass;
+        $model = $modelClass::findOne($id);
+
+        if (!$model) {
+            throw new \yii\web\NotFoundHttpException('Mensagem não encontrada.');
+        }
+
+        // valida permissões
+        $this->checkAccess('delete', $model);
+
+        if ($model->delete() === false) {
+            throw new \yii\web\ServerErrorHttpException('Erro ao apagar a mensagem.');
+        }
+
+        Yii::$app->response->statusCode = 204;
+    }
+
+
+
     public function checkAccess($action, $model = null, $params = [])
     {
         // Impede ver/alterar/apagar mensagens que não sejam do utilizador autenticado

@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use backend\mosquitto\MosquittoCatcher;
 use Yii;
 
 /**
@@ -81,6 +82,22 @@ class Message extends \yii\db\ActiveRecord
     public function getSenderUser()
     {
         return $this->hasOne(User::class, ['id' => 'sender_user_id']);
+    }
+
+
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        if ($insert) {
+            $topic = 'users/' . $this->receiver_user_id . '/NEW_MESSAGE';
+
+            MosquittoCatcher::makePublish(
+                $topic,
+                json_encode(['id' => $this->id])
+            );
+        }
     }
 
 }
