@@ -8,6 +8,7 @@ use yii\filters\auth\HttpBearerAuth;
 use yii\rest\ActiveController;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
+use yii\web\ServerErrorHttpException;
 
 class ApplicationController extends ActiveController {
     public $modelClass = 'backend\modules\api\models\Application';
@@ -64,8 +65,7 @@ class ApplicationController extends ActiveController {
      * Dar update da candidatura (aprovada/rejeitada)
      * Endpoint: PUT /api/applications/{id}/status/
      */
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id) {
         $model = $this->modelClass::findOne($id);
 
         if (!$model) {
@@ -80,5 +80,23 @@ class ApplicationController extends ActiveController {
         }
 
         return $model;
+    }
+
+    public function actionDelete($id){
+        $modelClass = $this->modelClass;
+        $model = $modelClass::findOne($id);
+
+        if (!$model) {
+            throw new NotFoundHttpException('Candidatura não encontrada.');
+        }
+
+        // valida permissões
+        $this->checkAccess('delete', $model);
+
+        if ($model->delete() === false) {
+            throw new ServerErrorHttpException('Erro ao apagar a mensagem.');
+        }
+
+        Yii::$app->response->statusCode = 204;
     }
 }
