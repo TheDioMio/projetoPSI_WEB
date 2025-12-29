@@ -146,3 +146,4 @@ class MessageController extends \yii\rest\ActiveController
     }
 
 }
+

@@ -76,7 +76,10 @@ class Message extends \common\models\Message
 
             MosquittoCatcher::makePublish(
                 $topic,
-                json_encode(['id' => $this->id])
+                json_encode([
+                    'id' => $this->id,
+                    'message' => 'Recebeu uma mensagem nova!'
+                ], JSON_UNESCAPED_UNICODE)
             );
         }
     }
