@@ -2,6 +2,7 @@
 
 namespace backend\modules\api\controllers;
 
+use common\models\Animal;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\auth\HttpBearerAuth;
@@ -98,5 +99,66 @@ class ApplicationController extends ActiveController {
         }
 
         Yii::$app->response->statusCode = 204;
+    }
+
+    public function actionCreate() {
+        $modelClass = $this->modelClass;
+        $model = new $modelClass();
+
+        //Receber os dados do Android
+        $body = Yii::$app->request->bodyParams;
+
+        //Validações básicas do Animal
+        $animalId = $body['animal_id'] ?? null;
+        if (!$animalId) {
+            throw new BadRequestHttpException("O ID do animal é obrigatório.");
+        }
+
+        $animal = Animal::findOne($animalId);
+        if (!$animal) {
+            throw new NotFoundHttpException("Animal não encontrado com o ID: " . $animalId);
+        }
+
+        //Preencher as colunas REAIS da tabela application
+        $model->animal_id = $animal->id;
+        $model->target_user_id = $animal->user_id;
+        $model->user_id = Yii::$app->user->id; // ID de quem está logado (Token)
+
+        // Preencher description e motive
+        $model->description = $body['motive'] ?? 'Sem motivo';
+        $model->motive = $body['motive'] ?? 'Sem motivo';
+
+        $dadosExtra = [
+            'age' => $body['age'] ?? null,
+            'contact' => $body['contact'] ?? null,
+            'motive' => $body['motive'] ?? null,
+            'home' => $body['home'] ?? null,
+            'bills' => $body['bills'] ?? null,
+            'timeAlone' => $body['timeAlone'] ?? null,
+            'children' => $body['children'] ?? null,
+            'followUp' => $body['followUp'] ?? null,
+        ];
+        if ($model->hasAttribute('data')) {
+            $model->data = json_encode($dadosExtra);
+        } else {
+            $model->load($body, '');
+        }
+
+        // 5. Defaults
+        $model->created_at = date('Y-m-d H:i:s');
+        $model->statusDate = date('Y-m-d'); // Data de hoje
+        $model->isRead = 0;
+        $model->type = 1; // 1 = TYPE_ADOPTION
+        $model->status = "Pendente";
+
+        if ($model->save()) {
+            $model->refresh();
+
+            Yii::$app->response->statusCode = 201;
+            return $model;
+        } else {
+            Yii::$app->response->statusCode = 422;
+            return $model->errors;
+        }
     }
 }

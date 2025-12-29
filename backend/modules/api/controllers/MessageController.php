@@ -48,8 +48,7 @@ class MessageController extends \yii\rest\ActiveController
         return $actions;
     }
 
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $modelClass = $this->modelClass;
         $model = new $modelClass();
 
