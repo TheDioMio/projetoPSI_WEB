@@ -33,12 +33,34 @@ class LoginCest
     public function loginUser(FunctionalTester $I)
     {
         $I->amOnRoute('/site/login');
-        $I->fillField('Username', 'erau');
-        $I->fillField('Password', 'password_0');
-        $I->click('login-button');
 
-        $I->see('Logout (erau)', 'form button[type=submit]');
+        $I->see('Sign in to start your session');
+
+        // teste campos vazios
+
+        $I->fillField('input[name="LoginForm[username]"]', '');
+        $I->fillField('input[name="LoginForm[password]"]', '');
+        $I->click('Sign In');
+        $I->see('Sign in to start your session');
+
+        // teste login errado
+
+        $I->fillField('input[name="LoginForm[username]"]', 'wrong');
+        $I->fillField('input[name="LoginForm[password]"]', 'wrong');
+        $I->click('Sign In');
+        $I->see('Incorrect username or password.');
+        $I->dontSee('Admin Panel');
+
+        // teste login correto
+
+        $I->fillField('input[name="LoginForm[username]"]', 'erau');
+        $I->fillField('input[name="LoginForm[password]"]', 'password_0');
+        $I->click('Sign In');
+
+        $I->see('Sair', 'a, button', 'form button[type=submit]');
         $I->dontSeeLink('Login');
         $I->dontSeeLink('Signup');
+        $I->see('Admin Panel');
+        $I->see('Dashboard');
     }
 }
