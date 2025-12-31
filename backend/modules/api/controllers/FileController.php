@@ -10,6 +10,7 @@ use yii\helpers\FileHelper;
 use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 use yii\web\UploadedFile;
 
 class FileController extends \yii\rest\Controller
@@ -43,6 +44,7 @@ class FileController extends \yii\rest\Controller
      */
     public function actionUpdateAvatar()
     {
+        Yii::$app->response->format = Response::FORMAT_JSON;
         $user = Yii::$app->user->identity;
 
         if (!$user) {
@@ -130,68 +132,82 @@ class FileController extends \yii\rest\Controller
     }
 
 
-    /**
-     * 🗑 DELETE FOTO DO ANIMAL
-     * DELETE /api/files/{id}
-     */
-    public function actionDelete($id)
-    {
-        $file = File::findOne($id);
+//    /**
+//     * 🗑 DELETE FOTO DO ANIMAL
+//     * DELETE /api/files/{id}
+//     */
+//    public function actionDelete($id)
+//    {
+//        $file = File::findOne($id);
+//
+//        // 🔍 ficheiro existe?
+//        if (!$file || $file->type_id !== 1) {
+//            throw new NotFoundHttpException('Image not found');
+//        }
+//
+//        // 🔍 animal existe?
+//        $animal = Animal::findOne($file->animal_id);
+//        if (!$animal) {
+//            throw new NotFoundHttpException('Animal not found');
+//        }
+//
+//        // 🔐 só o dono do animal
+//        if ($animal->user_id !== Yii::$app->user->id) {
+//            throw new ForbiddenHttpException('You cannot delete this image');
+//        }
+//
+//        // ❌ não apagar a última foto
+//        $photoCount = File::find()
+//            ->where([
+//                'animal_id' => $animal->id,
+//                'type_id' => 1
+//            ])
+//            ->count();
+//
+//        if ($photoCount <= 1) {
+//            throw new ForbiddenHttpException('An animal must have at least one photo');
+//        }
+//
+//        // 🧹 apagar ficheiro físico
+//        $physicalPath = Yii::getAlias('@frontend/web/' . $file->path);
+//        if (file_exists($physicalPath)) {
+//            unlink($physicalPath);
+//        }
+//
+//        // 🗑 apagar registo BD
+//        $file->delete();
+//
+//        // ✅ sucesso
+//        Yii::$app->response->statusCode = 204;
+//        //ponderar colocar a devolver "success" =>true
+//        return null;
+//    }
 
-        // 🔍 ficheiro existe?
-        if (!$file || $file->type_id !== 1) {
-            throw new NotFoundHttpException('Image not found');
-        }
-
-        // 🔍 animal existe?
-        $animal = Animal::findOne($file->animal_id);
-        if (!$animal) {
-            throw new NotFoundHttpException('Animal not found');
-        }
-
-        // 🔐 só o dono do animal
-        if ($animal->user_id !== Yii::$app->user->id) {
-            throw new ForbiddenHttpException('You cannot delete this image');
-        }
-
-        // ❌ não apagar a última foto
-        $photoCount = File::find()
-            ->where([
-                'animal_id' => $animal->id,
-                'type_id' => 1
-            ])
-            ->count();
-
-        if ($photoCount <= 1) {
-            throw new ForbiddenHttpException('An animal must have at least one photo');
-        }
-
-        // 🧹 apagar ficheiro físico
-        $physicalPath = Yii::getAlias('@frontend/web/' . $file->path);
-        if (file_exists($physicalPath)) {
-            unlink($physicalPath);
-        }
-
-        // 🗑 apagar registo BD
-        $file->delete();
-
-        // ✅ sucesso
-        Yii::$app->response->statusCode = 204;
-        //ponderar colocar a devolver "success" =>true
-        return null;
-    }
-
-
-    /**
-     * 📤 CREATE – Upload de várias fotos do animal
-     * POST /api/files/create
-     */
     public function actionCreate()
     {
+        Yii::error($_POST, 'UPLOAD_DEBUG');
+        Yii::error(array_keys($_FILES), 'UPLOAD_DEBUG');
+        Yii::error('ACTION FILE CREATE HIT', 'UPLOAD_DEBUG');
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
         $animalId = Yii::$app->request->post('animal_id');
+
+        // tenta buscar por "files"
         $files = UploadedFile::getInstancesByName('files');
 
-        // 🔎 validações básicas
+        if (empty($files)) {
+            $files = [];
+            foreach ($_FILES as $key => $fileInfo) {
+                if (strpos($key, 'files') === 0) {
+                    $uploaded = UploadedFile::getInstanceByName($key);
+                    if ($uploaded !== null) {
+                        $files[] = $uploaded;
+                    }
+                }
+            }
+        }
+
         if (!$animalId || empty($files)) {
             throw new BadRequestHttpException('animal_id and files[] are required');
         }
@@ -201,17 +217,12 @@ class FileController extends \yii\rest\Controller
             throw new NotFoundHttpException('Animal not found');
         }
 
-        // 🔐 apenas o dono
         if ($animal->user_id !== Yii::$app->user->id) {
             throw new ForbiddenHttpException('You cannot upload photos to this animal');
         }
 
-
         $uploadPath = Yii::getAlias('@frontend/web/uploads/animals/' . $animalId);
         FileHelper::createDirectory($uploadPath);
-//        if (!is_dir($uploadPath)) {
-//            mkdir($uploadPath, 0775, true);
-//        }
 
         $transaction = Yii::$app->db->beginTransaction();
         $saved = [];
@@ -230,11 +241,11 @@ class FileController extends \yii\rest\Controller
                 $model->type_id = 1;
                 $model->animal_id = $animalId;
                 $model->user_id = Yii::$app->user->id;
-                $model->path = 'uploads/animals/' . $animalId . '/' . $filename;
+                $model->path = '/uploads/animals/' . $animalId . '/' . $filename;
                 $model->created_at = date('Y-m-d H:i:s');
 
                 if (!$model->save()) {
-                    unlink($fullPath);
+                    @unlink($fullPath);
                     throw new \Exception('Failed to save DB record');
                 }
 
@@ -247,10 +258,11 @@ class FileController extends \yii\rest\Controller
 
             $transaction->rollBack();
 
-            // 🧹 limpeza
             foreach ($saved as $img) {
                 $p = Yii::getAlias('@frontend/web/' . $img->path);
-                if (file_exists($p)) unlink($p);
+                if (file_exists($p)) {
+                    @unlink($p);
+                }
                 $img->delete();
             }
 
@@ -261,9 +273,46 @@ class FileController extends \yii\rest\Controller
         return [
             'success' => true,
             'uploaded' => count($saved),
-            'files' => $saved
+            'files' => $saved,
         ];
     }
+
+
+    public function actionDelete()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $userId = Yii::$app->user->id;
+        $ids = Yii::$app->request->bodyParams['photo_ids'] ?? [];
+
+        if (empty($ids)) {
+            throw new BadRequestHttpException('No photo_ids provided');
+        }
+
+        $files = File::find()->where(['id' => $ids])->all();
+
+        foreach ($files as $file) {
+
+            if ($file->user_id !== $userId) {
+                throw new ForbiddenHttpException('Não autorizado');
+            }
+
+            $path = Yii::getAlias('@frontend/web/' . $file->path);
+
+            if (file_exists($path)) {
+                unlink($path);
+            }
+
+            $file->delete();
+        }
+
+        return [
+            'success' => true,
+            'deleted' => count($files)
+        ];
+    }
+
+
 
 
     /**

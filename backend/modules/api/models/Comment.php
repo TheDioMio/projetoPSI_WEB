@@ -23,6 +23,7 @@ class Comment extends \common\models\Comment
             'animal_id' => function () {
                 return $this->listing->animal_id ?? null;
             },
+            'user_id',
             'comment_text' => 'text',
             'comment_date' => 'created_at',
             'name_user' => function () {

@@ -64,7 +64,17 @@ return [
                         'PUT me' => 'update-me',
                     ],
                 ],
-                ['class' => 'yii\rest\UrlRule','controller' => 'api/animal'],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/animal',
+                    'pluralize' => true,
+                    'extraPatterns' => [
+                        'PUT <id:\d+>' => 'update',
+                        'GET my' => 'myanimals',
+                        'GET meta' => 'meta',
+                        'GET edit/<id:\d+>' => 'edit',
+                    ],
+                ],
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'api/message', 'pluralize' => true,],
                 [
                     'class' => 'yii\rest\UrlRule',
@@ -81,7 +91,7 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => ['api/file'],
                     'extraPatterns' => [
-
+                        'POST delete' => 'delete',
                         // ver file por ID
                         'GET animal/<animal_id:\d+>' => 'view-animal',
                         // upload múltiplo

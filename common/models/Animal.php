@@ -51,6 +51,8 @@ class Animal extends ActiveRecord
     const STATUS_DELETED  = 2;
     const STATUS_ACTIVE   = 1;
     const STATUS_INACTIVE = 0;
+    const SCENARIO_API_CREATE = 'api-create';
+    const SCENARIO_API_UPDATE = 'api-update';
 
 
     public $imageFiles;
@@ -73,7 +75,11 @@ class Animal extends ActiveRecord
             [['neutered'], 'default', 'value' => 0],
             [['age_id', 'size_id', 'vaccination_id', 'animal_type_id', 'breed_id', 'neutered', 'user_id'], 'integer'],
             [['description'], 'string'],
-            [['animal_type_id', 'name', 'age_id', 'size_id', 'user_id', 'breed_id', 'vaccination_id', 'location'], 'required'],
+//            [['animal_type_id', 'name', 'age_id', 'size_id', 'user_id', 'breed_id', 'vaccination_id', 'location'], 'required'],
+            [['animal_type_id', 'name', 'age_id', 'size_id', 'breed_id', 'vaccination_id', 'location'],
+                'required',
+                'on' => [self::SCENARIO_API_CREATE, self::SCENARIO_API_UPDATE]],
+
             [['created_at', 'statusDate'], 'safe'],
             [['location'], 'string', 'max' => 150],
             [['observations'], 'string', 'max' => 120],
@@ -106,6 +112,21 @@ class Animal extends ActiveRecord
 
         // Cenário UPDATE → NÃO obriga a ter fotos
         $scenarios['update'] = $scenarios[self::SCENARIO_DEFAULT];
+
+        $scenarios[self::SCENARIO_API_CREATE] = [
+            'animal_type_id',
+            'name',
+            'age_id',
+            'size_id',
+            'breed_id',
+            'vaccination_id',
+            'location',
+            'description',
+            'neutered',
+        ];
+
+        $scenarios[self::SCENARIO_API_UPDATE] =
+            $scenarios[self::SCENARIO_API_CREATE];
 
         return $scenarios;
     }
