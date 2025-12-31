@@ -3,5 +3,11 @@ actor: UnitTester
 bootstrap: false
 modules:
     enabled:
-        - Yii2:
-            part: fixtures
+      - Db:
+          dsn: 'mysql:host=localhost;dbname=petpaniontest'
+          user: 'root'
+          password: ''
+      - Yii2:
+          part: fixtures
+
+
