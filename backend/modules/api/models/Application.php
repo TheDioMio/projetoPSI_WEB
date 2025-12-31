@@ -27,9 +27,9 @@ class Application extends \common\models\Application {
     public function rules()
     {
         return array_merge(parent::rules(), [
-            [['name', 'contact', 'motive', 'professional_name', 'nif', 'website', 'bio'], 'string'],
+            [['name', 'contact', 'motive', 'professional_name', 'nif', 'website', 'bio', 'created_at'], 'string'],
             [['age', 'home', 'bills', 'timeAlone', 'children', 'followUp'], 'integer'],
-            [['status', 'type', 'animal_id', 'user_id'], 'integer'],
+            [['status', 'type', 'animal_id', 'user_id', 'target_user_id'], 'integer'],
         ]);
     }
 
@@ -56,9 +56,14 @@ class Application extends \common\models\Application {
             'candidate_name' => function () {
                 return $this->user ? $this->user->username : 'Desconhecido';
             },
-            'target_user_name' => function () {
-                return $this->targetUser ? $this->targetUser->username : 'Desconhecido';
-            },
+//            'target_user_name' => function () {
+//                return $this->targetUser ? $this->targetUser->username : 'Desconhecido';
+//            },
+            'target_user_name' => function(){
+                $animal = Animal::findOne($this->animal_id);
+                return $animal->user->username;
+            }
+
         ];
 
         // Se for ADOÇÃO
@@ -130,6 +135,34 @@ class Application extends \common\models\Application {
             $this->data = json_encode($dataToSave);
         }
         return true;
+    }
+
+    public function afterFind()
+    {
+        parent::afterFind(); // Mantém o comportamento base
+
+        // 1. Obter os dados (seja array ou string)
+        $dataJson = $this->data;
+
+        // Se vier como string (JSON), descodificar
+        if (is_string($dataJson)) {
+            $dataJson = json_decode($dataJson, true);
+        }
+
+        // 2. Preencher as variáveis públicas com os valores antigos
+        if (is_array($dataJson)) {
+            $this->age = $dataJson['age'] ?? null;
+            $this->name = $dataJson['name'] ?? null;
+            $this->contact = $dataJson['contact'] ?? null;
+            $this->motive = $dataJson['motive'] ?? null;
+
+            // Tratamento especial para inteiros (Selects/Spinners)
+            $this->home = isset($dataJson['home']) ? (int)$dataJson['home'] : null;
+            $this->bills = isset($dataJson['bills']) ? (int)$dataJson['bills'] : null;
+            $this->timeAlone = isset($dataJson['timeAlone']) ? (int)$dataJson['timeAlone'] : null;
+            $this->children = isset($dataJson['children']) ? (int)$dataJson['children'] : null;
+            $this->followUp = isset($dataJson['followUp']) ? (int)$dataJson['followUp'] : null;
+        }
     }
 
     // RELAÇÕES

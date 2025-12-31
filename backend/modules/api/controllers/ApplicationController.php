@@ -5,6 +5,7 @@ namespace backend\modules\api\controllers;
 use common\models\Animal;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\db\Query;
 use yii\filters\auth\HttpBearerAuth;
 use yii\rest\ActiveController;
 use yii\web\BadRequestHttpException;
@@ -14,7 +15,7 @@ use yii\web\ServerErrorHttpException;
 class ApplicationController extends ActiveController {
     public $modelClass = 'backend\modules\api\models\Application';
 
-    //Autenticação
+    // Autenticação
     public function behaviors()
     {
         $behaviors = parent::behaviors();
@@ -22,6 +23,20 @@ class ApplicationController extends ActiveController {
             'class' => HttpBearerAuth::class,
         ];
         return $behaviors;
+    }
+
+    /*
+     * DESATIVAR AÇÕES PADRÃO DO ACTIVECONTROLLER
+     * Isto é obrigatório para garantir que o Yii usa o nosso actionCreate
+     * e não a função automática que ignora o target_user_id. (Coisa que demorei 6h a descobrir)
+     *
+     */
+    public function actions()
+    {
+        $actions = parent::actions();
+        unset($actions['create']); // Desliga o create automático
+        unset($actions['update']); // Desliga o update automático
+        return $actions;
     }
 
     /*
@@ -102,63 +117,67 @@ class ApplicationController extends ActiveController {
     }
 
     public function actionCreate() {
+        // 1. Refresh ao Schema da BD
+        Yii::$app->db->schema->refresh();
+
         $modelClass = $this->modelClass;
         $model = new $modelClass();
 
-        //Receber os dados do Android
+        // 2. Receber dados
         $body = Yii::$app->request->bodyParams;
 
-        //Validações básicas do Animal
+        //Se o 'data' vier como string JSON dentro do JSON
+        if (isset($body['data']) && is_string($body['data'])) {
+            $decodedData = json_decode($body['data'], true);
+            if (is_array($decodedData)) {
+                $body = array_merge($body, $decodedData);
+            }
+        }
+
         $animalId = $body['animal_id'] ?? null;
-        if (!$animalId) {
-            throw new BadRequestHttpException("O ID do animal é obrigatório.");
+
+        if (!$animalId) throw new BadRequestHttpException("Falta animal_id");
+
+        // 3. Buscar Dono (SQL Puro)
+        $donoId = (new Query())
+            ->select(['user_id'])
+            ->from('animal')
+            ->where(['id' => $animalId])
+            ->scalar();
+
+        if (!$donoId) throw new BadRequestHttpException("Animal sem dono!");
+
+        // 4. Carregar dados do Android
+        $model->load($body, '');
+
+        //ATRIBUIÇÃO FORÇADA dos dados do modelo
+        $model->setAttributes([
+            'animal_id' => $animalId,
+            'user_id' => Yii::$app->user->id,
+            'target_user_id' => (int)$donoId, // Forçamos que seja Inteiro
+            'type' => 1,
+            'status' => 0,
+            'isRead' => 0,
+            'created_at' => date('Y-m-d H:i:s'),
+            'statusDate' => date('Y-m-d'),
+        ], false);
+
+        // Preencher descrição se faltar
+        if (empty($model->description)) {
+            $model->description = $body['motive'] ?? 'Sem motivo';
         }
 
-        $animal = Animal::findOne($animalId);
-        if (!$animal) {
-            throw new NotFoundHttpException("Animal não encontrado com o ID: " . $animalId);
-        }
-
-        //Preencher as colunas REAIS da tabela application
-        $model->animal_id = $animal->id;
-        $model->target_user_id = $animal->user_id;
-        $model->user_id = Yii::$app->user->id; // ID de quem está logado (Token)
-
-        // Preencher description e motive
-        $model->description = $body['motive'] ?? 'Sem motivo';
-        $model->motive = $body['motive'] ?? 'Sem motivo';
-
-        $dadosExtra = [
-            'age' => $body['age'] ?? null,
-            'contact' => $body['contact'] ?? null,
-            'motive' => $body['motive'] ?? null,
-            'home' => $body['home'] ?? null,
-            'bills' => $body['bills'] ?? null,
-            'timeAlone' => $body['timeAlone'] ?? null,
-            'children' => $body['children'] ?? null,
-            'followUp' => $body['followUp'] ?? null,
-        ];
-        if ($model->hasAttribute('data')) {
-            $model->data = json_encode($dadosExtra);
-        } else {
-            $model->load($body, '');
-        }
-
-        // 5. Defaults
-        $model->created_at = date('Y-m-d H:i:s');
-        $model->statusDate = date('Y-m-d'); // Data de hoje
-        $model->isRead = 0;
-        $model->type = 1; // 1 = TYPE_ADOPTION
-        $model->status = "Pendente";
-
+        //GUARDAR
         if ($model->save()) {
             $model->refresh();
-
             Yii::$app->response->statusCode = 201;
             return $model;
         } else {
             Yii::$app->response->statusCode = 422;
-            return $model->errors;
+            return [
+                'errors' => $model->errors,
+                'tentou_gravar_dono' => $donoId
+            ];
         }
     }
 }
