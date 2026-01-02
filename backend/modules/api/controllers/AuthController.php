@@ -29,9 +29,6 @@ class AuthController extends Controller
                     // 403
                     throw new ForbiddenHttpException('User inactive.');
                 }
-//                if ($user && $user->status == User::STATUS_ACTIVE && $user->validatePassword($password)) {
-//                    return $user;
-//                }
                 return $user;
             },
         ];
@@ -42,16 +39,45 @@ class AuthController extends Controller
     public function verbs()
     {
         return [
-            'login' => ['POST'],
+            'login' => ['POST', 'OPTIONS'],
         ];
     }
 
+    public function actions()
+    {
+        return [
+            'options' => [
+                'class' => 'yii\rest\OptionsAction',
+            ],
+        ];
+    }
+
+
+
     public function actionLogin()
     {
+        // Responde OPTIONS automaticamente
+        if (Yii::$app->request->isOptions) {
+            Yii::$app->response->statusCode = 200;
+            return [];
+        }
+
+        // resto do teu código...
+        Yii::error('METHOD=' . Yii::$app->request->method, 'AUTH_DEBUG');
+        // ...
+        Yii::error('METHOD=' . Yii::$app->request->method, 'AUTH_DEBUG');
+        Yii::error('HEADERS=' . json_encode(Yii::$app->request->headers->toArray()), 'AUTH_DEBUG');
         // o basicAuth já validou tudo
 
         /** @var User|null $user */
         $user = Yii::$app->user->identity;
+
+
+        if (!$user) {
+            Yii::$app->response->statusCode = 403;
+            return ['error' => 'User identity not set'];
+        }
+
 
         // devolve o code 200 de OK
         Yii::$app->response->statusCode = 200;

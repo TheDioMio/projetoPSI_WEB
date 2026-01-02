@@ -6,6 +6,7 @@ use backend\modules\api\models\File;
 use common\models\Animal;
 use Yii;
 use yii\filters\auth\HttpBearerAuth;
+use yii\filters\VerbFilter;
 use yii\helpers\FileHelper;
 use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
@@ -25,26 +26,50 @@ class FileController extends \yii\rest\Controller
         $behaviors = parent::behaviors();
         $behaviors['authenticator'] = [
             'class' => HttpBearerAuth::className(),
-            // 'exept' => ['index', 'view'],
         ];
+
+        $behaviors['verbs'] = [
+            'class' => VerbFilter::class,
+            'actions' => [
+                'updateAvatar'  => ['POST'],    // POST para upload avatar
+                'create'        => ['POST'],    // POST para upload fotos animal
+                'delete'        => ['POST'],    // POST para delete (array photo_ids)
+                'viewAvatar'    => ['GET'],     // GET para ver avatar
+                'viewAnimal'    => ['GET'],     // GET para ver fotos animal
+            ],
+        ];
+
         return $behaviors;
     }
 
 
-
-
     /**
-     * UPDATE / CREATE avatar do utilizador autenticado
-     *
-     * Endpoint:
      * POST /api/files/avatar
      *
+     * Atualiza o avatar do utilizador autenticado.
+     *
      * Body (multipart/form-data):
-     * - file : imagem (jpg/png)
+     * - file (obrigatório): imagem JPG/PNG (jpg, png)
+     *
+     * Regras:
+     * - O utilizador tem de estar autenticado (Bearer Token).
+     * - RBAC: permissão **uploadAvatar** necessária.
+     * - Apenas 1 avatar por utilizador (substitui o anterior).
+     *
+     * Respostas:
+     * - 200: { "success": true, "id": <int>, "path": "/uploads/users/xxx.jpg", "message": "Avatar updated" }
+     * - 400: ficheiro não enviado ou tipo inválido.
+     * - 401: autenticação inválida.
+     * - 403: sem permissão **uploadAvatar**.
      */
     public function actionUpdateAvatar()
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
+
+        if (!Yii::$app->user->can('uploadAvatar')) {
+            throw new ForbiddenHttpException('Sem permissão para alterar avatar');
+        }
+
         $user = Yii::$app->user->identity;
 
         if (!$user) {
@@ -132,64 +157,33 @@ class FileController extends \yii\rest\Controller
     }
 
 
-//    /**
-//     * 🗑 DELETE FOTO DO ANIMAL
-//     * DELETE /api/files/{id}
-//     */
-//    public function actionDelete($id)
-//    {
-//        $file = File::findOne($id);
-//
-//        // 🔍 ficheiro existe?
-//        if (!$file || $file->type_id !== 1) {
-//            throw new NotFoundHttpException('Image not found');
-//        }
-//
-//        // 🔍 animal existe?
-//        $animal = Animal::findOne($file->animal_id);
-//        if (!$animal) {
-//            throw new NotFoundHttpException('Animal not found');
-//        }
-//
-//        // 🔐 só o dono do animal
-//        if ($animal->user_id !== Yii::$app->user->id) {
-//            throw new ForbiddenHttpException('You cannot delete this image');
-//        }
-//
-//        // ❌ não apagar a última foto
-//        $photoCount = File::find()
-//            ->where([
-//                'animal_id' => $animal->id,
-//                'type_id' => 1
-//            ])
-//            ->count();
-//
-//        if ($photoCount <= 1) {
-//            throw new ForbiddenHttpException('An animal must have at least one photo');
-//        }
-//
-//        // 🧹 apagar ficheiro físico
-//        $physicalPath = Yii::getAlias('@frontend/web/' . $file->path);
-//        if (file_exists($physicalPath)) {
-//            unlink($physicalPath);
-//        }
-//
-//        // 🗑 apagar registo BD
-//        $file->delete();
-//
-//        // ✅ sucesso
-//        Yii::$app->response->statusCode = 204;
-//        //ponderar colocar a devolver "success" =>true
-//        return null;
-//    }
-
+    /**
+     * POST /api/files
+     *
+     * Faz upload de múltiplas fotos para um animal específico.
+     *
+     * Body (multipart/form-data):
+     * - animal_id (obrigatório): ID do animal.
+     * - files[] (obrigatório): array de imagens.
+     *
+     * Regras:
+     * - O utilizador tem de estar autenticado (Bearer Token).
+     * - RBAC: permissão **uploadAnimalPhoto** necessária.
+     * - Só o dono do animal pode fazer upload.
+     *
+     * Respostas:
+     * - 201: { "success": true, "uploaded": <int>, "files": [...] }
+     * - 400: animal_id ou files[] em falta.
+     * - 403: não é dono do animal ou sem permissão **uploadAnimalPhoto**.
+     * - 404: animal não encontrado.
+     * - 401: autenticação inválida.
+     */
     public function actionCreate()
     {
-        Yii::error($_POST, 'UPLOAD_DEBUG');
-        Yii::error(array_keys($_FILES), 'UPLOAD_DEBUG');
-        Yii::error('ACTION FILE CREATE HIT', 'UPLOAD_DEBUG');
-
         Yii::$app->response->format = Response::FORMAT_JSON;
+        if (!Yii::$app->user->can('uploadAnimalPhoto')) {
+            throw new ForbiddenHttpException('Sem permissão para fazer upload de fotos');
+        }
 
         $animalId = Yii::$app->request->post('animal_id');
 
@@ -278,9 +272,32 @@ class FileController extends \yii\rest\Controller
     }
 
 
+    /**
+     * POST /api/files/delete
+     *
+     * Apaga múltiplas fotos de animais.
+     *
+     * Body (JSON):
+     * - photo_ids (obrigatório): array de IDs das fotos [1,2,3]
+     *
+     * Regras:
+     * - O utilizador tem de estar autenticado (Bearer Token).
+     * - RBAC: permissão **deleteAnimalPhoto** necessária.
+     * - Só o dono das fotos pode apagar.
+     *
+     * Respostas:
+     * - 200: { "success": true, "deleted": <int> }
+     * - 400: photo_ids em falta.
+     * - 403: sem permissão **deleteAnimalPhoto** ou não é dono das fotos.
+     * - 401: autenticação inválida.
+     */
     public function actionDelete()
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
+
+        if (!Yii::$app->user->can('deleteAnimalPhoto')) {
+            throw new ForbiddenHttpException('Sem permissão para apagar fotos');
+        }
 
         $userId = Yii::$app->user->id;
         $ids = Yii::$app->request->bodyParams['photo_ids'] ?? [];
@@ -312,15 +329,30 @@ class FileController extends \yii\rest\Controller
         ];
     }
 
-
-
-
     /**
-     * 👤 VER AVATAR DE UM USER
      * GET /api/files/avatar/{user_id}
+     *
+     * Retorna o avatar de um utilizador específico.
+     *
+     * Path Params:
+     * - user_id (obrigatório): ID do utilizador.
+     *
+     * Regras:
+     * - O utilizador tem de estar autenticado (Bearer Token).
+     * - RBAC: permissão **viewAvatar** necessária.
+     *
+     * Respostas:
+     * - 200: { "id": <int>, "path": "/uploads/users/xxx.jpg", ... }
+     * - 404: avatar não encontrado.
+     * - 401: autenticação inválida.
+     * - 403: sem permissão **viewAvatar**.
      */
     public function actionViewAvatar($user_id)
     {
+        if (!Yii::$app->user->can('viewAvatar')) {
+            throw new ForbiddenHttpException('Sem permissão para ver avatares');
+        }
+
         $file = File::find()
             ->where([
                 'user_id' => $user_id,
@@ -339,11 +371,29 @@ class FileController extends \yii\rest\Controller
 
 
     /**
-     * 📂 LISTAR TODAS AS FOTOS DE UM ANIMAL
      * GET /api/files/animal/{animal_id}
+     *
+     * Lista todas as fotos de um animal específico.
+     *
+     * Path Params:
+     * - animal_id (obrigatório): ID do animal.
+     *
+     * Regras:
+     * - O utilizador tem de estar autenticado (Bearer Token).
+     * - RBAC: permissão **viewAnimalPhotos** necessária.
+     *
+     * Respostas:
+     * - 200: { "animal_id": <int>, "count": <int>, "files": [...] }
+     * - 404: animal não encontrado.
+     * - 401: autenticação inválida.
+     * - 403: sem permissão **viewAnimalPhotos**.
      */
     public function actionViewAnimal($animal_id)
     {
+        if (!Yii::$app->user->can('viewAnimalPhotos')) {
+            throw new ForbiddenHttpException('Sem permissão para ver fotos de animais');
+        }
+
         $animal = Animal::findOne($animal_id);
 
         if (!$animal) {
@@ -365,9 +415,5 @@ class FileController extends \yii\rest\Controller
             'files' => $files
         ];
     }
-
-
-
-
 
 }

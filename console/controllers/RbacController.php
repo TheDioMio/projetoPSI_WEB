@@ -14,10 +14,34 @@ class RbacController extends Controller
         $auth->removeAll();
 
         //-------------------- PERMISSION -----------------------------
-        $uploadAvatar = $auth->createPermission('uploadAvatar'); //NÃO ESTÁ ATRIBUIDA
-        $uploadAvatar->description = 'uploadAvatar';
+
+        //PERMISSÕES DOS ANIMALS
+        $animalsManager = $auth->createPermission('animalsManager');
+        $animalsManager->description = 'Fazer upload de avatar';
+        $auth->add($animalsManager);
+
+        //PERMISSÔES DOS FILES
+        $uploadAvatar = $auth->createPermission('uploadAvatar');
+        $uploadAvatar->description = 'Fazer upload de avatar';
         $auth->add($uploadAvatar);
 
+        $uploadAnimalPhoto = $auth->createPermission('uploadAnimalPhoto');
+        $uploadAnimalPhoto->description = 'Upload fotos de animais';
+        $auth->add($uploadAnimalPhoto);
+
+        $deleteAnimalPhoto = $auth->createPermission('deleteAnimalPhoto');
+        $deleteAnimalPhoto->description = 'Apagar fotos de animais';
+        $auth->add($deleteAnimalPhoto);
+
+        $viewAvatar = $auth->createPermission('viewAvatar');
+        $viewAvatar->description = 'Ver avatar de utilizadores';
+        $auth->add($viewAvatar);
+
+        $viewAnimalPhotos = $auth->createPermission('viewAnimalPhotos');
+        $viewAnimalPhotos->description = 'Ver fotos de animais';
+        $auth->add($viewAnimalPhotos);
+
+        //fim das permissões dos files
 
         //permissão de gestão de candidaturas no Frontend
         $applicationManeger = $auth->createPermission('applicationManeger');
@@ -54,9 +78,28 @@ class RbacController extends Controller
         $applyUserPro->description = 'Candidatar-se a User Pro';
         $auth->add($applyUserPro);
 
+
+        //permissões relacionadas com os comentários
         $createComment = $auth->createPermission('createComment');
         $createComment->description = 'Criar comentários';
         $auth->add($createComment);
+
+        $updateComment = $auth->createPermission('updateComment');
+        $updateComment->description = 'Atualizar um comentários';
+        $auth->add($updateComment);
+
+        $deleteComment = $auth->createPermission('deleteComment');
+        $deleteComment->description = 'Apagar um comentários';
+        $auth->add($deleteComment);
+
+        $viewComment = $auth->createPermission('viewComment');
+        $viewComment->description = 'Ver um comentários';
+        $auth->add($viewComment);
+
+        $listComment = $auth->createPermission('listComment');
+        $listComment->description = 'Listar comentários de um anúncio';
+        $auth->add($listComment);
+        // fim das permissões de comentários
 
         $updateAnimalStatus = $auth->createPermission('updateAnimalStatus');
         $updateAnimalStatus->description = 'updateAnimalStatus';
@@ -81,27 +124,51 @@ class RbacController extends Controller
         $user = $auth->createRole('user');
         $auth->add($user);
         $auth->addChild($user, $loginFrontend);
-        $auth->addChild($user, $createComment);
         $auth->addChild($user, $updateAnimalStatus);
         $auth->addChild($user, $listingsManeger);
         $auth->addChild($user, $messageManeger);
         $auth->addChild($user, $fileDelete);
         $auth->addChild($user, $applicationManeger);
+        $auth->addChild($user, $animalsManager);
         $auth->addChild($user, $updatePost);
+
+        $auth->addChild($user, $createComment);
+        $auth->addChild($user, $updateComment);
+        $auth->addChild($user, $deleteComment);
+        $auth->addChild($user, $viewComment);
+        $auth->addChild($user, $listComment);
+
+        $auth->addChild($user, $uploadAvatar);
+        $auth->addChild($user, $uploadAnimalPhoto);
+        $auth->addChild($user, $deleteAnimalPhoto);
+        $auth->addChild($user, $viewAvatar);
+        $auth->addChild($user, $viewAnimalPhotos);
 
         // Definição de UserPro e as suas permissões
         $userPro = $auth->createRole('userPro');
         $auth->add($userPro);
         $auth->addChild($userPro, $loginFrontend);
-        $auth->addChild($userPro, $createComment);
         $auth->addChild($userPro, $updateAnimalStatus);
         $auth->addChild($userPro, $listingsManeger);
         $auth->addChild($userPro, $messageManeger);
         $auth->addChild($userPro, $fileDelete);
         $auth->addChild($userPro, $applicationManeger);
+        $auth->addChild($userPro, $animalsManager);
         $auth->addChild($userPro, $updatePost);
         $auth->addChild($userPro, $statisticsPage);
         $auth->addChild($userPro, $animalObservations);
+
+        $auth->addChild($userPro, $createComment);
+        $auth->addChild($userPro, $updateComment);
+        $auth->addChild($userPro, $deleteComment);
+        $auth->addChild($userPro, $viewComment);
+        $auth->addChild($userPro, $listComment);
+
+        $auth->addChild($userPro, $uploadAvatar);
+        $auth->addChild($userPro, $uploadAnimalPhoto);
+        $auth->addChild($userPro, $deleteAnimalPhoto);
+        $auth->addChild($userPro, $viewAvatar);
+        $auth->addChild($userPro, $viewAnimalPhotos);
 
         //Definição de Admin e as suas permissões
         $admin = $auth->createRole('admin');

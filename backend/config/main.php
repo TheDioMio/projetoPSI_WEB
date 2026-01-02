@@ -90,6 +90,7 @@ return [
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => ['api/file'],
+                    'pluralize' => false,
                     'extraPatterns' => [
                         'POST delete' => 'delete',
                         // ver file por ID
@@ -104,19 +105,12 @@ return [
                         'DELETE <id:\d+>' => 'delete',
                     ],
                 ],
-                //'extraPatterns' => [
-                    //'GET animalsComplete' => 'animalsComplete', // contagem é 'actionAnimalsComplete'
-                    //'GET nomes' => 'nomes',
-                    //'GET {id}/preco' => 'preco',
-                    //'GET preco/{nomeprato}' => 'precopornome',
-                    //'DELETE {nomeprato}' => 'delpornome',
-                    //'PUT {nomeprato}' => 'putprecopornome',
-                    //'POST vazio' => 'postpratovazio',
-                //],
-//                'tokens' => [
-//                    '{id}' => '<id:\\d+>',
-//                    '{nomeprato}' => '<nomeprato:\\w+>', //[a-zA-Z0-9_] 1 ou + vezes
-//                ],
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => 'api/comment',
+                    'pluralize' => true,
+
+                ],
             ],
         ],
 

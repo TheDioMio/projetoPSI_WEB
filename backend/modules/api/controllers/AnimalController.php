@@ -42,8 +42,14 @@ class AnimalController extends ActiveController
         $behaviors['verbs'] = [
             'class' => VerbFilter::class,
             'actions' => [
-                'create' => ['POST'],
-                'update' => ['PUT', 'PATCH'],
+                'index'      => ['GET'],
+                'view'       => ['GET'],
+                'create'     => ['POST'],
+                'update'     => ['PUT', 'PATCH'],
+                'delete'     => ['DELETE'],
+                'myanimals'  => ['GET'],
+                'edit'       => ['GET'],
+                'meta'       => ['GET'],
             ],
         ];
 
@@ -61,17 +67,15 @@ class AnimalController extends ActiveController
     {
         $actions = parent::actions();
         unset($actions['create']);
+        unset($actions['view']);
         unset($actions['update']);
         unset($actions['delete']);
-        unset($actions['index']);
 
         return $actions;
     }
 
 
-
-    //--------------------------------ACTION INDEX DEVOLVE TODOS OS ANIMAIS/ ANUNCIOS ACTIVOS ---------------------- COM PAGINAÇÃO POIS PODEM SER MUITOS
-    /**
+     /**
      * GET /animals
      *
      * Lista animais com anúncio ativo, com paginação e possibilidade de filtros opcionais.
@@ -86,6 +90,10 @@ class AnimalController extends ActiveController
      */
     public function actionIndex()
     {
+        if (!Yii::$app->user->can('animalsManager')) {
+            throw new ForbiddenHttpException('Sem permissão para listar animais');
+        }
+
         $query = Animal::find()
             ->where(['status' => Listing::STATUS_ACTIVE])
             ->with('files',
@@ -147,6 +155,10 @@ class AnimalController extends ActiveController
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
 
+        if (!Yii::$app->user->can('animalsManager')) {
+            throw new ForbiddenHttpException('Sem permissão para criar animais');
+        }
+
         $userId = Yii::$app->user->id;
         $data = Yii::$app->request->bodyParams;
 
@@ -159,6 +171,7 @@ class AnimalController extends ActiveController
             $animal->scenario = Animal::SCENARIO_API_CREATE;
             $animal->load($data, '');
             $animal->user_id = $userId;
+            $animal->status = $data['listing_status'] ?? 0;
 
             if (!$animal->save()) {
                 throw new BadRequestHttpException(json_encode($animal->errors));
@@ -219,6 +232,11 @@ class AnimalController extends ActiveController
     public function actionUpdate($id)
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
+
+        if (!Yii::$app->user->can('animalsManager')) {
+            throw new ForbiddenHttpException('Sem permissão para editar animais');
+        }
+
         $userId = Yii::$app->user->id;
         $data = Yii::$app->request->bodyParams;
 
@@ -238,6 +256,7 @@ class AnimalController extends ActiveController
             // 1️⃣ Animal
             $animal->load($data, '');
             $animal->scenario = Animal::SCENARIO_API_UPDATE;
+            $animal->status = $data['listing_status'] ?? 0;
             if (!$animal->save()) {
                 throw new BadRequestHttpException(json_encode($animal->errors));
             }
@@ -280,6 +299,10 @@ class AnimalController extends ActiveController
      */
     public function actionMyanimals()
     {
+        if (!Yii::$app->user->can('animalsManager')) {
+            throw new ForbiddenHttpException('Sem permissão para listar os próprios animais');
+        }
+
         $userId = \Yii::$app->user->id;
 
         $query = Animal::find()
@@ -331,6 +354,10 @@ class AnimalController extends ActiveController
      */
     public function actionEdit($id)
     {
+        if (!Yii::$app->user->can('animalsManager')) {
+            throw new ForbiddenHttpException('Sem permissão para ver animal para edição.');
+        }
+
         $userId = Yii::$app->user->id;
 
         $animal = Animal::find()
@@ -380,6 +407,10 @@ class AnimalController extends ActiveController
      */
     public function actionView($id)
     {
+        if (!Yii::$app->user->can('animalsManager')) {
+            throw new ForbiddenHttpException('Sem permissão para consultar animal.');
+        }
+
         $userId = Yii::$app->user->id;
 
         $animal = Animal::find()
@@ -449,6 +480,11 @@ class AnimalController extends ActiveController
     public function actionDelete($id)
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
+
+        if (!Yii::$app->user->can('animalsManager')) {
+            throw new ForbiddenHttpException('Sem permissão para apagar animais');
+        }
+
         $userId = Yii::$app->user->id;
 
         $transaction = Yii::$app->db->beginTransaction();
@@ -493,18 +529,7 @@ class AnimalController extends ActiveController
                 }
             }
 
-//            $files = File::find()->where(['animal_id' => $animal->id])->all();
-//
-//            foreach ($files as $file) {
-//                $relativePath = ltrim($file->path, '/');
-//                $fullPath = Yii::getAlias('@frontend/web/' . $relativePath);
-//
-//                if (file_exists($fullPath)) {
-//                    @unlink($fullPath);
-//                }
-//
-//                $file->delete();
-//            }
+
 
             // 🔹 Apagar listing
             if ($listing) {
@@ -549,6 +574,10 @@ class AnimalController extends ActiveController
      */
     public function actionMeta()
     {
+        if (!Yii::$app->user->can('animalsManager')) {
+            throw new ForbiddenHttpException('Sem permissão para listar tabelas auxiliares.');
+        }
+
         return [
             'types' => AnimalType::find()
                 ->select(['id', 'description'])
