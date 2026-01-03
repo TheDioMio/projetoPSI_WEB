@@ -6,7 +6,7 @@ class m251207_020355_create_user_admin extends Migration
 {
     public function safeUp()
     {
-        // Verificar se já existe (usando tabela {{%user}})
+        // Verificar se já existe
         $existing = (new \yii\db\Query())
             ->from('{{%user}}')
             ->where(['username' => 'admin'])
@@ -17,27 +17,25 @@ class m251207_020355_create_user_admin extends Migration
             return true;
         }
 
-        $now = date('Y-m-d H:i:s'); // Formato DATETIME correto
-        $authKey = Yii::$app->security->generateRandomString();
+        $now = date('Y-m-d H:i:s');
 
-        $this->insert('{{%user}}', [ // ← Usa {{%user}} conforme tableName()
+        $this->insert('{{%user}}', [
             'id' => 1,
             'username' => 'admin',
             'name' => 'Administrador',
             'email' => 'admin@example.com',
             'address' => 'Admin Address',
-            'auth_key' => $authKey,
+            'auth_key' => Yii::$app->security->generateRandomString(),
             'password_hash' => Yii::$app->security->generatePasswordHash('123456789'),
             'status' => 10, // STATUS_ACTIVE
             'role_id' => 1, // ROLE_ADMINISTRATOR
             'created_at' => $now,
-            // updated_at NÃO é necessário (TimestampBehavior só usa created_at)
+            'updated_at' => $now, 
         ]);
 
-        echo "Admin user created successfully!\n";
-        echo "Username: admin\n";
-        echo "Password: 123456789\n";
-        echo "Auth Key: $authKey\n";
+        echo "✅ Admin user created successfully!\n";
+        echo "👤 Username: admin\n";
+        echo "🔑 Password: 123456789\n";
         return true;
     }
 
