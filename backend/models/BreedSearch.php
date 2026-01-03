@@ -11,8 +11,7 @@ use common\models\Breed;
  * BreedSearch represents the model behind the search form of `common\models\Breed`.
  */
 
-class BreedSearch extends Breed
-{
+class BreedSearch extends Breed {
     public $animal_type_name;
     /**
      * {@inheritdoc}
@@ -71,6 +70,7 @@ class BreedSearch extends Breed
 
         //Isto aqui é para não dar erro de ambiguity!
         $query->andFilterWhere(['like', Breed::tableName().'.id', $this->id]);
+        $query->andFilterWhere(['like', Breed::tableName().'.description', $this->description]);
 
         $query->andFilterWhere(['like', AnimalType::tableName() . '.description', $this->animal_type_name]);
         return $dataProvider;

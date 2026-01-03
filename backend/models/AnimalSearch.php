@@ -62,12 +62,9 @@ class AnimalSearch extends Animal
             'created_at' => $this->created_at,
         ]);
 
-        //Vai só buscar os animais que NÃO sejam STATUS_DELETED
-        $query = Animal::find()->where(['!=', 'status', Animal::STATUS_DELETED]);
-
         $query->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'location', $this->location])
-            ->andFilterWhere(['like', 'name', $this->name]);
+            ->andFilterWhere(['like', Animal::tableName() . '.name', $this->name]);
 
         //FILTROS PARA AS TABELAS RELACIONADAS!!!!
         $query->andFilterWhere(['like', AnimalType::tableName() . '.description', $this->animal_type]);

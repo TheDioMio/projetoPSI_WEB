@@ -8,16 +8,19 @@ use common\models\AnimalAge;
 use common\models\AnimalSize;
 use common\models\AnimalType;
 use common\models\Breed;
+use common\models\File;
 use common\models\Listing;
 use common\models\User;
 use common\models\Vaccination;
 use Yii;
 use yii\filters\AccessControl;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
+use yii\web\UploadedFile;
 
 
 class AnimalController extends Controller
@@ -74,8 +77,7 @@ class AnimalController extends Controller
         ]);
     }
 
-    public function actionView($id)
-    {
+    public function actionView($id){
         $model = $this->findModel($id);
 
         // --- LÓGICA DE IMAGENS ---
@@ -116,34 +118,73 @@ class AnimalController extends Controller
             'carouselItems' => $carouselItems,
         ]);
     }
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id) {
         $model = $this->findModel($id);
 
-        $sizes = AnimalSize::find()->select(['id','description'])->indexBy('id')->asArray()->all();
-        $breeds = Breed::find()->select(['id','description'])->indexBy('id')->asArray()->all();
-        $animalTypes = AnimalType::find()->select(['id','description'])->indexBy('id')->asArray()->all();
-        $users = User::find()->select(['id', 'name'])->indexBy('id')->asArray()->all();
-        $vaccines = Vaccination::find()->select(['id', 'description'])->indexBy('id')->asArray()->all();
-        $ages = AnimalAge::find()->select(['id', 'description'])->indexBy('id')->asArray()->all();
+        $model->scenario = 'update';
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        // Recarregar Dropdowns
+        $animalTypes = ArrayHelper::map(AnimalType::find()->orderBy('description')->all(), 'id', 'description');
+        $idades = ArrayHelper::map(AnimalAge::find()->all(), 'id', 'description');
+        $portes = ArrayHelper::map(AnimalSize::find()->all(), 'id', 'description');
+        $vacinas = ArrayHelper::map(Vaccination::find()->all(), 'id', 'description');
+        $users = ArrayHelper::map(User::find()->all(), 'id', 'username');
+
+        $breedsByType = [];
+        $breeds = Breed::find()->orderBy('description')->all();
+        foreach ($breeds as $breed) {
+            $breedsByType[$breed->animal_type_id][$breed->id] = $breed->description;
+        }
+
+        // Imagens existentes
+        $existingImages = File::find()->where(['animal_id' => $model->id])->all();
+
+        if ($this->request->isPost) {
+            $model->load($this->request->post());
+
+            $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
+
+            if ($model->validate()) {
+                if ($model->save()) {
+                    // Upload de NOVAS imagens (se existirem)
+                    if (count($model->imageFiles) > 0) {
+                        $basePath = Yii::getAlias('@frontend/web/uploads/animals/' . $model->id);
+                        if (!is_dir($basePath)) { mkdir($basePath, 0777, true); }
+
+                        foreach ($model->imageFiles as $file) {
+                            $filename = uniqid() . '.' . $file->extension;
+                            $path = $basePath . '/' . $filename;
+                            if ($file->saveAs($path)) {
+                                $fileDb = new File();
+                                $fileDb->animal_id = $model->id;
+                                $fileDb->user_id = $model->user_id;
+                                $fileDb->type_id = 1;
+                                $fileDb->path = '/uploads/animals/' . $model->id . '/' . $filename;
+                                $fileDb->created_at = date('Y-m-d H:i:s');
+                                $fileDb->save(false);
+                            }
+                        }
+                    }
+
+                    Yii::$app->session->setFlash('success', 'Atualizado com sucesso.');
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
-            'sizes' => $sizes,
-            'breeds' => $breeds,
+            'existingImages' => $existingImages,
             'animalTypes' => $animalTypes,
+            'breedsByType' => $breedsByType,
+            'idades' => $idades,
+            'portes' => $portes,
+            'vacinas' => $vacinas,
             'users' => $users,
-            'vaccines' => $vaccines,
-            'ages' => $ages,
         ]);
     }
 
-    public function actionDelete($id)
-    {
+    public function actionDelete($id) {
         $model = $this->findModel($id);
 
         if ($model->listing) {
@@ -164,5 +205,24 @@ class AnimalController extends Controller
             return $model;
         }
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionDeleteImage($id, $animal_id)
+    {
+        $fileDb = File::findOne($id);
+
+        if ($fileDb) {
+            $frontendPath = dirname(dirname(__DIR__)) . '/frontend/web';
+            $filePath = $frontendPath . $fileDb->path;
+
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+
+            $fileDb->delete();
+            Yii::$app->session->setFlash('success', 'Imagem apagada com sucesso.');
+        }
+
+        return $this->redirect(['update', 'id' => $animal_id]);
     }
 }

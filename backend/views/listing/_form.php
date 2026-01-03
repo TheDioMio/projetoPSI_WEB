@@ -1,12 +1,17 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
 /** @var common\models\Listing $listingModel */
 /** @var common\models\Animal $animalModel */
 /** @var yii\widgets\ActiveForm $form */
+
+$currentBaseUrl = Url::base();
+$frontendBaseUrl = str_replace('/backend/web', '/frontend/web', $currentBaseUrl);
+
 ?>
 
     <div class="listing-form">
@@ -69,19 +74,57 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($animalModel, 'description')->textarea(['rows' => 4])->label('Descrição do Animal') ?>
 
-                <div class="form-group border p-3 bg-light rounded">
-                    <label>Fotografias</label>
-                    <?= $form->field($animalModel, 'imageFiles[]')->fileInput(['multiple' => true, 'accept' => 'image/*'])->label(false) ?>
+                <div class="form-group border p-3 bg-light rounded shadow-sm">
+                    <label class="font-weight-bold">Fotografias</label>
+
+                    <div class="mb-3">
+                        <?= $form->field($animalModel, 'imageFiles[]')->fileInput([
+                            'multiple' => true,
+                            'accept' => 'image/*',
+                            'class' => 'form-control-file'
+                        ])->label(false) ?>
+                    </div>
+
+                    <hr>
 
                     <?php if(isset($existingImages) && count($existingImages) > 0): ?>
-                        <div class="row mt-2">
+                        <label class="mb-2">Imagens Atuais:</label>
+                        <div class="row">
                             <?php foreach($existingImages as $img): ?>
-                                <div class="col-2"><img src="<?= Yii::getAlias('@frontendUrl') . $img->path ?>" class="img-thumbnail"></div>
+                                <?php
+                                // Lógica do URL
+                                $imageSrc = $frontendBaseUrl . $img->path;
+                                ?>
+
+                                <div class="col-6 col-md-3 col-lg-2 mb-3">
+                                    <div class="card h-100 shadow-sm">
+                                        <div class="card-body p-1 d-flex align-items-center justify-content-center bg-white" style="height: 120px;">
+                                            <?= Html::img($imageSrc, [
+                                                'class' => 'img-fluid',
+                                                'style' => 'max-height: 100%; object-fit: contain;',
+                                            ]) ?>
+                                        </div>
+
+                                        <div class="card-footer p-2 text-center bg-light border-0">
+                                            <?= Html::a('<i class="fas fa-trash"></i>',
+                                                ['delete-image', 'id' => $img->id, 'listing_id' => $listingModel->id],
+                                                [
+                                                    'class' => 'btn btn-danger btn-xs btn-block',
+                                                    'data' => [
+                                                        'confirm' => 'Tem a certeza que pretende apagar esta imagem? A página será recarregada.',
+                                                        'method' => 'post', // Isto garante segurança e envia como POST
+                                                    ],
+                                                ])
+                                            ?>
+                                        </div>
+                                    </div>
+                                </div>
                             <?php endforeach; ?>
                         </div>
+                    <?php else: ?>
+                        <p class="text-muted font-italic">Não existem fotografias carregadas.</p>
                     <?php endif; ?>
                 </div>
-
             </div>
         </div>
 

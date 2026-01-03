@@ -76,18 +76,18 @@ class ApplicationSearch extends Application
         $query->andFilterWhere([
             'application.id' => $this->id,
             'application.status' => $this->status,
-            'application.created_at' => $this->created_at,
             'user_id' => $this->user_id,
             'animal_id' => $this->animal_id,
             'type' => $this->type,
             'target_user_id' => $this->target_user_id,
         ]);
 
-        $query->andFilterWhere(['like', 'description', $this->description])
+        $query->andFilterWhere(['like', 'application.description', $this->description])
             ->andFilterWhere(['like', 'data', $this->data]);
 
 
 
+        $query->andFilterWhere(['like', 'application.created_at', $this->created_at]);
         $query->andFilterWhere(['like', Animal::tableName() . '.name', $this->animal_name]);
         $query->andFilterWhere(['like', 'candidateUser.name', $this->candidate_name]);
         $query->andFilterWhere(['like', 'ownerUser.name', $this->animal_owner_name]);

@@ -38,13 +38,13 @@ YiiAsset::register($this);
         <div class="col-md-4">
             <div class="card card-primary card-outline shadow-sm">
                 <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-id-card"></i><?=Html::encode('Resumo')?></h3>
+                    <h3 class="card-title"><i class="fas fa-id-card mr-1"></i><?=Html::encode('Resumo')?></h3>
                 </div>
                 <div class="card-body box-profile">
                     <div class="text-center mb-3">
                         <span class="img-circle elevation-2 d-inline-flex align-items-center justify-content-center bg-light" style="width: 80px; height: 80px; font-size: 2rem;">
                             <?php if ($avatar == null): ?>
-                                <span class="fa-stack fa-4x">
+                                <span class="fa-stack">
                                     <i class="fas fa-circle fa-stack-2x text-light"></i>
                                     <i class="fas fa-user fa-stack-1x text-secondary"></i>
                                 </span>

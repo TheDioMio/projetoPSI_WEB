@@ -18,6 +18,7 @@ use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 use yii\web\UploadedFile;
 
 class ListingController extends Controller
@@ -182,8 +183,7 @@ class ListingController extends Controller
         ]);
     }
 
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id) {
         $listingModel = $this->findModel($id);
         $animalModel = $listingModel->animal;
         $animalModel->scenario = 'update';
@@ -280,5 +280,30 @@ class ListingController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionDeleteImage($id, $listing_id){
+        $fileDb = File::findOne($id);
+
+        if ($fileDb) {
+            // Calcular caminho físico
+            $frontendPath = dirname(dirname(__DIR__)) . '/frontend/web';
+            $filePath = $frontendPath . $fileDb->path;
+
+            //Apagar do disco
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+
+            //Apagar da Base de Dados
+            $fileDb->delete();
+
+            Yii::$app->session->setFlash('success', 'Imagem apagada com sucesso.');
+        } else {
+            Yii::$app->session->setFlash('error', 'Imagem não encontrada.');
+        }
+
+        //Redirecionar de volta para a página de edição
+        return $this->redirect(['update', 'id' => $listing_id]);
     }
 }

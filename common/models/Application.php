@@ -136,6 +136,7 @@ class Application extends ActiveRecord
             self::STATUS_IN_REVIEW => [
                 self::STATUS_APPROVED,
                 self::STATUS_REJECTED,
+                self::STATUS_CANCELLED,
             ],
             // NÃO têm transições
             self::STATUS_APPROVED  => [],
@@ -236,7 +237,13 @@ class Application extends ActiveRecord
         }
 
         $this->status = self::STATUS_CANCELLED;
-        return $this->save(false);
+        $this->statusDate = date('Y-m-d');
+
+        if (!$this->save(false)) {
+            return false;
+        }
+
+        return true;
     }
 
     protected function sendStatusMessage($subject, $text)

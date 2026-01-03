@@ -40,18 +40,18 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <!-- ESQUERDA -->
                                 <div>
                                     <h4 class="mb-2">
-                                        Candidatura
+                                        <?=Html::encode('Candidatura')?>
                                     </h4>
 
                                     <div class="text-muted small mb-2">
                                         <i class="bi bi-calendar-event me-1"></i>
-                                        Submetida em
+                                        <?=Html::encode('Submetida em')?>
                                         <?= Yii::$app->formatter->asDatetime($model->created_at, 'php:d/m/Y H:i') ?>
                                     </div>
 
                                     <div class="text-muted small">
                                         <i class="bi bi-heart me-1"></i>
-                                        Animal:
+                                        <?=Html::encode('Animal:')?>
                                         <strong><?= Html::encode($model->animal->name ?? '—') ?></strong>
                                     </div>
                                 </div>
@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                 <div class="text-end">
                                     <div class="mb-1 text-muted small">
-                                        Estado atual
+                                        <?=Html::encode('Estado atual')?>
                                     </div>
 
                                     <?php
@@ -68,6 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                         Application::STATUS_REJECTED  => 'danger',
                                         Application::STATUS_IN_REVIEW => 'warning',
                                         Application::STATUS_CANCELLED => 'secondary',
+                                        Application::STATUS_SENT => 'warning',
                                         default                       => 'primary',
                                     };
                                     ?>
@@ -135,7 +136,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="col-md-4">
                                     <div class="fw-semibold text-muted small">Crianças em casa</div>
                                     <div>
-                    <span class="badge bg-secondary">
+                    <span class="badge <?= ($model->data['children'] ?? null) ? 'bg-success' : 'bg-danger' ?>">
                         <?= Html::encode($model->getYesNoLabel($model->data['children'] ?? null)) ?>
                     </span>
                                     </div>
@@ -190,55 +191,58 @@ $this->params['breadcrumbs'][] = $this->title;
                     <!-- BOTÕES -->
                     <div class="d-flex justify-content-between mt-4">
 
-                        <!-- Voltar -->
                         <?= Html::a('Voltar',
-                            [$isInbox ? 'inbox' : 'outbox'],
+                            [$box === 'inbox' ? 'inbox' : 'outbox'],
                             ['class' => 'btn btn-outline-secondary']
                         ) ?>
 
+                        <?php
+                        $userId = Yii::$app->user->id;
+                        $isOwner = ($userId == $model->target_user_id); // Sou o dono do animal?
+                        $isCandidate = ($userId == $model->user_id);    // Sou quem se candidatou?
+                        ?>
 
-                            <?php if ($box === 'inbox' && $model->status === Application::STATUS_IN_REVIEW): ?>
-                                <?php if(Yii::$app->user->id == $model->target_user_id):?>
-                                    <?= Html::a(
-                                        '<i class="bi bi-check-circle"></i> Aprovar',
-                                        ['application/approve', 'id' => $model->id],
-                                        [
-                                            'class' => 'btn btn-success',
-                                            'data' => [
-                                                'confirm' => 'Tem a certeza que quer aprovar esta candidatura?',
-                                                'method' => 'post',
-                                            ],
-                                        ]
-                                    ) ?>
-
-                                    <?= Html::a(
-                                        '<i class="bi bi-x-circle"></i> Reprovar',
-                                        ['application/reject', 'id' => $model->id],
-                                        [
-                                            'class' => 'btn btn-danger',
-                                            'data' => [
-                                                'confirm' => 'Tem a certeza que quer reprovar esta candidatura?',
-                                                'method' => 'post',
-                                            ],
-                                        ]
-                                    ) ?>
-                                <?php endif; ?>
-                            <?php elseif ($box === 'outbox' && $model->status === Application::STATUS_IN_REVIEW): ?>
-
+                        <?php if ($isOwner && ($model->status === Application::STATUS_SENT || $model->status === Application::STATUS_IN_REVIEW)): ?>                            <div>
                                 <?= Html::a(
-                                    '<i class="bi bi-slash-circle"></i> Cancelar candidatura',
-                                    ['application/cancel', 'id' => $model->id],
+                                    '<i class="bi bi-x-circle"></i> Rejeitar',
+                                    ['application/reject', 'id' => $model->id],
                                     [
-                                        'class' => 'btn btn-warning',
+                                        'class' => 'btn btn-danger me-2',
                                         'data' => [
-                                            'confirm' => 'Tem a certeza que quer cancelar esta candidatura?',
+                                            'confirm' => 'Tem a certeza que quer rejeitar esta candidatura?',
                                             'method' => 'post',
                                         ],
                                     ]
                                 ) ?>
 
-                            <?php endif; ?>
+                                <?= Html::a(
+                                    '<i class="bi bi-check-circle"></i> Aprovar',
+                                    ['application/approve', 'id' => $model->id],
+                                    [
+                                        'class' => 'btn btn-success',
+                                        'data' => [
+                                            'confirm' => 'Tem a certeza que quer aprovar esta candidatura?',
+                                            'method' => 'post',
+                                        ],
+                                    ]
+                                ) ?>
+                            </div>
 
+                        <?php elseif ($isCandidate && ($model->status === Application::STATUS_SENT || $model->status === Application::STATUS_IN_REVIEW)): ?>
+
+                            <?= Html::a(
+                                '<i class="bi bi-slash-circle"></i> Cancelar candidatura',
+                                ['application/cancel', 'id' => $model->id],
+                                [
+                                    'class' => 'btn btn-warning',
+                                    'data' => [
+                                        'confirm' => 'Tem a certeza que quer cancelar esta candidatura?',
+                                        'method' => 'post',
+                                    ],
+                                ]
+                            ) ?>
+
+                        <?php endif; ?>
 
                     </div>
 

@@ -23,12 +23,13 @@ $this->params['breadcrumbs'][] = 'Update';
         <div class="card-body">
             <?= $this->render('_form', [
                 'model' => $model,
-                'sizes' => $sizes,
-                'breeds' => $breeds,
+                'existingImages' => $existingImages,
                 'animalTypes' => $animalTypes,
+                'breedsByType' => $breedsByType,
+                'idades' => $idades,
+                'portes' => $portes,
+                'vacinas' => $vacinas,
                 'users' => $users,
-                'vaccines' => $vaccines,
-                'ages' => $ages,
             ]) ?>
         </div>
     </div>

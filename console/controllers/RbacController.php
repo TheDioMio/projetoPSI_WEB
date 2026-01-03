@@ -131,6 +131,7 @@ class RbacController extends Controller
         $auth->addChild($user, $applicationManeger);
         $auth->addChild($user, $animalsManager);
         $auth->addChild($user, $updatePost);
+        $auth->addChild($user, $applyUserPro);
 
         $auth->addChild($user, $createComment);
         $auth->addChild($user, $updateComment);
