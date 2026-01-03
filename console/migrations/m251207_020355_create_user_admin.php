@@ -1,6 +1,5 @@
 <?php
 
-
 use yii\db\Migration;
 
 class m251207_020355_create_user_admin extends Migration
@@ -18,13 +17,14 @@ class m251207_020355_create_user_admin extends Migration
             return true;
         }
 
-        // Criar user diretamente na BD
+        // Criar user com TODOS os campos obrigatórios
         $this->insert('user', [
             'id' => 1,
             'username' => 'admin',
             'name' => 'admin',
             'email' => 'admin@example.com',
-            'auth_key' => $this->generateRandomString(), // 32 chars
+            'address' => 'Admin Address', // ← CAMPO OBRIGATÓRIO
+            'auth_key' => $this->generateRandomString(),
             'password_hash' => Yii::$app->security->generatePasswordHash('123456789'),
             'status' => 10,
             'created_at' => time(),
@@ -42,13 +42,11 @@ class m251207_020355_create_user_admin extends Migration
         return true;
     }
 
-    // Função auxiliar para auth_key
     private function generateRandomString($length = 32)
     {
         return Yii::$app->security->generateRandomString($length);
     }
 }
-
 
 
 
