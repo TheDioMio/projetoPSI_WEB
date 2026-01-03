@@ -12,7 +12,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="card card-outline card-primary shadow-sm">
         <div class="card-header">
             <div class="card-tools float-right">
-                <?= Html::a('<i class="fas fa-plus-circle"></i> Criar Raça', ['create'], ['class' => 'btn btn-success btn-sm']) ?>
+                <?= Html::a('<i class="fas fa-plus-circle"></i>',
+                    ['create'],
+                    ['class' => 'btn btn-success'])
+                ?>
             </div>
         </div>
         <div class="card-body p-0">
@@ -32,6 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'value' => 'animalType.description',
                     ],
                     [
+                        'template' => '{update} {delete}',
                         'class' => ActionColumn::class,
                         'urlCreator' => function ($action, Breed $model, $key, $index, $column) {
                             return Url::toRoute([$action, 'id' => $model->id]);

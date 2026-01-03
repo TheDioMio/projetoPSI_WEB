@@ -9,7 +9,14 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="card card-outline card-success shadow-sm">
         <div class="card-header">
             <div class="card-tools">
-                <?= Html::a('<i class="fas fa-arrow-left"></i> Voltar à Lista', ['index'], ['class' => 'btn btn-default btn-sm']) ?>
+                <?= Html::a('<i class="fas fa-arrow-left"></i>',
+                    ['index'],
+                    [
+                        'class' => 'btn btn-outline-secondary mr-1',
+                        'title' => 'Voltar',
+                    ],
+                )
+                ?>
             </div>
         </div>
         <div class="card-body">

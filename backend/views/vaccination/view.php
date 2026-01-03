@@ -12,7 +12,7 @@ YiiAsset::register($this);
     <div class="card card-outline card-primary shadow-sm">
         <div class="card-header">
             <div class="card-tools float-right">
-                <?= Html::a('<i class="fas fa-arrow-left"></i> Voltar à Lista', ['index'], ['class' => 'btn btn-default btn-sm']) ?>
+                <?= Html::a('<i class="fas fa-arrow-left"></i>', ['index'], ['class' => 'btn btn-default btn-sm']) ?>
                 <?= Html::a('Delete', ['delete', 'id' => $model->id], [
                     'class' => 'btn btn-danger btn-sm',
                     'data' => [

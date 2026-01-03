@@ -28,15 +28,42 @@ YiiAsset::register($this);
             </p>
         </div>
         <div>
-            <?= Html::a('<i class="fas fa-arrow-left"></i> Voltar', ['index'], ['class' => 'btn btn-outline-secondary mr-1']) ?>
-            <?= Html::a('<i class="fas fa-edit"></i> Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary mr-1']) ?>
-            <?= Html::a('<i class="fas fa-trash"></i> Apagar', ['delete', 'id' => $model->id], [
-                'class' => 'btn btn-danger',
-                'data' => [
-                    'confirm' => 'Tem a certeza que deseja eliminar este utilizador?',
-                    'method' => 'post',
+            <?= Html::a('<i class="fas fa-arrow-left"></i>',
+                ['index'],
+                [
+                    'class' => 'btn btn-outline-secondary mr-1',
+                    'title' => 'Voltar',
                 ],
-            ]) ?>
+            )
+            ?>
+
+            <?= Html::a('<i class="fas fa-edit"></i>',
+                ['update', 'id' => $model->id],
+                [
+                    'class' => 'btn btn-primary mr-1',
+                    'title' => 'Editar',
+                ],
+            )
+            ?>
+            <!--            Ocultar o botão de delete para conta logada não se conseguir apagar a si mesma-->
+            <?php if($model->id == Yii::$app->user->id) {
+                echo Html::a('<i class="fas fa-trash"></i>', ['delete', '#'], [
+                    'class' => 'btn btn-danger',
+                    'title' => 'Apagar',
+                    'onclick' => 'return false;',
+                    'style' => 'opacity: 0.5; cursor: not-allowed;',
+                ]);
+                } else {
+                echo Html::a('<i class="fas fa-trash"></i>', ['delete', 'id' => $model->id], [
+                    'class' => 'btn btn-danger',
+                    'title' => 'Apagar',
+                    'data' => [
+                        'confirm' => 'Tem a certeza que deseja apagar este utilizador?',
+                        'method' => 'post',
+                    ],
+                ]);
+            }
+            ?>
         </div>
     </div>
 

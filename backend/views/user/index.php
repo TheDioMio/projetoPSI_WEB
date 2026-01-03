@@ -14,7 +14,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="card card-outline card-primary shadow-sm">
         <div class="card-header">
             <div class="card-tools float-right">
-                <?= Html::a('<i class="fas fa-plus-circle"></i> Criar Utilizador', ['create'], ['class' => 'btn btn-success btn-sm']) ?>
+                <?= Html::a('<i class="fas fa-plus-circle"></i>',
+                    ['create'],
+                    [
+                        'class' => 'btn btn-success',
+                        'title' => 'Criar',
+                    ])
+                ?>
             </div>
         </div>
         <div class="card-body p-0">
@@ -24,10 +30,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'tableOptions' => ['class' => 'table table-hover table-striped table-sm'],
                 'layout' => "{items}\n{summary}\n{pager}",
                 'columns' => [
-                    [
-                        'label' => 'ID',
-                        'attribute' => 'id',
-                    ],
                     'username',
                     'email:email',
                     [
@@ -81,7 +83,17 @@ $this->params['breadcrumbs'][] = $this->title;
                         'class' => ActionColumn::className(),
                         'urlCreator' => function ($action, User $model) {
                             return Url::toRoute([$action, 'id' => $model->id]);
-                        }
+                        },
+                        //Esconde o botão de delete no próprio user.
+                        'visibleButtons' => [
+                            'delete' => function ($model) use ($userLogado) {
+                                if($model->id != $userLogado->id){
+                                    return $model->id;
+                                }
+                                return;
+                            },
+                            // Podes fazer o mesmo para 'update' ou 'view' se precisares
+                        ],
                     ],
                 ],
             ]); ?>

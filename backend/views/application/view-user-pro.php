@@ -16,8 +16,24 @@ YiiAsset::register($this);
 ?>
 <div class="application-view-user-pro">
     <div class="mb-3 text-right">
-        <?= Html::a('<i class="fas fa-arrow-left"></i> Voltar à Lista', ['index-user-pro'],
-            ['class' => 'btn btn-default']) ?>
+        <?= Html::a('<i class="fas fa-arrow-left"></i>',
+            ['index'],
+            [
+                'class' => 'btn btn-outline-secondary mr-1',
+                'title' => 'Voltar',
+            ],
+        )
+        ?>
+
+        <?= Html::a('<i class="fas fa-trash"></i>',
+            ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger mr-1',
+                'title' => 'Apagar',
+                'data' => [
+                    'confirm' => 'Tem a certeza que deseja apagar esta candidatura?',
+                    'method' => 'post',
+                ],
+            ]) ?>
     </div>
 
     <div class="row">

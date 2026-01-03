@@ -13,14 +13,25 @@ YiiAsset::register($this);
     <div class="card card-outline card-primary shadow-sm">
         <div class="card-header">
             <div class="card-tools float-right">
-                <?= Html::a('<i class="fas fa-arrow-left"></i> Voltar à Lista', ['index'], ['class' => 'btn btn-default btn-sm']) ?>
-                <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-                    'class' => 'btn btn-danger btn-sm',
-                    'data' => [
-                        'confirm' => 'Tem a certeza que deseja eliminar este comentário?',
-                        'method' => 'post',
+                <?= Html::a('<i class="fas fa-arrow-left"></i>',
+                    ['index'],
+                    [
+                        'class' => 'btn btn-outline-secondary mr-1',
+                        'title' => 'Voltar',
                     ],
-                ]) ?>
+                )
+                ?>
+
+                <?= Html::a('<i class="fas fa-trash"></i>',
+                    ['delete', 'id' => $model->id],
+                    [
+                        'class' => 'btn btn-danger',
+                        'title' => 'Apagar',
+                        'data' => [
+                            'confirm' => 'Tem a certeza que deseja apagar este comentário?',
+                            'method' => 'post',
+                        ],
+                    ]) ?>
             </div>
         </div>
 

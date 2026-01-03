@@ -15,7 +15,7 @@ use yii\widgets\ActiveForm;
 
         <div class="card card-primary">
             <div class="card-header">
-                <h3 class="card-title">Dados do Animal</h3>
+                <h3 class="card-title"><?=Html::encode('Dados do Animal')?></h3>
             </div>
             <div class="card-body">
 
@@ -87,7 +87,7 @@ use yii\widgets\ActiveForm;
 
         <div class="card card-success mt-3">
             <div class="card-header">
-                <h3 class="card-title">Dados do Anúncio</h3>
+                <h3 class="card-title"><?=Html::encode('Dados do Anúncio')?></h3>
             </div>
             <div class="card-body">
                 <?= $form->field($listingModel, 'description')->textarea(['rows' => 4])->label('Texto do Anúncio (Listing)') ?>
@@ -100,7 +100,7 @@ use yii\widgets\ActiveForm;
         </div>
 
         <div class="form-group mt-3">
-            <?= Html::submitButton('Guardar Tudo', ['class' => 'btn btn-success btn-lg btn-block']) ?>
+            <?= Html::submitButton('Guardar', ['class' => 'btn btn-success btn-lg btn-block']) ?>
         </div>
 
         <?php ActiveForm::end(); ?>

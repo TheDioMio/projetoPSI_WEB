@@ -13,12 +13,28 @@ YiiAsset::register($this);
     <div class="card card-outline card-primary shadow-sm">
         <div class="card-header">
             <div class="card-tools float-right">
-                <?= Html::a('<i class="fas fa-arrow-left"></i> Voltar', ['index'], ['class' => 'btn btn-outline-secondary mr-1']) ?>
-                <?= Html::a('<i class="fas fa-edit"></i> Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary mr-1']) ?>
-                <?= Html::a('<i class="fas fa-trash"></i> Apagar', ['delete', 'id' => $model->id], [
-                    'class' => 'btn btn-danger',
+                <?= Html::a('<i class="fas fa-arrow-left"></i>',
+                    ['index'],
+                    [
+                        'class' => 'btn btn-outline-secondary mr-1',
+                        'title' => 'Voltar',
+                    ],
+                )
+                ?>
+                <?= Html::a('<i class="fas fa-edit"></i>',
+                    ['update', 'id' => $model->id],
+                    [
+                        'class' => 'btn btn-primary mr-1',
+                        'title' => 'Editar',
+                    ],
+                )
+                ?>
+                <?= Html::a('<i class="fas fa-trash"></i>',
+                    ['delete', 'id' => $model->id], [
+                    'class' => 'btn btn-danger mr-1',
+                    'title' => 'Apagar',
                     'data' => [
-                        'confirm' => 'Tem a certeza que deseja eliminar esta idade?',
+                        'confirm' => 'Tem a certeza que deseja apagar esta idade?',
                         'method' => 'post',
                     ],
                 ]) ?>

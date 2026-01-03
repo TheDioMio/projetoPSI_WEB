@@ -17,7 +17,13 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="card card-outline card-primary shadow-sm">
         <div class="card-header">
             <div class="card-tools float-right">
-                <?= Html::a('<i class="fas fa-plus-circle"></i> Criar Listagem', ['create'], ['class' => 'btn btn-success btn-sm']) ?>
+                <?= Html::a('<i class="fas fa-plus-circle"></i>',
+                    ['create'],
+                    [
+                        'class' => 'btn btn-success',
+                        'title' => 'Criar',
+                    ])
+                ?>
             </div>
         </div>
         <div class="card-body p-0">

@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /** @var common\models\Listing $listingModel */
 /** @var common\models\Animal $animalModel */
 
-$this->title = 'Criar Anúncio e Animal';
+$this->title = 'Criar Listagem';
 $this->params['breadcrumbs'][] = ['label' => 'Listings', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -15,7 +15,14 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="card-header">
             <h3 class="card-title"><?= Html::encode($this->title) ?></h3>
             <div class="card-tools">
-                <?= Html::a('<i class="fas fa-arrow-left"></i> Voltar à Lista', ['index'], ['class' => 'btn btn-default btn-sm']) ?>
+                <?= Html::a('<i class="fas fa-arrow-left"></i>',
+                    ['index'],
+                    [
+                        'class' => 'btn btn-outline-secondary mr-1',
+                        'title' => 'Voltar',
+                    ],
+                )
+                ?>
             </div>
         </div>
         <div class="card-body">

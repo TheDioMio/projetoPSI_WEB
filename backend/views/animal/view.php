@@ -23,12 +23,29 @@ YiiAsset::register($this);
             <p class="text-muted mb-0"><?='ID do Registo: #'. $model->id ?></p>
         </div>
         <div>
-            <?= Html::a('<i class="fas fa-arrow-left"></i> Voltar', ['index'], ['class' => 'btn btn-outline-secondary mr-1']) ?>
-            <?= Html::a('<i class="fas fa-edit"></i> Editar', ['update', 'id' => $model->id], ['class' => 'btn btn-primary mr-1']) ?>
-            <?= Html::a('<i class="fas fa-trash"></i> Apagar', ['delete', 'id' => $model->id], [
+            <?= Html::a('<i class="fas fa-arrow-left"></i>',
+                ['index'],
+                [
+                    'class' => 'btn btn-outline-secondary mr-1',
+                    'title' => 'Voltar',
+                ],
+            )
+            ?>
+            <?= Html::a('<i class="fas fa-edit"></i>',
+                ['update', 'id' => $model->id],
+                [
+                        'class' => 'btn btn-primary mr-1',
+                        'title' => 'Editar',
+                ],
+            )
+            ?>
+            <?= Html::a('<i class="fas fa-trash"></i>',
+                ['delete', 'id' => $model->id],
+                [
                 'class' => 'btn btn-danger',
+                'title' => 'Apagar',
                 'data' => [
-                    'confirm' => 'Tem a certeza que deseja eliminar este animal?',
+                    'confirm' => 'Tem a certeza que deseja apagar este animal?',
                     'method' => 'post',
                 ],
             ]) ?>

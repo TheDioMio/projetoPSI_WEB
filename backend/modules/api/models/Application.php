@@ -86,7 +86,7 @@ class Application extends \common\models\Application {
                 'contact' => fn() => $dataJson['contact'] ?? null,
                 'motive' => fn() => $dataJson['motive'] ?? null,
 
-                // DADOS CONVERTIDOS (INT -> STRING) USANDO NOMES NOVOS
+                // DADOS CONVERTIDOS (INT -> STRING)
                 'home' => function() use ($dataJson) {
                     $val = $dataJson['home'] ?? null;
                     return parent::homeOptions()[$val] ?? null;
@@ -165,7 +165,8 @@ class Application extends \common\models\Application {
         }
     }
 
-    // RELAÇÕES
+
+
     public function getAnimal() {
         return $this->hasOne(Animal::class, ['id' => 'animal_id']);
     }

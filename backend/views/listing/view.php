@@ -16,17 +16,34 @@ YiiAsset::register($this);
     <div class="card card-outline card-primary shadow-sm">
         <div class="card-header">
             <div class="card-tools float-right">
-                <p>
-                    <?= Html::a('<i class="fas fa-arrow-left"></i> Voltar à Lista', ['index'], ['class' => 'btn btn-default btn-sm']) ?>
-                    <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary btn-sm']) ?>
-                    <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-                        'class' => 'btn btn-danger btn-sm',
+                <?= Html::a('<i class="fas fa-arrow-left"></i>',
+                    ['index'],
+                    [
+                        'class' => 'btn btn-outline-secondary mr-1',
+                        'title' => 'Voltar',
+                    ],
+                )
+                ?>
+
+                <?= Html::a('<i class="fas fa-edit"></i>',
+                    ['update', 'id' => $model->id],
+                    [
+                        'class' => 'btn btn-primary mr-1',
+                        'title' => 'Editar',
+                    ],
+                )
+                ?>
+
+                <?= Html::a('<i class="fas fa-trash"></i>',
+                    ['delete', 'id' => $model->id],
+                    [
+                        'class' => 'btn btn-danger',
+                        'title' => 'Apagar',
                         'data' => [
-                            'confirm' => 'Tem a certeza que deseja eliminar esta listagem?',
+                            'confirm' => 'Tem a certeza que deseja apagar esta listagem?',
                             'method' => 'post',
                         ],
                     ]) ?>
-                </p>
             </div>
         </div>
         <div class="card-body">
@@ -35,13 +52,37 @@ YiiAsset::register($this);
                 'attributes' => [
                     [
                         'label' => 'Animal Listado',
-                        'attribute' => 'animal.name',
-
+                        'format' => 'raw',
+                        'value' => function ($model) {
+                            if (!$model->animal) {
+                                return '<span class="text-muted">(Sem animal associado)</span>';
+                            }
+                            return Html::a(
+                                $model->animal->name,
+                                ['animal/view', 'id' => $model->animal->id],
+                                [
+                                    'target' => '_blank',
+                                ]
+                            );
+                        },
                     ],
                     [
                         'label' => 'Autor da Listagem',
-                        'attribute' => 'user.name',
+                        'format' => 'raw',
+                        'value' => function ($model) {
+                            if (!$model->user) {
+                                return '<span class="text-muted">(Sem dono associado)</span>';
+                            }
+                            return Html::a(
+                                $model->user->username, //Texto que aparece no botão (nome do dono)
+                                ['user/view', 'id' => $model->user->id], //A rota para onde vai (backend/user/view)
+                                [
+                                    'target' => '_blank',
+                                ]
+                            );
+                        },
                     ],
+
                     [
                         'label' => 'Descrição',
                         'attribute' => 'description',

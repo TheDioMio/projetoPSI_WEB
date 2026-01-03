@@ -200,8 +200,8 @@ class SiteController extends Controller
         // =========================================================
         // 5. DEMOGRAFIA ETÁRIA & RAÇAS
         // =========================================================
-        $ageStats = Animal::find()->alias('a')->select(['age.description', 'COUNT(a.id) as total'])
-            ->joinWith('age age')->groupBy('a.age_id')->asArray()->all();
+        $ageStats = Animal::find()->alias('a')->select(['animal_age.description', 'COUNT(a.id) as total'])
+            ->joinWith('animalAge')->groupBy('a.age_id')->asArray()->all();
         $ageLabels = array_column($ageStats, 'description');
         $ageData = array_column($ageStats, 'total');
 

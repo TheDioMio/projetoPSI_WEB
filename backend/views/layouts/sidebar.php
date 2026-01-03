@@ -43,7 +43,14 @@ if ($userLogado->profileImage) {
                 <?php endif; ?>
             </div>
             <div class="info">
-                <a href="#" class="d-block"><?=$userLogado->username?><a/>
+                <?= Html::a(
+                    $userLogado->username, //Texto que aparece no botão (nome do dono)
+                    ['user/view', 'id' => $userLogado->id], //A rota para onde vai (backend/user/view)
+                    [
+                        'target' => '_blank',
+                    ]
+                );
+                ?>
             </div>
         </div>
 
