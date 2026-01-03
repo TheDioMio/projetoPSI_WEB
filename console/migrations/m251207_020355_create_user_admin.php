@@ -30,7 +30,7 @@ class m251207_020355_create_user_admin extends Migration
             'status' => 10, // STATUS_ACTIVE
             'role_id' => 1, // ROLE_ADMINISTRATOR
             'created_at' => $now,
-            'updated_at' => $now, 
+            'updated_at' => $now,
         ]);
 
         echo "✅ Admin user created successfully!\n";
