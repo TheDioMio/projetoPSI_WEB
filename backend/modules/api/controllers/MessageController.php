@@ -35,6 +35,14 @@ class MessageController extends \yii\rest\ActiveController
         return $behaviors;
     }
 
+    public function afterAction($action, $result)
+    {
+        if ($action->id === 'delete') {
+            return $result; // NÃO deixar o Yii forçar 204
+        }
+
+        return parent::afterAction($action, $result);
+    }
 
     public function actions()
     {
