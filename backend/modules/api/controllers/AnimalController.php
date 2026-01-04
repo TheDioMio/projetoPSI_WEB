@@ -437,7 +437,7 @@ class AnimalController extends ActiveController
             'location' => $animal->location,
 
             // IDs (para spinners)
-            'type_id' => $animal->type_id,
+            'animal_type_id' => $animal->animal_type_id,
             'breed_id' => $animal->breed_id,
             'age_id' => $animal->age_id,
             'size_id' => $animal->size_id,
