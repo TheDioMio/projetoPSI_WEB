@@ -7,6 +7,7 @@ use yii\data\ActiveDataProvider;
 use yii\filters\auth\HttpBearerAuth;
 use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
+use yii\filters\VerbFilter;
 
 class MessageController extends \yii\rest\ActiveController
 {
