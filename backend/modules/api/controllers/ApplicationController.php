@@ -113,12 +113,7 @@ class ApplicationController extends ActiveController {
             throw new ServerErrorHttpException('Erro ao apagar a mensagem.');
         }
 
-        Yii::$app->response->statusCode = 200;
-
-        return [
-            'success' => true,
-            'message' => 'Candidatura apagada com sucesso',
-        ];
+        Yii::$app->response->statusCode = 204;
     }
 
     public function actionCreate() {
