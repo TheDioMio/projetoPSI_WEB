@@ -35,14 +35,6 @@ class MessageController extends \yii\rest\ActiveController
         return $behaviors;
     }
 
-    public function afterAction($action, $result)
-    {
-        if ($action->id === 'delete') {
-            return $result; // NÃO deixar o Yii forçar 204
-        }
-
-        return parent::afterAction($action, $result);
-    }
 
     public function actions()
     {
@@ -148,12 +140,7 @@ class MessageController extends \yii\rest\ActiveController
             throw new \yii\web\ServerErrorHttpException('Erro ao apagar a mensagem.');
         }
 
-        Yii::$app->response->statusCode = 200;
-
-        return [
-            'success' => true,
-            'message' => 'Mensagem apagada com sucesso'
-        ];
+        Yii::$app->response->statusCode = 204;
     }
 
 
