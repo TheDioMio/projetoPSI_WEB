@@ -361,6 +361,4 @@ obj/
 
 # End of https://www.toptal.com/developers/gitignore/api/android,androidstudio,phpstorm,yii2,composer,java,visualstudiocode
 
-frontend/web/uploads/animal/
-
-frontend/web/uploads/animals/67/694801969915a.png
+frontend/web/uploads/
