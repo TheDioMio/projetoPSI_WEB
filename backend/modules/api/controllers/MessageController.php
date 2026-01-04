@@ -19,6 +19,18 @@ class MessageController extends \yii\rest\ActiveController
         $behaviors['authenticator'] = [
             'class' => HttpBearerAuth::className(),
         ];
+
+        $behaviors['verbs'] = [
+            'class' => VerbFilter::class,
+            'actions' => [
+                'index'  => ['GET'],
+                'view'   => ['GET'],
+                'create' => ['POST'],
+                'update' => ['PUT', 'PATCH'],
+                //'delete' => ['DELETE'],
+            ],
+        ];
+
         return $behaviors;
     }
 
@@ -128,6 +140,11 @@ class MessageController extends \yii\rest\ActiveController
         }
 
         Yii::$app->response->statusCode = 204;
+
+        return [
+            'success' => true,
+            'message' => 'Mensagem apagada com sucesso'
+        ];
     }
 
 
