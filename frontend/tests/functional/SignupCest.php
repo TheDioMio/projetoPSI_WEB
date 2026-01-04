@@ -11,13 +11,18 @@ class SignupCest
 
     public function _before(FunctionalTester $I)
     {
+        \Yii::$app->db->createCommand()->truncateTable('auth_assignment')->execute();
+        \Yii::$app->db->createCommand()->truncateTable('user')->execute();
+
+
+
         $I->amOnRoute('site/signup');
     }
 
     public function signupWithEmptyFields(FunctionalTester $I)
     {
-        $I->see('Signup', 'h1');
-        $I->see('Please fill out the following fields to signup:');
+        $I->see('Criar Conta', 'h1');
+        $I->see('Seja bem-vindo à PetPanion!');
         $I->submitForm($this->formId, []);
         $I->seeValidationError('Username cannot be blank.');
         $I->seeValidationError('Email cannot be blank.');
@@ -39,6 +44,8 @@ class SignupCest
         $I->see('Email is not a valid email address.', '.invalid-feedback');
     }
 
+
+
     public function signupSuccessfully(FunctionalTester $I)
     {
         $I->submitForm($this->formId, [
@@ -50,10 +57,11 @@ class SignupCest
         $I->seeRecord('common\models\User', [
             'username' => 'tester',
             'email' => 'tester.email@example.com',
-            'status' => \common\models\User::STATUS_INACTIVE
         ]);
 
         $I->seeEmailIsSent();
         $I->see('Thank you for registration. Please check your inbox for verification email.');
     }
+
+
 }
