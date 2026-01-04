@@ -89,6 +89,8 @@ class User extends ActiveRecord implements IdentityInterface
             ['name', 'string', 'max' => 120],
             ['password', 'required', 'on' => 'create'], // senha obrigatória ao criar
             ['password', 'string', 'min' => 6],
+            ['address', 'default', 'value' => 'Sem endereço'],
+            ['updated_at', 'default', 'value' => new \yii\db\Expression('NOW()')],
             [['username', 'email'], 'string', 'max' => 255],
             ['role_id', 'integer'],
             [['role_id'], 'exist', 'skipOnError' => true, 'targetClass' => Role::class, 'targetAttribute' => ['role_id' => 'id']],

@@ -115,7 +115,7 @@ class UserController extends ActiveController
             'name' => $user->name,
             'email' => $user->email,
             'address' => $user->address,
-            'avatar' =>$user->profileImage->path,
+            'avatar' => $user->profileImage ? $user->profileImage->path : null,
         ];
     }
 
