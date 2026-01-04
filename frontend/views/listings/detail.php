@@ -101,11 +101,6 @@ $i = 0;
                  style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
             <span><?= Html::encode($model->user->name) ?></span>
 
-            <iframe class="position-relative w-100 mb-5"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d565.315930341978!2d-8.796304639772064!3d39.730868391230864!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd2273a5f1339db1%3A0xbf6fd68c4f4fcccd!2sAssocia%C3%A7%C3%A3o%20Zo%C3%B3fila%20de%20Leiria%20-%20Fi%C3%A9is%20Amigos!5e1!3m2!1spt-PT!2spt!4v1761435578952!5m2!1spt-PT!2spt"
-                    frameborder="0" style="height: 300px; border:0;" allowfullscreen="" aria-hidden="false"
-                    tabindex="0"></iframe>
-
 <!--            precisa de chave da api da google, mas localizava logo o address do user-->
             <?php ?>
             <?php if ( $model->location) : ?>
