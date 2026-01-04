@@ -140,7 +140,7 @@ class MessageController extends \yii\rest\ActiveController
             throw new \yii\web\ServerErrorHttpException('Erro ao apagar a mensagem.');
         }
 
-        Yii::$app->response->statusCode = 204;
+        Yii::$app->response->statusCode = 200;
 
         return [
             'success' => true,
