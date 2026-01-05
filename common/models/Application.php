@@ -420,7 +420,7 @@ class Application extends ActiveRecord
 
         foreach ($requiredFields as $key => $label) {
             if (!isset($this->$attribute[$key]) || trim((string)$this->$attribute[$key]) === '') {
-                
+
                 $this->addError("{$attribute}[{$key}]", "$label não pode estar vazio.");
             }
         }

@@ -194,15 +194,13 @@ AppAsset::register($this);
             </div>
 
             <div class="col-12 text-center text-body">
-                <a class="text-body" href="">Termos & Condições</a>
+                <?= Html::a('Termos & Condições', ['site/terms'], ['class' => 'text-body']) ?>
                 <span class="mx-1">|</span>
-                <a class="text-body" href="">Política de Privacidade</a>
+                <?= Html::a('Política de Privacidade', ['site/privacy'], ['class' => 'text-body']) ?>
                 <span class="mx-1">|</span>
-                <a class="text-body" href="">Apoio ao Cliente</a>
+                <?= Html::a('Apoio ao Cliente', ['site/contact'], ['class' => 'text-body']) ?>
                 <span class="mx-1">|</span>
-                <a class="text-body" href="">Ajuda</a>
-                <span class="mx-1">|</span>
-                <a class="text-body" href="">FAQs</a>
+                <?= Html::a('FAQs', ['site/faq'], ['class' => 'text-body']) ?>
             </div>
         </div>
     </div>

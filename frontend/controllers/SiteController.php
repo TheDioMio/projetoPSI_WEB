@@ -37,7 +37,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'except' => ['error', 'index', 'about', 'contact'],
+                'except' => ['error', 'index', 'about', 'contact', 'faq','privacy', 'terms'],
                 'rules' => [
                     [
                         'actions' => [
@@ -325,5 +325,20 @@ class SiteController extends Controller
         return $this->render('resendVerificationEmail', [
             'model' => $model
         ]);
+    }
+
+    public function actionFaq()
+    {
+        return $this->render('faq');
+    }
+
+    public function actionPrivacy()
+    {
+        return $this->render('privacy');
+    }
+
+    public function actionTerms()
+    {
+        return $this->render('terms');
     }
 }
