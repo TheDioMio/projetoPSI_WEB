@@ -289,7 +289,7 @@ $this->title = 'Início';
                 <p class="text-white mb-4"><?=Html::encode('Sabemos que a vida muda. A nossa plataforma ajuda-o a encontrar uma nova família responsável para o seu companheiro.')?></p>
                 <?= Html::a(
                     'Criar Anúncio',
-                    ['/site/create-listing'],
+                    ['/listings/create-listing'],
                     ['class' => 'btn btn-light py-md-3 px-md-5 me-3']
                 ) ?>
             </div>
