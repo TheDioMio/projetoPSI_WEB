@@ -2,6 +2,7 @@
 namespace backend\modules\api\models;
 use common\models\Animal;
 use common\models\User;
+use backend\mosquitto\MosquittoCatcher;
 use Yii;
 
 class Application extends \common\models\Application {
@@ -177,5 +178,37 @@ class Application extends \common\models\Application {
 
     public function getTargetUser() {
         return $this->hasOne(User::class, ['id' => 'target_user_id']);
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        // Se for uma nova candidatura, o alvo da notificação é o dono do animal
+        if ($insert) {
+            $topic = 'users/' . $this->target_user_id . '/applications';
+            $payload = [
+                'event' => 'NEW_APPLICATION',
+                'application_id' => $this->id,
+                'animal' => $this->animal ? $this->animal->name : 'Animal',
+                'message' => 'Nova candidatura recebida!'
+            ];
+        }
+        // Se for uma atualização de estado (Update), o alvo é o candidato
+        else {
+            $topic = 'users/' . $this->user_id . '/applications';
+            $payload = [
+                'event' => 'STATUS_UPDATED',
+                'application_id' => $this->id,
+                'new_status' => $this->getStatusLabel(),
+                'message' => 'O estado da sua candidatura mudou.'
+            ];
+        }
+
+        // Disparar via MosquittoCatcher (o mesmo que usaste nas mensagens)
+        MosquittoCatcher::makePublish(
+            $topic,
+            json_encode($payload, JSON_UNESCAPED_UNICODE)
+        );
     }
 }
