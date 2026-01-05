@@ -73,10 +73,7 @@ class ListingsController extends Controller
         $searchModel = new ListingSearch();
 
         if(array_key_exists('ListingSearch',$this->request->queryParams)){
-            if($this->request->queryParams['ListingSearch']['breed_id']){
-                dd('n tem breed');
-            }
-            dd($this->request->queryParams['ListingSearch']);
+
         }
         $dataProvider = $searchModel->search($this->request->queryParams);
         $dataProvider->pagination->pageSize = 10;
@@ -257,9 +254,6 @@ class ListingsController extends Controller
             if ($model->upload()) {
                 // file is uploaded successfully
                 return $this->goHome();
-            } else {
-                dd('error');
-                return "error";
             }
         }
 
