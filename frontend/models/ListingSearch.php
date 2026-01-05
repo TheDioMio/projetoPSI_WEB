@@ -85,18 +85,16 @@ class ListingSearch extends Listing
             ['like', 'animal.description', $this->q],
         ]);
 
-        // 2. ⚠️ FILTROS DE DROPDOWN (NOVOS)
-        // andFilterWhere ignora automaticamente valores vazios, 0 ou null.
+
         $query->andFilterWhere([
             'animal.animal_type_id' => $this->animal_type_id, // Filtrar pelo campo na tabela 'animal'
             'animal.breed_id' => $this->breed_id,
             'animal.age_id' => $this->animal_age_id,
             'animal.size_id' => $this->animal_size_id,
 
-            // Se as colunas estiverem na tabela 'listing', use assim:
             // 'listing.animal_type_id' => $this->animal_type_id,
 
-            // Assumo que os IDs estão no modelo Animal, o que é mais lógico.
+
         ]);
 
         // grid filtering conditions

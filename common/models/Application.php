@@ -281,6 +281,7 @@ class Application extends ActiveRecord
             [['user_id'], 'required'],
             //animal_id só é obrigatório no cenário de ADOÇÃO (ou default)
             [['animal_id'], 'required', 'on' => [self::SCENARIO_DEFAULT, self::SCENARIO_ADOPTION]],
+            ['data', 'validateAdoptionData', 'on' => [self::SCENARIO_DEFAULT, self::SCENARIO_ADOPTION]],
 
             [['created_at', 'data', 'statusDate'], 'safe'],
             [['description'], 'string', 'min' => 3, 'max' => 120, 'tooShort' => 'O nome é demasiado curto!'],
@@ -403,5 +404,25 @@ class Application extends ActiveRecord
             3 => 'Apenas Fins de Semana',
             4 => 'Apenas por Marcação',
         ];
+    }
+
+    public function validateAdoptionData($attribute, $params)
+    {
+
+        $requiredFields = [
+            'name'      => 'Nome Completo',
+            'age'       => 'Idade',
+            'contact'   => 'Contacto',
+            'home'      => 'Tipo de Habitação',
+            'timeAlone' => 'Horas sozinho',
+            'motive'    => 'Motivação'
+        ];
+
+        foreach ($requiredFields as $key => $label) {
+            if (!isset($this->$attribute[$key]) || trim((string)$this->$attribute[$key]) === '') {
+                
+                $this->addError("{$attribute}[{$key}]", "$label não pode estar vazio.");
+            }
+        }
     }
 }
