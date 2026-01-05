@@ -9,5 +9,9 @@ return [
         'created_at' => '1392559490',
         'updated_at' => '1392559490',
         'email' => 'sfriesen@jenkins.info',
+        'role_id' => 1,
+        'name' => 'Era User',
+        'status' => 10,
+
     ],
 ];

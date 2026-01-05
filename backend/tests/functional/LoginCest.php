@@ -36,6 +36,7 @@ class LoginCest
 
         $I->see('Sign in to start your session');
 
+
         // teste campos vazios
 
         $I->fillField('input[name="LoginForm[username]"]', '');
@@ -57,9 +58,9 @@ class LoginCest
         $I->fillField('input[name="LoginForm[password]"]', 'password_0');
         $I->click('Sign In');
 
-        $I->see('Sair', 'a, button', 'form button[type=submit]');
         $I->dontSeeLink('Login');
         $I->dontSeeLink('Signup');
+        $I->see('Sair', 'a, button', 'form button[type=submit]');
         $I->see('Admin Panel');
         $I->see('Dashboard');
     }

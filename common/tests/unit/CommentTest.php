@@ -40,7 +40,7 @@ class CommentTest extends \Codeception\Test\Unit
         $this->assertFalse($comment->validate(['user_id']));
 
         $comment->listing_id = 18;
-        $comment->user_id = 2;
+        $comment->user_id = 1;
         $comment->text = 'Rua Principal';
 
 
@@ -93,22 +93,12 @@ class CommentTest extends \Codeception\Test\Unit
 
         $comment = new Comment();
         $comment->listing_id = 18;
-        $comment->user_id = 2;
+        $comment->user_id = 1;
         $comment->text = 'comment';
 
         if($save){
             $comment->save();
         }
         return $comment;
-    }
-
-
-
-
-
-    // tests
-    public function testSomeFeature()
-    {
-
     }
 }

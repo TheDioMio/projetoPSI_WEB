@@ -48,7 +48,7 @@ class ListingTest extends \Codeception\Test\Unit
 
        $listing->description = 'teste';
        $listing->animal_id = 1;
-       $listing->user_id = 2;
+       $listing->user_id = 1;
        $listing->views = 123456789;
        $listing->status = 1;
 
@@ -58,12 +58,6 @@ class ListingTest extends \Codeception\Test\Unit
        $this->assertTrue($listing->validate(['user_id']));
        $this->assertTrue($listing->validate(['views']));
        $this->assertTrue($listing->validate(['status']));
-
-    }
-
-    // tests
-    public function testSomeFeature()
-    {
 
     }
 

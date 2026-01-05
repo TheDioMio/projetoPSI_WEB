@@ -28,12 +28,13 @@ class animalTest extends \Codeception\Test\Unit
     public function testValidations()
     {
         $animal = new Animal();
+        $animal->scenario = Animal::SCENARIO_API_CREATE;
 
+        $this->assertFalse($animal->validate());
         $animal->animal_type_id = null;
         $animal->name           = null;
         $animal->age_id         = null;
         $animal->size_id        = null;
-        $animal->user_id        = null;
         $animal->breed_id       = null;
         $animal->vaccination_id = null;
         $animal->location       = null;
@@ -42,7 +43,6 @@ class animalTest extends \Codeception\Test\Unit
         $this->assertFalse($animal->validate(['name']));
         $this->assertFalse($animal->validate(['age_id']));
         $this->assertFalse($animal->validate(['size_id']));
-        $this->assertFalse($animal->validate(['user_id']));
         $this->assertFalse($animal->validate(['breed_id']));
         $this->assertFalse($animal->validate(['vaccination_id']));
         $this->assertFalse($animal->validate(['location']));

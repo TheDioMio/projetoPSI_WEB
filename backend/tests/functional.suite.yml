@@ -3,3 +3,7 @@ actor: FunctionalTester
 modules:
     enabled:
         - Yii2
+        - Db:
+              dsn: 'mysql:host=localhost;dbname=petpaniontest'
+              user: 'root'
+              password: ''
