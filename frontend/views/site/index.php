@@ -167,7 +167,7 @@ $this->title = 'Início';
                         <p class="small mb-2"><?=Html::encode('Conheça as associações parceiras.')?></p>
                         <?= Html::a(
                                 'Conhecer <i class="bi bi-arrow-right"></i>',
-                                ['/site/index'],
+                                ['/partners/shelters'],
                                 ['class' => 'text-primary text-uppercase small fw-bold'])
                         ?>
                     </div>
@@ -182,7 +182,7 @@ $this->title = 'Início';
                         <p class="small mb-2"><?=Html::encode('Conheça as clínicas parceiras.')?></p>
                         <?= Html::a(
                                 'Conhecer <i class="bi bi-arrow-right"></i>',
-                                ['/site/index'],
+                                ['/partners/vets'],
                                 ['class' => 'text-primary text-uppercase small fw-bold'])
                         ?>
                     </div>
