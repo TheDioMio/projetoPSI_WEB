@@ -115,7 +115,7 @@ class MessageController extends Controller
      */
     //user_id é quem vai receber a mensagem
 
-    public function actionCreate($user_id, $from, $listing_id = null)
+    public function actionCreate($user_id, $from, $animal_id = null)
     {
         $receiver = User::findOne($user_id);
         if ($receiver === null) {
@@ -140,9 +140,9 @@ class MessageController extends Controller
                 if ($model->save()) {
                     Yii::$app->session->setFlash('success', 'Mensagem enviada com sucesso!');
 
-                    if ($from === "listing" && $listing_id !== null) {
-                        $listing = Listing::findOne($listing_id);
-                        return $this->redirect(['/listings/detail', 'id' => $listing->animal_id]);
+                    if ($from === "listing" && $animal_id !== null) {
+                        //$listing = Listing::findOne($listing_id);
+                        return $this->redirect(['/listings/detail', 'id' => $animal_id]);
                     } elseif ($from === "inbox") {
                         return $this->redirect(['/message/index', 'user_id' => Yii::$app->user->id]);
                     } else {

@@ -266,7 +266,7 @@ $i = 0;
                     ) ?>
                     <?= Html::a(
                         '<i class="bi bi-arrow-right me-2"></i>Pedir mais Informações <i class="bi bi-input-cursor-text"></i>',
-                        ['message/create', 'user_id' => $model->user_id, "from"=>"listing", "listing_id"=>$model->id],
+                        ['message/create', 'user_id' => $model->user_id, "from"=>"listing", "animal_id"=>$model->id],
                         ['class' => 'h5 bg-light py-2 px-3 mb-2']
                     ) ?>
                     <?php
