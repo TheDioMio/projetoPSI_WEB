@@ -303,89 +303,90 @@ $this->title = 'Início';
     <div class="container">
         <div class="border-start border-5 border-primary ps-5 mb-5" style="max-width: 600px">
             <h6 class="text-primary text-uppercase"><?=Html::encode('A Nossa Equipa')?></h6>
-            <h1 class="display-5 text-uppercase mb-0"><?=Html::encode('Conheça os nosso Voluntários')?></h1>
+            <h1 class="display-5 text-uppercase mb-0"><?=Html::encode('Conheça os nossos Voluntários')?></h1>
         </div>
         <div class="owl-carousel team-carousel position-relative pr-4">
+
             <div class="team-item">
                 <div class="position-relative overflow-hidden">
-                    <img class="img-fluid w-100" src="<?= Yii::getAlias('@web') ?>/img/team-1.jpg" alt="">
+                    <img class="img-fluid w-100" src="<?= Yii::getAlias('@web') ?>/img/team-1.jpg" alt="João Silva">
                     <div class="team-overlay">
                         <div class="d-flex align-items-center justify-content-start">
-                            <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-twitter"></i></a>
                             <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-facebook"></i></a>
                             <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-linkedin"></i></a>
                         </div>
                     </div>
                 </div>
                 <div class="bg-light text-center p-4">
-                    <h5 class="text-uppercase">Full Name</h5>
-                    <p class="m-0">Designation</p>
+                    <h5 class="text-uppercase">João Silva</h5>
+                    <p class="m-0 text-primary fw-bold">Gestor de Projeto</p>
                 </div>
             </div>
+
             <div class="team-item">
                 <div class="position-relative overflow-hidden">
-                    <img class="img-fluid w-100" src="<?= Yii::getAlias('@web') ?>/img/team-2.jpg" alt="">
+                    <img class="img-fluid w-100" src="<?= Yii::getAlias('@web') ?>/img/team-2.jpg" alt="Ana Costa">
                     <div class="team-overlay">
                         <div class="d-flex align-items-center justify-content-start">
-                            <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-twitter"></i></a>
                             <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-facebook"></i></a>
                             <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-linkedin"></i></a>
                         </div>
                     </div>
                 </div>
                 <div class="bg-light text-center p-4">
-                    <h5 class="text-uppercase">Full Name</h5>
-                    <p class="m-0">Designation</p>
+                    <h5 class="text-uppercase">Ana Costa</h5>
+                    <p class="m-0 text-primary fw-bold">Full-Stack Developer</p>
                 </div>
             </div>
+
             <div class="team-item">
                 <div class="position-relative overflow-hidden">
-                    <img class="img-fluid w-100" src="<?= Yii::getAlias('@web') ?>/img/team-3.jpg" alt="">
+                    <img class="img-fluid w-100" src="<?= Yii::getAlias('@web') ?>/img/team-3.jpg" alt="Pedro Santos">
                     <div class="team-overlay">
                         <div class="d-flex align-items-center justify-content-start">
-                            <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-twitter"></i></a>
                             <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-facebook"></i></a>
                             <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-linkedin"></i></a>
                         </div>
                     </div>
                 </div>
                 <div class="bg-light text-center p-4">
-                    <h5 class="text-uppercase">Full Name</h5>
-                    <p class="m-0">Designation</p>
+                    <h5 class="text-uppercase">Pedro Santos</h5>
+                    <p class="m-0 text-primary fw-bold">Especialista de UI/UX</p>
                 </div>
             </div>
+
             <div class="team-item">
                 <div class="position-relative overflow-hidden">
-                    <img class="img-fluid w-100" src="<?= Yii::getAlias('@web') ?>/img/team-4.jpg" alt="">
+                    <img class="img-fluid w-100" src="<?= Yii::getAlias('@web') ?>/img/team-4.jpg" alt="Maria Oliveira">
                     <div class="team-overlay">
                         <div class="d-flex align-items-center justify-content-start">
-                            <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-twitter"></i></a>
                             <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-facebook"></i></a>
                             <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-linkedin"></i></a>
                         </div>
                     </div>
                 </div>
                 <div class="bg-light text-center p-4">
-                    <h5 class="text-uppercase">Full Name</h5>
-                    <p class="m-0">Designation</p>
+                    <h5 class="text-uppercase">Maria Oliveira</h5>
+                    <p class="m-0 text-primary fw-bold">Gestão de Parcerias</p>
                 </div>
             </div>
+
             <div class="team-item">
                 <div class="position-relative overflow-hidden">
-                    <img class="img-fluid w-100" src="<?= Yii::getAlias('@web') ?>/img/team-5.jpg" alt="">
+                    <img class="img-fluid w-100" src="<?= Yii::getAlias('@web') ?>/img/team-5.jpg" alt="André Sousa">
                     <div class="team-overlay">
                         <div class="d-flex align-items-center justify-content-start">
-                            <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-twitter"></i></a>
                             <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-facebook"></i></a>
                             <a class="btn btn-light btn-square mx-1" href="#"><i class="bi bi-linkedin"></i></a>
                         </div>
                     </div>
                 </div>
                 <div class="bg-light text-center p-4">
-                    <h5 class="text-uppercase">Full Name</h5>
-                    <p class="m-0">Designation</p>
+                    <h5 class="text-uppercase">André Sousa</h5>
+                    <p class="m-0 text-primary fw-bold">Apoio ao Adotante</p>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
@@ -401,30 +402,46 @@ $this->title = 'Início';
         <div class="row justify-content-end">
             <div class="col-lg-7">
                 <div class="owl-carousel testimonial-carousel bg-white p-5">
+
                     <div class="testimonial-item text-center">
                         <div class="position-relative mb-4">
-                            <img class="img-fluid mx-auto" src="<?= Yii::getAlias('@web') ?>/img/testimonial-1.jpg" alt="">
-                            <div class="position-absolute top-100 start-50 translate-middle d-flex align-items-center justify-content-center bg-white" style="width: 45px; height: 45px;">
+                            <img class="img-fluid mx-auto" src="<?= Yii::getAlias('@web') ?>/img/testimonial-1.jpg" alt="" style="border-radius: 50%; width: 100px; height: 100px; object-fit: cover;">
+                            <div class="position-absolute top-100 start-50 translate-middle d-flex align-items-center justify-content-center bg-white" style="width: 45px; height: 45px; border-radius: 50%; border: 1px solid #eee;">
                                 <i class="bi bi-chat-square-quote text-primary"></i>
                             </div>
                         </div>
-                        <p>Dolores sed duo clita tempor justo dolor et stet lorem kasd labore dolore lorem ipsum. At lorem lorem magna ut et, nonumy et labore et tempor diam tempor erat. Erat dolor rebum sit ipsum.</p>
+                        <p>Adotei o 'Bobi' através desta plataforma e a experiência não podia ter sido melhor. O processo de candidatura foi simples e hoje ele é o rei da casa. Obrigado por facilitarem este encontro!</p>
                         <hr class="w-25 mx-auto">
-                        <h5 class="text-uppercase">Client Name</h5>
-                        <span>Profession</span>
+                        <h5 class="text-uppercase">Ana Silva</h5>
+                        <span>Professora, Leiria</span>
                     </div>
+
                     <div class="testimonial-item text-center">
                         <div class="position-relative mb-4">
-                            <img class="img-fluid mx-auto" src="<?= Yii::getAlias('@web') ?>/img/testimonial-2.jpg" alt="">
-                            <div class="position-absolute top-100 start-50 translate-middle d-flex align-items-center justify-content-center bg-white" style="width: 45px; height: 45px;">
+                            <img class="img-fluid mx-auto" src="<?= Yii::getAlias('@web') ?>/img/testimonial-2.jpg" alt="" style="border-radius: 50%; width: 100px; height: 100px; object-fit: cover;">
+                            <div class="position-absolute top-100 start-50 translate-middle d-flex align-items-center justify-content-center bg-white" style="width: 45px; height: 45px; border-radius: 50%; border: 1px solid #eee;">
                                 <i class="bi bi-chat-square-quote text-primary"></i>
                             </div>
                         </div>
-                        <p>Dolores sed duo clita tempor justo dolor et stet lorem kasd labore dolore lorem ipsum. At lorem lorem magna ut et, nonumy et labore et tempor diam tempor erat. Erat dolor rebum sit ipsum.</p>
+                        <p>Como voluntário numa associação local, esta plataforma ajudou-nos a encontrar famílias responsáveis para mais de 10 animais em apenas um mês. Uma ferramenta essencial para a causa animal.</p>
                         <hr class="w-25 mx-auto">
-                        <h5 class="text-uppercase">Client Name</h5>
-                        <span>Profession</span>
+                        <h5 class="text-uppercase">Ricardo Santos</h5>
+                        <span>Voluntário, Marinha Grande</span>
                     </div>
+
+                    <div class="testimonial-item text-center">
+                        <div class="position-relative mb-4">
+                            <img class="img-fluid mx-auto" src="<?= Yii::getAlias('@web') ?>/img/testimonial-3.jpg" alt="" style="border-radius: 50%; width: 100px; height: 100px; object-fit: cover;">
+                            <div class="position-absolute top-100 start-50 translate-middle d-flex align-items-center justify-content-center bg-white" style="width: 45px; height: 45px; border-radius: 50%; border: 1px solid #eee;">
+                                <i class="bi bi-chat-square-quote text-primary"></i>
+                            </div>
+                        </div>
+                        <p>Excelente iniciativa! A transparência nos perfis dos animais e a facilidade de contacto com os abrigos faz toda a diferença para quem quer adotar de forma consciente.</p>
+                        <hr class="w-25 mx-auto">
+                        <h5 class="text-uppercase">Marta Ferreira</h5>
+                        <span>Designer, Batalha</span>
+                    </div>
+
                 </div>
             </div>
         </div>
