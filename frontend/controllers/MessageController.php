@@ -157,7 +157,7 @@ class MessageController extends Controller
             'receiver' => $receiver,
             'user_id' => $user_id,
             'from' => $from,
-            'listing_id' => $listing_id,
+            'animal_id' => $animal_id,
         ]);
     }
 
