@@ -307,7 +307,6 @@ class AnimalController extends ActiveController
 
         $query = Animal::find()
             ->where([
-                'status' => Listing::STATUS_ACTIVE,
                 'user_id' => $userId
             ])
             ->with(

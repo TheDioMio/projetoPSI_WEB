@@ -21,7 +21,9 @@ class Animal extends \common\models\Animal
             'description',
             'created_at',
             'location',
-
+            'status',
+            'user_id',
+            'user_role' => fn() => $this->user?->role_id,
             'age' => function () {
                 return $this->animalAge ? $this->animalAge->description : null;
             },
