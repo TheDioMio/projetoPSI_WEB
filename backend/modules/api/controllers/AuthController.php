@@ -97,7 +97,7 @@ class AuthController extends Controller
         $user = new User();
         $user->scenario = 'create';
 
-        // 📌 regras de negócio da API
+        // regras de negócio da API
         $user->username = $data['username'];
         $user->name = $data['username'];
         $user->email = $data['email'];

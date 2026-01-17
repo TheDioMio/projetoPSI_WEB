@@ -65,6 +65,7 @@ return [
                         'POST signup' => 'signup',
                     ],
                 ],
+
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'api/user',
@@ -82,6 +83,8 @@ return [
                         'GET my' => 'myanimals',
                         'GET meta' => 'meta',
                         'GET edit/<id:\d+>' => 'edit',
+                        'POST {id}/view' => 'add-view',
+                        'GET stats' =>'stats',
                     ],
                 ],
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'api/message', 'pluralize' => true,],

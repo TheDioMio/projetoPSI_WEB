@@ -5,6 +5,7 @@ namespace backend\modules\api\controllers;
 use backend\modules\api\models\Animal;
 use backend\modules\api\models\Comment;
 use backend\modules\api\models\File;
+use backend\modules\api\models\User;
 use common\models\Listing;
 use common\models\AnimalType;
 use common\models\Breed;
@@ -22,6 +23,7 @@ use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 use yii\web\ServerErrorHttpException;
+
 
 /**
  * Default controller for the `api` module
@@ -50,6 +52,8 @@ class AnimalController extends ActiveController
                 'myanimals'  => ['GET'],
                 'edit'       => ['GET'],
                 'meta'       => ['GET'],
+                'add-view'   => ['POST'],
+                'stats' => ['GET'],
             ],
         ];
 
@@ -612,5 +616,71 @@ class AnimalController extends ActiveController
         ];
     }
 
+    /**
+     * POST /api/animals/{id}/view
+     *
+     * Incrementa o número de visualizações do anúncio associado ao animal.
+     */
+    public function actionAddView($id)
+    {
+        $animal = Animal::find()
+            ->where(['id' => $id])
+            ->with('listing')
+            ->one();
+
+        if (!$animal || !$animal->listing) {
+            throw new NotFoundHttpException('Anúncio não encontrado');
+        }
+
+        // Incremento seguro
+        $animal->listing->updateCounters(['views' => 1]);
+
+        return [
+            'success' => true,
+            'views' => $animal->listing->views
+        ];
+    }
+
+
+    public function actionStats()
+    {
+        if (!Yii::$app->user->can('animalsManager')) {
+            throw new ForbiddenHttpException('Sem permissão');
+        }
+
+        // Animais adotados
+        $animalsAdopted = Animal::find()
+            ->where(['status' => Listing::STATUS_ADOPTED])
+            ->count();
+
+        // Animais à espera
+        $animalsWaiting = Animal::find()
+            ->where(['status' => Listing::STATUS_ACTIVE])
+            ->count();
+
+        // Utilizadores ativos (user + userPro)
+        $activeUsers = User::find()
+            ->where(['status' => User::STATUS_ACTIVE])
+            ->andWhere(['in', 'role_id', [2, 3]])
+            ->count();
+
+        // Anúncios ativos
+        $activeListings = Listing::find()
+            ->where(['status' => Listing::STATUS_ACTIVE])
+            ->count();
+
+        // Total de views
+        $totalViews = Listing::find()
+            ->sum('views');
+
+        return [
+            'success' => true,
+            'animals_adopted' => (int)$animalsAdopted,
+            'animals_waiting' => (int)$animalsWaiting,
+            'active_users' => (int)$activeUsers,
+            'active_listings' => (int)$activeListings,
+            'total_views' => (int)$totalViews,
+        ];
+    }
 
 }
