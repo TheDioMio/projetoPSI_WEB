@@ -101,6 +101,7 @@ class AuthController extends Controller
         $user->username = $data['username'];
         $user->name = $data['username'];
         $user->email = $data['email'];
+        $user->address = "Sem endereço";
         $user->role_id = User::ROLE_USER;             
         $user->status = User::STATUS_ACTIVE;
         $user->password = $data['password'];
